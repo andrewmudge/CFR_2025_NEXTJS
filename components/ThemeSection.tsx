@@ -25,7 +25,7 @@ const ThemeSection = () => {
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-red-500 to-red-600 mx-auto rounded-full mb-8"></div>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-            The theme this year is Harry Potter and the Chamber of Churchwells Witches, wizards, and wild relatives—your Hogwarts letter has arrived! This year, the Churchwell family is conjuring chaos and cousinly love at the legendary Casa de Fruta. Expect magical mayhem, family feasts worthy of the Great Hall, and enough enchantment to make even Aunt Edna’s fruitcake levitate. Don’t forget your wand—or your stretchy pants.
+            The theme this year is Harry Potter and the Chamber of Churchwells. Witches, wizards, and wild relatives—your Hogwarts letter has arrived! This year, the Churchwell family is conjuring chaos and cousinly love at the legendary Casa de Fruta. Expect magical mayhem, family feasts worthy of the Great Hall, and enough enchantment to make even Aunt Edna’s fruitcake levitate. Don’t forget your wand—or your stretchy pants.
           </p>
           <div className="flex justify-center mt-6">
             <img

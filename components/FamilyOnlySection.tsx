@@ -64,7 +64,7 @@ const FamilyOnlySection = () => {
                   Access Family Content
                 </Button>
                 
-                {/* Preview Mode Toggle - For Development Only */}
+                {/* Preview Mode Toggle - For Development Only
                 <Button
                   onClick={() => setPreviewMode(true)}
                   size="sm"
@@ -73,7 +73,7 @@ const FamilyOnlySection = () => {
                 >
                   <Eye className="w-4 h-4 mr-2" />
                   Preview Mode (Development)
-                </Button>
+                </Button> */}
               </div>
             </div>
 
@@ -112,7 +112,7 @@ const FamilyOnlySection = () => {
               Welcome to the Family Area
             </h2>
             
-            {/* Preview Mode Indicator */}
+            {/* Preview Mode Indicator 
             {previewMode && !user && (
               <div className="flex items-center space-x-2">
                 <Button
@@ -125,16 +125,16 @@ const FamilyOnlySection = () => {
                   Exit Preview
                 </Button>
               </div>
-            )}
+            )} */}
           </div>
           
-          {previewMode && !user && (
+          {/* {previewMode && !user && (
             <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 p-3 rounded-lg mb-6 max-w-md mx-auto">
               <p className="text-sm">
                 <strong>Preview Mode:</strong> You&apos;re viewing the authenticated content for development purposes.
               </p>
             </div>
-          )}
+          )} */}
           
           <p className="text-lg text-slate-600 max-w-2xl mx-auto">
             Exclusive family content, memories, and treasures. Share photos, explore our family tree, 
