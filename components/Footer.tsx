@@ -115,14 +115,12 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
             <div className="flex items-center space-x-2 text-sm text-slate-300">
               <span>&copy; 2025 Churchwell Family Reunion. All Rights Reserved.</span>
-              <Heart className="w-4 h-4 text-red-400" />
+              
               <span>A BOFA Brainchild Production</span>
             </div>
             
             <div className="flex items-center space-x-4 text-sm text-slate-300">
-              <span>Made with</span>
-              <Heart className="w-4 h-4 text-red-400" />
-              <span>for the family</span>
+              
               <motion.span
                 className="text-red-400"
                 animate={{
@@ -134,7 +132,7 @@ const Footer = () => {
                   ease: "easeInOut",
                 }}
               >
-                🏡
+                
               </motion.span>
             </div>
           </div>

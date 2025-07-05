@@ -1,10 +1,10 @@
-const AWS = require('aws-sdk');
-const { v4: uuidv4 } = require('uuid');
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { v4 as uuidv4 } from 'uuid';
 
-const s3 = new AWS.S3();
-const BUCKET_NAME = process.env.S3_BUCKET_NAME;
+const s3 = new S3Client({ region: process.env.AWS_REGION });
+const BUCKET_NAME = process.env.AMPLIFY_STORAGE_BUCKET_NAME;
 
-exports.handler = async (event) => {
+export const handler = async (event) => {
   try {
     const { fileName, fileType, fileData, year, metadata } = JSON.parse(event.body);
     
@@ -27,7 +27,7 @@ exports.handler = async (event) => {
       }
     };
     
-    await s3.upload(uploadParams).promise();
+    await s3.send(new PutObjectCommand(uploadParams));
     
     // Generate public URL
     const photoUrl = `https://${BUCKET_NAME}.s3.amazonaws.com/${s3Key}`;

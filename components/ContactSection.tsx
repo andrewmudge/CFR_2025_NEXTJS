@@ -9,8 +9,8 @@ const ContactSection = () => {
       icon: Mail,
       title: 'Email Us',
       description: 'General questions & information',
-      contact: 'info@churchwellreunion.com',
-      action: 'mailto:info@churchwellreunion.com',
+      contact: 'churchwell.reunion@gmail.com',
+      action: 'mailto:churchwell.reunion@gmail.com',
       color: 'from-blue-500 to-blue-700',
       bgColor: 'bg-blue-50',
     },
@@ -42,7 +42,7 @@ const ContactSection = () => {
             Contact Information
           </h2>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-            Have questions about our family gathering? We're here to help 
+            Have questions about our family gathering? We&apos;re here to help 
             with all your questions and needs.
           </p>
         </div>
@@ -109,7 +109,7 @@ const ContactSection = () => {
 
             <div className="mt-6 text-center">
               <p className="text-blue-100">
-                More questions? Don't hesitate to reach out! 🏡
+                More questions? Don&apos;t hesitate to reach out! 🏡
               </p>
             </div>
           </div>

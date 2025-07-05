@@ -41,7 +41,7 @@ export default function Home() {
             <CabinetSection />
             <ThemeSection />
             <ScheduleSection />
-            <GamesSection /> 
+            {/* <GamesSection />  */}
             <FamilyOnlySection />
             <PaymentsSection />
             <ContactSection />

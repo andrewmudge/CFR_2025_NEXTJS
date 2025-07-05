@@ -1,0 +1,104 @@
+{
+  "version": "44.0.0",
+  "files": {
+    "dc74d48ab56a7e77dfd8fcfc66e4c0ac0d5091ec05ea4e74142e71fbc218b926": {
+      "displayName": "function/uploadPhoto-lambda/Code",
+      "source": {
+        "path": "asset.dc74d48ab56a7e77dfd8fcfc66e4c0ac0d5091ec05ea4e74142e71fbc218b926",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "dc74d48ab56a7e77dfd8fcfc66e4c0ac0d5091ec05ea4e74142e71fbc218b926.zip",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    },
+    "de6f5e86306ab17290e215e1b9a2a01d7470ca9a3fe8a2334df0baa0c151fec9": {
+      "displayName": "function/listPhotos-lambda/Code",
+      "source": {
+        "path": "asset.de6f5e86306ab17290e215e1b9a2a01d7470ca9a3fe8a2334df0baa0c151fec9",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "de6f5e86306ab17290e215e1b9a2a01d7470ca9a3fe8a2334df0baa0c151fec9.zip",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    },
+    "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
+      "displayName": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/storage/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
+      "source": {
+        "path": "asset.faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6.zip",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    },
+    "d124323115304e329679aad06f2eef2a578b91c5bec44a27ecece5aea99b207d": {
+      "displayName": "auth Nested Stack Template",
+      "source": {
+        "path": "amplifychurchwellfamilyreunionmudgesandboxf5603c1efdauth4CDE13FF.nested.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "d124323115304e329679aad06f2eef2a578b91c5bec44a27ecece5aea99b207d.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    },
+    "663625e1567398745c106884ddde6f81e61899cee7414eb4a66d46f3e975b441": {
+      "displayName": "function Nested Stack Template",
+      "source": {
+        "path": "amplifychurchwellfamilyreunionmudgesandboxf5603c1efdfunctionBAA4FC09.nested.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "663625e1567398745c106884ddde6f81e61899cee7414eb4a66d46f3e975b441.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    },
+    "1cf1a395c41f41d3b9d13e43f3264b71dd2e7e7384a9af5136d5b6dc288efeee": {
+      "displayName": "storage Nested Stack Template",
+      "source": {
+        "path": "amplifychurchwellfamilyreunionmudgesandboxf5603c1efdstorageA664F27F.nested.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "1cf1a395c41f41d3b9d13e43f3264b71dd2e7e7384a9af5136d5b6dc288efeee.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    },
+    "d4a705c6d8361e968b23943acb184bc27ba540fad65052e8e651a062841830cf": {
+      "displayName": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd Template",
+      "source": {
+        "path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "d4a705c6d8361e968b23943acb184bc27ba540fad65052e8e651a062841830cf.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

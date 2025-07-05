@@ -8,12 +8,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/lib/auth/AuthContext';
 import { toast } from 'sonner';
+import Image from 'next/image';
 
 const AuthModal = () => {
-  const { isAuthModalOpen, closeAuthModal, signIn, signUp } = useAuth();
-  const [isSignUp, setIsSignUp] = useState(false);
+  const { isAuthModalOpen, closeAuthModal, signIn, signUp, confirmSignUp, resetPassword, confirmResetPassword } = useAuth();
+  const [authStep, setAuthStep] = useState<'signup' | 'signin' | 'verify' | 'reset' | 'confirmReset'>('signup');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [verificationCode, setVerificationCode] = useState('');
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -28,26 +30,27 @@ const AuthModal = () => {
     setLoading(true);
 
     try {
-      if (isSignUp) {
+      if (authStep === 'signup') {
         if (formData.password !== formData.confirmPassword) {
           toast.error('Passwords do not match');
           return;
         }
         
-        await signUp(
+        const result = await signUp(
           formData.email,
           formData.password,
           formData.firstName,
           formData.lastName,
           formData.phone
         );
-        toast.success('Account created successfully!');
+        setAuthStep('verify');
+        toast.success('Verification code sent to your email!');
       } else {
         await signIn(formData.email, formData.password);
         toast.success('Welcome back to the family!');
       }
     } catch (error) {
-      toast.error(isSignUp ? 'Failed to create account' : 'Failed to sign in');
+      toast.error(authStep === 'signup' ? 'Failed to create account' : 'Failed to sign in');
     } finally {
       setLoading(false);
     }
@@ -55,6 +58,55 @@ const AuthModal = () => {
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleVerifyEmail = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    
+    try {
+      await confirmSignUp(formData.email, verificationCode);
+      toast.success('Account confirmed! Please sign in.');
+      setAuthStep('signin');
+      setFormData({ email: formData.email, password: '', firstName: '', lastName: '', phone: '', confirmPassword: '' });
+      setVerificationCode('');
+    } catch (error) {
+      toast.error('Invalid verification code');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResetPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    
+    try {
+      await resetPassword(formData.email);
+      toast.success('Reset code sent to your email!');
+      setAuthStep('confirmReset');
+    } catch (error) {
+      toast.error('Failed to send reset code');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleConfirmReset = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    
+    try {
+      await confirmResetPassword(formData.email, verificationCode, formData.password);
+      toast.success('Password reset successfully! Please sign in.');
+      setAuthStep('signin');
+      setFormData({ email: formData.email, password: '', firstName: '', lastName: '', phone: '', confirmPassword: '' });
+      setVerificationCode('');
+    } catch (error) {
+      toast.error('Failed to reset password');
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (!isAuthModalOpen) return null;
@@ -86,27 +138,140 @@ const AuthModal = () => {
             
             <div className="text-center">
               <div className="w-16 h-16 mx-auto mb-4 bg-white rounded-full flex items-center justify-center border-2 border-red-600 shadow-lg">
-                <img 
+                <Image 
                   src="/favicon.png" 
                   alt="Churchwell Family Logo" 
+                  width={48}         // <-- Add the actual width in pixels
+                  height={48}        // <-- Add the actual height in pixels
                   className="w-12 h-12 object-contain"
                 />
               </div>
               <h2 className="text-2xl font-bold text-slate-800">
-                {isSignUp ? 'Join the Family' : 'Welcome Back'}
+                {authStep === 'signup' ? 'Join the Family' : 
+                 authStep === 'verify' ? 'Verify Your Email' :
+                 authStep === 'reset' ? 'Reset Password' :
+                 authStep === 'confirmReset' ? 'Set New Password' :
+                 'Welcome Back'}
               </h2>
               <p className="text-gray-600 mt-2">
-                {isSignUp 
-                  ? 'Create your account to access family-only content'
-                  : 'Sign in to access exclusive family content'
-                }
+                {authStep === 'signup' ? 'Create your account to access family-only content' :
+                 authStep === 'verify' ? 'Enter the code sent to your email' :
+                 authStep === 'reset' ? 'Enter your email to reset password' :
+                 authStep === 'confirmReset' ? 'Enter code and new password' :
+                 'Sign in to access exclusive family content'}
               </p>
             </div>
           </div>
 
-          {/* Form */}
+          {/* Email Verification Form */}
+          {authStep === 'verify' ? (
+            <form onSubmit={handleVerifyEmail} className="p-6 space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="verificationCode">Verification Code</Label>
+                <Input
+                  id="verificationCode"
+                  type="text"
+                  placeholder="123456"
+                  value={verificationCode}
+                  onChange={(e) => setVerificationCode(e.target.value)}
+                  className="text-center text-lg tracking-widest"
+                  maxLength={6}
+                  required
+                />
+              </div>
+              
+              <Button
+                type="submit"
+                className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800"
+                disabled={loading}
+              >
+                {loading ? 'Verifying...' : 'Verify Email'}
+              </Button>
+              
+              <div className="text-center">
+                <button
+                  type="button"
+                  onClick={() => setAuthStep('signup')}
+                  className="text-red-600 hover:text-red-700 text-sm"
+                >
+                  Back to Sign Up
+                </button>
+              </div>
+            </form>
+          ) : authStep === 'reset' ? (
+            /* Password Reset Form */
+            <form onSubmit={handleResetPassword} className="p-6 space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="resetEmail">Email</Label>
+                <Input
+                  id="resetEmail"
+                  type="email"
+                  placeholder="john@example.com"
+                  value={formData.email}
+                  onChange={(e) => handleInputChange('email', e.target.value)}
+                  required
+                />
+              </div>
+              
+              <Button
+                type="submit"
+                className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800"
+                disabled={loading}
+              >
+                {loading ? 'Sending...' : 'Send Reset Code'}
+              </Button>
+              
+              <div className="text-center">
+                <button
+                  type="button"
+                  onClick={() => setAuthStep('signin')}
+                  className="text-red-600 hover:text-red-700 text-sm"
+                >
+                  Back to Sign In
+                </button>
+              </div>
+            </form>
+          ) : authStep === 'confirmReset' ? (
+            /* Confirm Reset Form */
+            <form onSubmit={handleConfirmReset} className="p-6 space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="resetCode">Reset Code</Label>
+                <Input
+                  id="resetCode"
+                  type="text"
+                  placeholder="123456"
+                  value={verificationCode}
+                  onChange={(e) => setVerificationCode(e.target.value)}
+                  className="text-center text-lg tracking-widest"
+                  maxLength={6}
+                  required
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="newPassword">New Password</Label>
+                <Input
+                  id="newPassword"
+                  type="password"
+                  placeholder="Enter new password"
+                  value={formData.password}
+                  onChange={(e) => handleInputChange('password', e.target.value)}
+                  required
+                />
+              </div>
+              
+              <Button
+                type="submit"
+                className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800"
+                disabled={loading}
+              >
+                {loading ? 'Resetting...' : 'Reset Password'}
+              </Button>
+            </form>
+          ) : (
+          /* Main Form */
           <form onSubmit={handleSubmit} className="p-6 space-y-4">
-            {isSignUp && (
+            {authStep === 'signup' && (
               <>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
@@ -199,7 +364,7 @@ const AuthModal = () => {
               </div>
             </div>
 
-            {isSignUp && (
+            {authStep === 'signup' && (
               <div className="space-y-2">
                 <Label htmlFor="confirmPassword">Confirm Password</Label>
                 <div className="relative">
@@ -222,22 +387,40 @@ const AuthModal = () => {
               className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800"
               disabled={loading}
             >
-              {loading ? 'Processing...' : (isSignUp ? 'Create Account' : 'Sign In')}
+              {loading ? 'Processing...' : (authStep === 'signup' ? 'Create Account' : 'Sign In')}
             </Button>
 
-            <div className="text-center">
-              <button
-                type="button"
-                onClick={() => setIsSignUp(!isSignUp)}
-                className="text-red-600 hover:text-red-700 text-sm"
-              >
-                {isSignUp 
-                  ? 'Already have an account? Sign in' 
-                  : "Don't have an account? Sign up"
-                }
-              </button>
+            <div className="text-center space-y-2">
+              {authStep === 'signin' && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => setAuthStep('reset')}
+                    className="text-red-600 hover:text-red-700 text-sm block w-full"
+                  >
+                    Forgot your password?
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setAuthStep('signup')}
+                    className="text-red-600 hover:text-red-700 text-sm"
+                  >
+                    Don&apos;t have an account? Sign up
+                  </button>
+                </>
+              )}
+              {authStep === 'signup' && (
+                <button
+                  type="button"
+                  onClick={() => setAuthStep('signin')}
+                  className="text-red-600 hover:text-red-700 text-sm"
+                >
+                  Already have an account? Sign in
+                </button>
+              )}
             </div>
           </form>
+          )}
 
           {/* Social Auth Placeholder */}
           <div className="p-6 pt-0">

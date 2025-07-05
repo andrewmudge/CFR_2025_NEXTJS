@@ -23,7 +23,7 @@ const Header = () => {
     { href: '#cabinet', label: 'Cabinet' },
     { href: '#theme', label: 'Theme' },
     { href: '#schedule', label: 'Schedule' },
-    { href: '#games', label: 'Games' },
+    // { href: '#games', label: 'Games' },
     { href: '#family-only', label: 'Family Only' },
     { href: '#payments', label: 'Payments' },
     { href: '#contact', label: 'Contact' },

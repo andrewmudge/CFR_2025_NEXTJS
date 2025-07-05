@@ -4,20 +4,17 @@ import { motion } from 'framer-motion';
 import { Calendar, MapPin, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/lib/auth/AuthContext';
+import Image from 'next/image';
 
 const AboutSection = () => {
-  const { user, openAuthModal, openSignUpModal } = useAuth();
+  const { user, openAuthModal } = useAuth();
 
   const handleSignUpClick = () => {
-    if (!user) {
-      openAuthModal();
-    } else {
-      openSignUpModal();
-    }
+    openAuthModal();
   };
 
   return (
-    <section id="about" className="py-20 bg-white">
+    <section id="about" className="pt-16 py-20 bg-white">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -70,7 +67,7 @@ const AboutSection = () => {
                 </div>
               </div>
 
-              {/* Registration Button */}
+              {/* Registration Button 
               <div className="pt-6">
                 <Button
                   onClick={handleSignUpClick}
@@ -83,15 +80,17 @@ const AboutSection = () => {
                 <p className="text-sm text-slate-500 mt-3">
                   {!user && "Account required to register for the reunion"}
                 </p>
-              </div>
+              </div> */}
             </div>
 
             {/* Image */}
             <div className="relative">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl group">
-                <img
+                <Image
                   src="/intro-bg - Copy.jpg"
                   alt="Churchwell Family Reunion - Large family group photo"
+                  width={1200} // <-- set to your image's width in pixels
+                  height={500} // <-- set to your image's height in pixels
                   className="w-full h-[500px] object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

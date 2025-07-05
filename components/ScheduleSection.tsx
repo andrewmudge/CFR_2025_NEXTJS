@@ -97,7 +97,6 @@ const ScheduleSection = () => {
         time: 'After Dinner',
         title: 'After Dinner Game',
         description: 'After Dinner Game Details TBD',
-        subtitle: 'Place Holder',
         icon: Trophy,
         color: 'from-blue-500 to-blue-700',
         bgColor: 'bg-blue-50',
@@ -115,7 +114,7 @@ const ScheduleSection = () => {
       {
         time: '10:30 AM',
         title: 'Brunch',
-        description: 'Sign Up for brunch Potluck Here',
+        description: 'Mimosas and Deliciousness',
         icon: Utensils,
         color: 'from-orange-500 to-orange-700',
         bgColor: 'bg-orange-50',

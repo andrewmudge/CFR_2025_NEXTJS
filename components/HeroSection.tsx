@@ -5,7 +5,7 @@ import { Calendar, MapPin } from 'lucide-react';
 
 const HeroSection = () => {
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section id="home" className="pt-24 relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Professional Background */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900" />

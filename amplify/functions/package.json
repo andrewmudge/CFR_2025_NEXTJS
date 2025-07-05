@@ -1,8 +1,0 @@
-{
-  "name": "photo-gallery-lambdas",
-  "version": "1.0.0",
-  "dependencies": {
-    "aws-sdk": "^2.1691.0",
-    "uuid": "^9.0.1"
-  }
-}

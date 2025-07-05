@@ -1,0 +1,57 @@
+{
+  "auth": {
+    "user_pool_id": "us-east-1_5tkjh6Sud",
+    "aws_region": "us-east-1",
+    "user_pool_client_id": "232344d7tg5t59l4fuqlaf01pa",
+    "identity_pool_id": "us-east-1:cbb86391-f626-4676-b2f7-eac0d6240f5a",
+    "mfa_methods": [],
+    "standard_required_attributes": [
+      "email",
+      "phone_number",
+      "given_name",
+      "family_name"
+    ],
+    "username_attributes": [
+      "email"
+    ],
+    "user_verification_types": [
+      "email"
+    ],
+    "groups": [],
+    "mfa_configuration": "NONE",
+    "password_policy": {
+      "min_length": 8,
+      "require_lowercase": true,
+      "require_numbers": true,
+      "require_symbols": true,
+      "require_uppercase": true
+    },
+    "unauthenticated_identities_enabled": true
+  },
+  "storage": {
+    "aws_region": "us-east-1",
+    "bucket_name": "amplify-churchwellfamilyr-photostoragebucketdd5123-ia0zmxvmgzcc",
+    "buckets": [
+      {
+        "name": "photoStorage",
+        "bucket_name": "amplify-churchwellfamilyr-photostoragebucketdd5123-ia0zmxvmgzcc",
+        "aws_region": "us-east-1",
+        "paths": {
+          "public/*": {
+            "authenticated": [
+              "get",
+              "write",
+              "delete",
+              "list"
+            ],
+            "guest": [
+              "get",
+              "list"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "version": "1.4"
+}

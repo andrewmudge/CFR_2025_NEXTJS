@@ -1,9 +1,9 @@
-const AWS = require('aws-sdk');
+import { S3Client, ListObjectsV2Command, HeadObjectCommand } from '@aws-sdk/client-s3';
 
-const s3 = new AWS.S3();
-const BUCKET_NAME = process.env.S3_BUCKET_NAME;
+const s3 = new S3Client({ region: process.env.AWS_REGION });
+const BUCKET_NAME = process.env.AMPLIFY_STORAGE_BUCKET_NAME;
 
-exports.handler = async (event) => {
+export const handler = async (event) => {
   try {
     const year = event.queryStringParameters?.year;
     
@@ -20,7 +20,7 @@ exports.handler = async (event) => {
       Prefix: `photos/${year}/`,
     };
 
-    const data = await s3.listObjectsV2(listParams).promise();
+    const data = await s3.send(new ListObjectsV2Command(listParams));
     
     // Get metadata for each photo
     const photos = await Promise.all(
@@ -30,7 +30,7 @@ exports.handler = async (event) => {
           Key: object.Key,
         };
         
-        const metadata = await s3.headObject(headParams).promise();
+        const metadata = await s3.send(new HeadObjectCommand(headParams));
         const photoId = object.Key.split('/').pop().split('.')[0];
         
         return {

@@ -63,7 +63,7 @@ const CabinetSection = () => {
             2025 Cabinet
           </h2>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-            Meet the dedicated family members organizing this year's reunion and ensuring 
+            Meet the dedicated family members organizing this year&apos;s reunion and ensuring 
             every detail creates lasting memories for our family.
           </p>
         </div>

@@ -1,6 +1,9 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { Amplify } from 'aws-amplify';
+import { signUp as amplifySignUp, signIn as amplifySignIn, signOut as amplifySignOut, getCurrentUser, fetchUserAttributes, confirmSignUp as amplifyConfirmSignUp, resetPassword as amplifyResetPassword, confirmResetPassword as amplifyConfirmResetPassword } from 'aws-amplify/auth';
+import outputs from '@/amplify_outputs.json';
 
 interface User {
   id: string;
@@ -17,16 +20,14 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string, firstName: string, lastName: string, phone: string) => Promise<void>;
+  signUp: (email: string, password: string, firstName: string, lastName: string, phone: string) => Promise<{ nextStep: any }>;
   signOut: () => Promise<void>;
   confirmSignUp: (email: string, code: string) => Promise<void>;
-  resendConfirmationCode: (email: string) => Promise<void>;
+  resetPassword: (email: string) => Promise<void>;
+  confirmResetPassword: (email: string, code: string, newPassword: string) => Promise<void>;
   openAuthModal: () => void;
   closeAuthModal: () => void;
-  openSignUpModal: () => void;
-  closeSignUpModal: () => void;
   isAuthModalOpen: boolean;
-  isSignUpModalOpen: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -47,20 +48,31 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
+
+
+  // Configure Amplify on client side
+  useEffect(() => {
+    Amplify.configure(outputs);
+  }, []);
 
   useEffect(() => {
-    // Check for existing session
     const checkUser = async () => {
       try {
-        // This would normally check AWS Cognito session
-        // For now, we'll simulate with localStorage
-        const savedUser = localStorage.getItem('cfr_user');
-        if (savedUser) {
-          setUser(JSON.parse(savedUser));
-        }
+        const currentUser = await getCurrentUser();
+        const userAttributes = await fetchUserAttributes();
+        
+        setUser({
+          id: currentUser.userId,
+          username: currentUser.username,
+          email: userAttributes.email || '',
+          attributes: {
+            given_name: userAttributes.given_name || '',
+            family_name: userAttributes.family_name || '',
+            phone_number: userAttributes.phone_number || ''
+          }
+        });
       } catch (error) {
-        console.error('Error checking user session:', error);
+        console.log('No authenticated user');
       } finally {
         setLoading(false);
       }
@@ -70,25 +82,24 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }, []);
 
   const signIn = async (email: string, password: string) => {
+    setLoading(true);
     try {
-      setLoading(true);
+      const result = await amplifySignIn({ username: email, password });
       
-      // Simulate AWS Cognito sign in
-      // In production, this would use AWS Amplify Auth
-      const mockUser: User = {
-        id: '1',
-        username: email,
-        email,
-        attributes: {
-          given_name: 'John',
-          family_name: 'Churchwell',
-          phone_number: '+1234567890',
-        },
-      };
-
-      localStorage.setItem('cfr_user', JSON.stringify(mockUser));
-      setUser(mockUser);
-      setIsAuthModalOpen(false);
+      if (result.isSignedIn) {
+        const currentUser = await getCurrentUser();
+        setUser({
+          id: currentUser.userId,
+          username: currentUser.username,
+          email: email,
+          attributes: {
+            given_name: '',
+            family_name: '',
+            phone_number: ''
+          }
+        });
+        setIsAuthModalOpen(false);
+      }
     } catch (error) {
       console.error('Sign in error:', error);
       throw error;
@@ -98,28 +109,22 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const signUp = async (email: string, password: string, firstName: string, lastName: string, phone: string) => {
+    setLoading(true);
     try {
-      setLoading(true);
-      
-      // Simulate AWS Cognito sign up
-      // In production, this would use AWS Amplify Auth
-      console.log('Signing up user:', { email, firstName, lastName, phone });
-      
-      // For demo purposes, we'll auto-confirm
-      const mockUser: User = {
-        id: Date.now().toString(),
+      const result = await amplifySignUp({
         username: email,
-        email,
-        attributes: {
-          given_name: firstName,
-          family_name: lastName,
-          phone_number: phone,
-        },
-      };
-
-      localStorage.setItem('cfr_user', JSON.stringify(mockUser));
-      setUser(mockUser);
-      setIsAuthModalOpen(false);
+        password,
+        options: {
+          userAttributes: {
+            email,
+            phone_number: phone,
+            given_name: firstName,
+            family_name: lastName
+          }
+        }
+      });
+      
+      return { nextStep: result.nextStep };
     } catch (error) {
       console.error('Sign up error:', error);
       throw error;
@@ -131,7 +136,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const signOut = async () => {
     try {
       setLoading(true);
-      localStorage.removeItem('cfr_user');
+      await amplifySignOut();
       setUser(null);
     } catch (error) {
       console.error('Sign out error:', error);
@@ -142,10 +147,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const confirmSignUp = async (email: string, code: string) => {
+    setLoading(true);
     try {
-      setLoading(true);
-      // Simulate confirmation
-      console.log('Confirming sign up:', { email, code });
+      await amplifyConfirmSignUp({ username: email, confirmationCode: code });
     } catch (error) {
       console.error('Confirmation error:', error);
       throw error;
@@ -154,20 +158,33 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
-  const resendConfirmationCode = async (email: string) => {
+  const resetPassword = async (email: string) => {
+    setLoading(true);
     try {
-      // Simulate resending code
-      console.log('Resending confirmation code to:', email);
+      await amplifyResetPassword({ username: email });
     } catch (error) {
-      console.error('Resend error:', error);
+      console.error('Reset password error:', error);
       throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const confirmResetPassword = async (email: string, code: string, newPassword: string) => {
+    setLoading(true);
+    try {
+      await amplifyConfirmResetPassword({ username: email, confirmationCode: code, newPassword });
+    } catch (error) {
+      console.error('Confirm reset password error:', error);
+      throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
   const openAuthModal = () => setIsAuthModalOpen(true);
   const closeAuthModal = () => setIsAuthModalOpen(false);
-  const openSignUpModal = () => setIsSignUpModalOpen(true);
-  const closeSignUpModal = () => setIsSignUpModalOpen(false);
+
 
   const value: AuthContextType = {
     user,
@@ -176,13 +193,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     signUp,
     signOut,
     confirmSignUp,
-    resendConfirmationCode,
+    resetPassword,
+    confirmResetPassword,
     openAuthModal,
     closeAuthModal,
-    openSignUpModal,
-    closeSignUpModal,
     isAuthModalOpen,
-    isSignUpModalOpen,
   };
 
   return (

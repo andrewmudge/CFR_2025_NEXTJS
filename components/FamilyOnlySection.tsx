@@ -131,7 +131,7 @@ const FamilyOnlySection = () => {
           {previewMode && !user && (
             <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 p-3 rounded-lg mb-6 max-w-md mx-auto">
               <p className="text-sm">
-                <strong>Preview Mode:</strong> You're viewing the authenticated content for development purposes.
+                <strong>Preview Mode:</strong> You&apos;re viewing the authenticated content for development purposes.
               </p>
             </div>
           )}

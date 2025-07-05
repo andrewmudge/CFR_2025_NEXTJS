@@ -6,7 +6,7 @@ import { Upload, X, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useDropzone } from 'react-dropzone';
-import { uploadPhoto, fetchPhotos, PhotoMetadata } from '@/lib/s3-utils';
+import { uploadPhoto, listPhotos } from '@/lib/amplify-storage';
 
 interface Photo {
   id: string;
@@ -24,16 +24,16 @@ const PhotoGallery = () => {
   const [loading, setLoading] = useState(false);
 
   const years = [
-    { id: '2025', label: '2025', theme: 'Current Year', color: 'from-blue-500 to-blue-700' },
-    { id: '2024', label: '2024', theme: 'Superheroes Unite', color: 'from-red-500 to-red-700' },
-    { id: '2023', label: '2023', theme: 'Wild West Adventure', color: 'from-orange-500 to-orange-700' },
-    { id: '2022', label: '2022', theme: 'Under the Sea', color: 'from-teal-500 to-teal-700' },
+    { id: '2025', label: '2025', theme: 'Harry Potter', color: 'from-blue-500 to-blue-700' },
+    { id: '2024', label: '2024', theme: 'Captain Ron', color: 'from-red-500 to-red-700' },
+    { id: '2023', label: '2023', theme: 'Under the Sea', color: 'from-orange-500 to-orange-700' },
+    { id: '2022', label: '2022', theme: 'Paradise', color: 'from-teal-500 to-teal-700' },
   ];
 
   const loadPhotos = async (year: string) => {
     try {
       setLoading(true);
-      const photos = await fetchPhotos(year);
+      const photos = await listPhotos(parseInt(year));
       setPhotosByYear(prev => ({ ...prev, [year]: photos }));
     } catch (error) {
       console.error('Failed to load photos:', error);
@@ -53,19 +53,15 @@ const PhotoGallery = () => {
       try {
         setLoading(true);
         const metadata = {
-          id: `${currentYear}_${Date.now()}`,
           caption: file.name.replace(/\.[^/.]+$/, ""),
           uploader: 'You',
           date: new Date().toISOString().split('T')[0],
-          year: currentYear,
         };
         
-        const result = await uploadPhoto(file, activeYear, metadata);
+        await uploadPhoto(file, currentYear, metadata);
         
-        setPhotosByYear(prev => ({
-          ...prev,
-          [activeYear]: [result.photo, ...(prev[activeYear] || [])],
-        }));
+        // Reload photos after upload
+        await loadPhotos(activeYear);
       } catch (error) {
         console.error('Upload failed:', error);
       } finally {
@@ -237,7 +233,7 @@ const PhotoGallery = () => {
         </motion.div>
       )}
 
-      {/* Gallery Statistics */}
+      {/* Gallery Statistics 
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -257,7 +253,7 @@ const PhotoGallery = () => {
             </div>
           );
         })}
-      </motion.div>
+      </motion.div> */}
     </div>
   );
 };
