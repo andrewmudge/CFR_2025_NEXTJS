@@ -1,0 +1,244 @@
+type FamilyWhitelist @aws_iam @aws_cognito_user_pools {
+  id: ID!
+  email: String!
+  fullName: String!
+  phoneNumber: String
+  isActive: Boolean!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+input AmplifyAIConversationTurnErrorInput {
+  errorType: String!
+  message: String!
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelSubscriptionStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  in: [String]
+  notIn: [String]
+}
+
+input ModelSubscriptionIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  in: [Int]
+  notIn: [Int]
+}
+
+input ModelSubscriptionFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  in: [Float]
+  notIn: [Float]
+}
+
+input ModelSubscriptionBooleanInput {
+  ne: Boolean
+  eq: Boolean
+}
+
+input ModelSubscriptionIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  in: [ID]
+  notIn: [ID]
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelFamilyWhitelistConnection @aws_iam @aws_cognito_user_pools {
+  items: [FamilyWhitelist]!
+  nextToken: String
+}
+
+input ModelFamilyWhitelistFilterInput {
+  id: ModelIDInput
+  email: ModelStringInput
+  fullName: ModelStringInput
+  phoneNumber: ModelStringInput
+  isActive: ModelBooleanInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelFamilyWhitelistFilterInput]
+  or: [ModelFamilyWhitelistFilterInput]
+  not: ModelFamilyWhitelistFilterInput
+}
+
+type Query {
+  getFamilyWhitelist(id: ID!): FamilyWhitelist @aws_iam @aws_cognito_user_pools
+  listFamilyWhitelists(filter: ModelFamilyWhitelistFilterInput, limit: Int, nextToken: String): ModelFamilyWhitelistConnection @aws_iam @aws_cognito_user_pools
+  familyWhitelistsByEmail(email: String!, sortDirection: ModelSortDirection, filter: ModelFamilyWhitelistFilterInput, limit: Int, nextToken: String): ModelFamilyWhitelistConnection @aws_iam @aws_cognito_user_pools
+}
+
+input ModelFamilyWhitelistConditionInput {
+  email: ModelStringInput
+  fullName: ModelStringInput
+  phoneNumber: ModelStringInput
+  isActive: ModelBooleanInput
+  and: [ModelFamilyWhitelistConditionInput]
+  or: [ModelFamilyWhitelistConditionInput]
+  not: ModelFamilyWhitelistConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+}
+
+input CreateFamilyWhitelistInput {
+  id: ID
+  email: String!
+  fullName: String!
+  phoneNumber: String
+  isActive: Boolean!
+}
+
+input UpdateFamilyWhitelistInput {
+  id: ID!
+  email: String
+  fullName: String
+  phoneNumber: String
+  isActive: Boolean
+}
+
+input DeleteFamilyWhitelistInput {
+  id: ID!
+}
+
+type Mutation {
+  createFamilyWhitelist(input: CreateFamilyWhitelistInput!, condition: ModelFamilyWhitelistConditionInput): FamilyWhitelist @aws_iam @aws_cognito_user_pools
+  updateFamilyWhitelist(input: UpdateFamilyWhitelistInput!, condition: ModelFamilyWhitelistConditionInput): FamilyWhitelist @aws_iam @aws_cognito_user_pools
+  deleteFamilyWhitelist(input: DeleteFamilyWhitelistInput!, condition: ModelFamilyWhitelistConditionInput): FamilyWhitelist @aws_iam @aws_cognito_user_pools
+}
+
+input ModelSubscriptionFamilyWhitelistFilterInput {
+  id: ModelSubscriptionIDInput
+  email: ModelSubscriptionStringInput
+  fullName: ModelSubscriptionStringInput
+  phoneNumber: ModelSubscriptionStringInput
+  isActive: ModelSubscriptionBooleanInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionFamilyWhitelistFilterInput]
+  or: [ModelSubscriptionFamilyWhitelistFilterInput]
+}
+
+type Subscription {
+  onCreateFamilyWhitelist(filter: ModelSubscriptionFamilyWhitelistFilterInput): FamilyWhitelist @aws_subscribe(mutations: ["createFamilyWhitelist"]) @aws_iam @aws_cognito_user_pools
+  onUpdateFamilyWhitelist(filter: ModelSubscriptionFamilyWhitelistFilterInput): FamilyWhitelist @aws_subscribe(mutations: ["updateFamilyWhitelist"]) @aws_iam @aws_cognito_user_pools
+  onDeleteFamilyWhitelist(filter: ModelSubscriptionFamilyWhitelistFilterInput): FamilyWhitelist @aws_subscribe(mutations: ["deleteFamilyWhitelist"]) @aws_iam @aws_cognito_user_pools
+}

@@ -1,0 +1,2302 @@
+{
+ "Parameters": {
+  "DynamoDBModelTableReadIOPS": {
+   "Type": "Number",
+   "Default": 5,
+   "Description": "The number of read IOPS the table should support."
+  },
+  "DynamoDBModelTableWriteIOPS": {
+   "Type": "Number",
+   "Default": 5,
+   "Description": "The number of write IOPS the table should support."
+  },
+  "DynamoDBBillingMode": {
+   "Type": "String",
+   "Default": "PAY_PER_REQUEST",
+   "AllowedValues": [
+    "PAY_PER_REQUEST",
+    "PROVISIONED"
+   ],
+   "Description": "Configure @model types to create DynamoDB tables with PAY_PER_REQUEST or PROVISIONED billing modes."
+  },
+  "DynamoDBEnablePointInTimeRecovery": {
+   "Type": "String",
+   "Default": "false",
+   "AllowedValues": [
+    "true",
+    "false"
+   ],
+   "Description": "Whether to enable Point in Time Recovery on the table."
+  },
+  "DynamoDBEnableServerSideEncryption": {
+   "Type": "String",
+   "Default": "true",
+   "AllowedValues": [
+    "true",
+    "false"
+   ],
+   "Description": "Enable server side encryption powered by KMS."
+  },
+  "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResource25266F72Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataAmplifyTableEAC710E4": {
+   "Type": "String"
+  },
+  "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId": {
+   "Type": "String"
+  },
+  "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPINONEDS201EFB38Name": {
+   "Type": "String"
+  },
+  "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthauthenticatedUserRole97EF2E07Ref": {
+   "Type": "String"
+  },
+  "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthunauthenticatedUserRole4D0D6590Ref": {
+   "Type": "String"
+  },
+  "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthIdentityPool86B7E993Ref": {
+   "Type": "String"
+  }
+ },
+ "Conditions": {
+  "HasEnvironmentParameter": {
+   "Fn::Not": [
+    {
+     "Fn::Equals": [
+      "NONE",
+      "NONE"
+     ]
+    }
+   ]
+  },
+  "ShouldUsePayPerRequestBilling": {
+   "Fn::Equals": [
+    {
+     "Ref": "DynamoDBBillingMode"
+    },
+    "PAY_PER_REQUEST"
+   ]
+  },
+  "ShouldUsePointInTimeRecovery": {
+   "Fn::Equals": [
+    {
+     "Ref": "DynamoDBEnablePointInTimeRecovery"
+    },
+    "true"
+   ]
+  },
+  "CDKMetadataAvailable": {
+   "Fn::Or": [
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "af-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-3"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-4"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-northwest-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-2"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "il-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "sa-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Equals": [
+      {
+       "Ref": "AWS::Region"
+      },
+      "us-west-2"
+     ]
+    }
+   ]
+  }
+ },
+ "Resources": {
+  "FamilyWhitelistTable": {
+   "Type": "Custom::AmplifyDynamoDBTable",
+   "Properties": {
+    "ServiceToken": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResource25266F72Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataAmplifyTableEAC710E4"
+    },
+    "tableName": {
+     "Fn::Join": [
+      "",
+      [
+       "FamilyWhitelist-",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+       },
+       "-NONE"
+      ]
+     ]
+    },
+    "attributeDefinitions": [
+     {
+      "attributeName": "id",
+      "attributeType": "S"
+     },
+     {
+      "attributeName": "email",
+      "attributeType": "S"
+     }
+    ],
+    "keySchema": [
+     {
+      "attributeName": "id",
+      "keyType": "HASH"
+     }
+    ],
+    "globalSecondaryIndexes": [
+     {
+      "indexName": "byEmail",
+      "keySchema": [
+       {
+        "attributeName": "email",
+        "keyType": "HASH"
+       }
+      ],
+      "projection": {
+       "projectionType": "ALL"
+      },
+      "provisionedThroughput": {
+       "Fn::If": [
+        "ShouldUsePayPerRequestBilling",
+        {
+         "Ref": "AWS::NoValue"
+        },
+        {
+         "ReadCapacityUnits": {
+          "Ref": "DynamoDBModelTableReadIOPS"
+         },
+         "WriteCapacityUnits": {
+          "Ref": "DynamoDBModelTableWriteIOPS"
+         }
+        }
+       ]
+      }
+     }
+    ],
+    "provisionedThroughput": {
+     "Fn::If": [
+      "ShouldUsePayPerRequestBilling",
+      {
+       "Ref": "AWS::NoValue"
+      },
+      {
+       "ReadCapacityUnits": {
+        "Ref": "DynamoDBModelTableReadIOPS"
+       },
+       "WriteCapacityUnits": {
+        "Ref": "DynamoDBModelTableWriteIOPS"
+       }
+      }
+     ]
+    },
+    "sseSpecification": {
+     "sseEnabled": false
+    },
+    "streamSpecification": {
+     "streamViewType": "NEW_AND_OLD_IMAGES"
+    },
+    "deletionProtectionEnabled": false,
+    "allowDestructiveGraphqlSchemaUpdates": true,
+    "replaceTableUponGsiUpdate": true,
+    "pointInTimeRecoverySpecification": {
+     "Fn::If": [
+      "ShouldUsePointInTimeRecovery",
+      {
+       "PointInTimeRecoveryEnabled": true
+      },
+      {
+       "Ref": "AWS::NoValue"
+      }
+     ]
+    },
+    "billingMode": {
+     "Fn::If": [
+      "ShouldUsePayPerRequestBilling",
+      "PAY_PER_REQUEST",
+      {
+       "Ref": "AWS::NoValue"
+      }
+     ]
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/FamilyWhitelistTable/Default/Default"
+   }
+  },
+  "FamilyWhitelistIAMRole49FF8335": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "appsync.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "dynamodb:BatchGetItem",
+          "dynamodb:BatchWriteItem",
+          "dynamodb:PutItem",
+          "dynamodb:DeleteItem",
+          "dynamodb:GetItem",
+          "dynamodb:Scan",
+          "dynamodb:Query",
+          "dynamodb:UpdateItem",
+          "dynamodb:ConditionCheckItem",
+          "dynamodb:DescribeTable",
+          "dynamodb:GetRecords",
+          "dynamodb:GetShardIterator"
+         ],
+         "Effect": "Allow",
+         "Resource": [
+          {
+           "Fn::Sub": [
+            "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${tablename}",
+            {
+             "tablename": {
+              "Fn::Join": [
+               "",
+               [
+                "FamilyWhitelist-",
+                {
+                 "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+                },
+                "-NONE"
+               ]
+              ]
+             }
+            }
+           ]
+          },
+          {
+           "Fn::Sub": [
+            "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${tablename}/*",
+            {
+             "tablename": {
+              "Fn::Join": [
+               "",
+               [
+                "FamilyWhitelist-",
+                {
+                 "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+                },
+                "-NONE"
+               ]
+              ]
+             }
+            }
+           ]
+          }
+         ]
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "DynamoDBAccess"
+     }
+    ],
+    "RoleName": {
+     "Fn::Join": [
+      "",
+      [
+       "FamilyWhitelistIAMRo0945fa-",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+       },
+       "-NONE"
+      ]
+     ]
+    },
+    "Tags": [
+     {
+      "Key": "amplify:deployment-type",
+      "Value": "sandbox"
+     },
+     {
+      "Key": "amplify:friendly-name",
+      "Value": "amplifyData"
+     },
+     {
+      "Key": "created-by",
+      "Value": "amplify"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/FamilyWhitelistIAMRole/Resource"
+   }
+  },
+  "FamilyWhitelistDataSource": {
+   "Type": "AWS::AppSync::DataSource",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "DynamoDBConfig": {
+     "AwsRegion": {
+      "Ref": "AWS::Region"
+     },
+     "TableName": {
+      "Fn::Select": [
+       1,
+       {
+        "Fn::Split": [
+         "/",
+         {
+          "Fn::Select": [
+           5,
+           {
+            "Fn::Split": [
+             ":",
+             {
+              "Fn::GetAtt": [
+               "FamilyWhitelistTable",
+               "TableArn"
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    },
+    "Name": "FamilyWhitelistTable",
+    "ServiceRoleArn": {
+     "Fn::GetAtt": [
+      "FamilyWhitelistIAMRole49FF8335",
+      "Arn"
+     ]
+    },
+    "Type": "AMAZON_DYNAMODB"
+   },
+   "DependsOn": [
+    "FamilyWhitelistIAMRole49FF8335"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/FamilyWhitelistDataSource/Resource"
+   }
+  },
+  "QuerygetFamilyWhitelistauth0FunctionQuerygetFamilyWhitelistauth0FunctionAppSyncFunction80FF2DA7": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPINONEDS201EFB38Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QuerygetFamilyWhitelistauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/88d5b7081b0dc9c39fd0bffedf56f011b2a7cf1ce5cc227f47a1e94efee8067c.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/QuerygetFamilyWhitelistauth0Function/QuerygetFamilyWhitelistauth0Function.AppSyncFunction"
+   }
+  },
+  "QuerygetFamilyWhitelistpostAuth0FunctionQuerygetFamilyWhitelistpostAuth0FunctionAppSyncFunctionE44AE261": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPINONEDS201EFB38Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QuerygetFamilyWhitelistpostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/QuerygetFamilyWhitelistpostAuth0Function/QuerygetFamilyWhitelistpostAuth0Function.AppSyncFunction"
+   }
+  },
+  "QueryGetFamilyWhitelistDataResolverFnQueryGetFamilyWhitelistDataResolverFnAppSyncFunction26B7FCA7": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "FamilyWhitelistDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QueryGetFamilyWhitelistDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/08f4d557693d96c1a4efba0f9dc91330e4b19772fd5477c156468843e3d9cb5e.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/4c6a2d29f01c6091bd1d9afe16e5849d456c96f17c3b215938c8067399532719.vtl"
+    }
+   },
+   "DependsOn": [
+    "FamilyWhitelistDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/QueryGetFamilyWhitelistDataResolverFn/QueryGetFamilyWhitelistDataResolverFn.AppSyncFunction"
+   }
+  },
+  "GetFamilyWhitelistResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "FieldName": "getFamilyWhitelist",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "QuerygetFamilyWhitelistauth0FunctionQuerygetFamilyWhitelistauth0FunctionAppSyncFunction80FF2DA7",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "QuerygetFamilyWhitelistpostAuth0FunctionQuerygetFamilyWhitelistpostAuth0FunctionAppSyncFunctionE44AE261",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "QueryGetFamilyWhitelistDataResolverFnQueryGetFamilyWhitelistDataResolverFnAppSyncFunction26B7FCA7",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Query\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"getFamilyWhitelist\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+       {
+        "Fn::Select": [
+         1,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Fn::Select": [
+             5,
+             {
+              "Fn::Split": [
+               ":",
+               {
+                "Fn::GetAtt": [
+                 "FamilyWhitelistTable",
+                 "TableArn"
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthauthenticatedUserRole97EF2E07Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthunauthenticatedUserRole4D0D6590Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthIdentityPool86B7E993Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Query"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/queryGetFamilyWhitelistResolver"
+   }
+  },
+  "QuerylistFamilyWhitelistsauth0FunctionQuerylistFamilyWhitelistsauth0FunctionAppSyncFunctionCD4B7E11": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPINONEDS201EFB38Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QuerylistFamilyWhitelistsauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/88d5b7081b0dc9c39fd0bffedf56f011b2a7cf1ce5cc227f47a1e94efee8067c.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/QuerylistFamilyWhitelistsauth0Function/QuerylistFamilyWhitelistsauth0Function.AppSyncFunction"
+   }
+  },
+  "QuerylistFamilyWhitelistspostAuth0FunctionQuerylistFamilyWhitelistspostAuth0FunctionAppSyncFunction1AA5B846": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPINONEDS201EFB38Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QuerylistFamilyWhitelistspostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/QuerylistFamilyWhitelistspostAuth0Function/QuerylistFamilyWhitelistspostAuth0Function.AppSyncFunction"
+   }
+  },
+  "QueryListFamilyWhitelistsDataResolverFnQueryListFamilyWhitelistsDataResolverFnAppSyncFunctionE3552304": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "FamilyWhitelistDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QueryListFamilyWhitelistsDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9fcbe070ecd3023c5bf5b966fa9584757db9762eef123bad0820bd87591b2174.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/cc01911d0269d4080ea57505dc445dfc315ef7ad85d3d9d4ea1357858bff451d.vtl"
+    }
+   },
+   "DependsOn": [
+    "FamilyWhitelistDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/QueryListFamilyWhitelistsDataResolverFn/QueryListFamilyWhitelistsDataResolverFn.AppSyncFunction"
+   }
+  },
+  "ListFamilyWhitelistResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "FieldName": "listFamilyWhitelists",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "QuerylistFamilyWhitelistsauth0FunctionQuerylistFamilyWhitelistsauth0FunctionAppSyncFunctionCD4B7E11",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "QuerylistFamilyWhitelistspostAuth0FunctionQuerylistFamilyWhitelistspostAuth0FunctionAppSyncFunction1AA5B846",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "QueryListFamilyWhitelistsDataResolverFnQueryListFamilyWhitelistsDataResolverFnAppSyncFunctionE3552304",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Query\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"listFamilyWhitelists\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+       {
+        "Fn::Select": [
+         1,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Fn::Select": [
+             5,
+             {
+              "Fn::Split": [
+               ":",
+               {
+                "Fn::GetAtt": [
+                 "FamilyWhitelistTable",
+                 "TableArn"
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthauthenticatedUserRole97EF2E07Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthunauthenticatedUserRole4D0D6590Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthIdentityPool86B7E993Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Query"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/queryListFamilyWhitelistsResolver"
+   }
+  },
+  "MutationcreateFamilyWhitelistinit0FunctionMutationcreateFamilyWhitelistinit0FunctionAppSyncFunctionFFFAEC82": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPINONEDS201EFB38Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationcreateFamilyWhitelistinit0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a183ddccbd956316c38ef97177b8f088ef0826f62023323f5ae6053d348ccffc.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/MutationcreateFamilyWhitelistinit0Function/MutationcreateFamilyWhitelistinit0Function.AppSyncFunction"
+   }
+  },
+  "MutationcreateFamilyWhitelistauth0FunctionMutationcreateFamilyWhitelistauth0FunctionAppSyncFunction5694E9FC": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPINONEDS201EFB38Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationcreateFamilyWhitelistauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/b371d68ddfbdd11b176756ce33b2c4e79d26fcc2fd4b7c0c9e75d06efacee90e.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/MutationcreateFamilyWhitelistauth0Function/MutationcreateFamilyWhitelistauth0Function.AppSyncFunction"
+   }
+  },
+  "MutationcreateFamilyWhitelistpostAuth0FunctionMutationcreateFamilyWhitelistpostAuth0FunctionAppSyncFunction1BB99F8C": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPINONEDS201EFB38Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationcreateFamilyWhitelistpostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/MutationcreateFamilyWhitelistpostAuth0Function/MutationcreateFamilyWhitelistpostAuth0Function.AppSyncFunction"
+   }
+  },
+  "MutationCreateFamilyWhitelistDataResolverFnMutationCreateFamilyWhitelistDataResolverFnAppSyncFunction71908A35": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "FamilyWhitelistDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationCreateFamilyWhitelistDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f67a5622741a87af2e91d36962feccd9990bea2595d84acf25ce694424175d0c.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f4a52b72209a9dfa197b5e7367a5c378c5bb86de6e29ddd9e48b49a3fe54b249.vtl"
+    }
+   },
+   "DependsOn": [
+    "FamilyWhitelistDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/MutationCreateFamilyWhitelistDataResolverFn/MutationCreateFamilyWhitelistDataResolverFn.AppSyncFunction"
+   }
+  },
+  "CreateFamilyWhitelistResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "FieldName": "createFamilyWhitelist",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "MutationcreateFamilyWhitelistinit0FunctionMutationcreateFamilyWhitelistinit0FunctionAppSyncFunctionFFFAEC82",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationcreateFamilyWhitelistauth0FunctionMutationcreateFamilyWhitelistauth0FunctionAppSyncFunction5694E9FC",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationcreateFamilyWhitelistpostAuth0FunctionMutationcreateFamilyWhitelistpostAuth0FunctionAppSyncFunction1BB99F8C",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationCreateFamilyWhitelistDataResolverFnMutationCreateFamilyWhitelistDataResolverFnAppSyncFunction71908A35",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"createFamilyWhitelist\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+       {
+        "Fn::Select": [
+         1,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Fn::Select": [
+             5,
+             {
+              "Fn::Split": [
+               ":",
+               {
+                "Fn::GetAtt": [
+                 "FamilyWhitelistTable",
+                 "TableArn"
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthauthenticatedUserRole97EF2E07Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthunauthenticatedUserRole4D0D6590Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthIdentityPool86B7E993Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Mutation"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/mutationCreateFamilyWhitelistResolver"
+   }
+  },
+  "MutationupdateFamilyWhitelistinit0FunctionMutationupdateFamilyWhitelistinit0FunctionAppSyncFunction56C09B2F": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPINONEDS201EFB38Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationupdateFamilyWhitelistinit0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/06db846fd14e6fc371f22b12b5545ba8e2dbfeda85d8c8d586c71c282166657b.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/MutationupdateFamilyWhitelistinit0Function/MutationupdateFamilyWhitelistinit0Function.AppSyncFunction"
+   }
+  },
+  "MutationupdateFamilyWhitelistauth0FunctionMutationupdateFamilyWhitelistauth0FunctionAppSyncFunction71E5EBFB": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "FamilyWhitelistDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationupdateFamilyWhitelistauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/1f5fed297da9c32ae3af922bf3a38ccf23b956078887d16891ec06c20c64722c.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/245ed8ac5185462a6923b7e45a318fec4c9ba0c45d1d720abd5b20317aa3dc6a.vtl"
+    }
+   },
+   "DependsOn": [
+    "FamilyWhitelistDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/MutationupdateFamilyWhitelistauth0Function/MutationupdateFamilyWhitelistauth0Function.AppSyncFunction"
+   }
+  },
+  "MutationupdateFamilyWhitelistpostAuth0FunctionMutationupdateFamilyWhitelistpostAuth0FunctionAppSyncFunction174EF2DF": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPINONEDS201EFB38Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationupdateFamilyWhitelistpostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/MutationupdateFamilyWhitelistpostAuth0Function/MutationupdateFamilyWhitelistpostAuth0Function.AppSyncFunction"
+   }
+  },
+  "MutationUpdateFamilyWhitelistDataResolverFnMutationUpdateFamilyWhitelistDataResolverFnAppSyncFunction9612F0BD": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "FamilyWhitelistDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationUpdateFamilyWhitelistDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/474bf0776ec2164a13191d1a0a9e057154931e4918fea5086f49850d02a5371b.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f4a52b72209a9dfa197b5e7367a5c378c5bb86de6e29ddd9e48b49a3fe54b249.vtl"
+    }
+   },
+   "DependsOn": [
+    "FamilyWhitelistDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/MutationUpdateFamilyWhitelistDataResolverFn/MutationUpdateFamilyWhitelistDataResolverFn.AppSyncFunction"
+   }
+  },
+  "UpdateFamilyWhitelistResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "FieldName": "updateFamilyWhitelist",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "MutationupdateFamilyWhitelistinit0FunctionMutationupdateFamilyWhitelistinit0FunctionAppSyncFunction56C09B2F",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationupdateFamilyWhitelistauth0FunctionMutationupdateFamilyWhitelistauth0FunctionAppSyncFunction71E5EBFB",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationupdateFamilyWhitelistpostAuth0FunctionMutationupdateFamilyWhitelistpostAuth0FunctionAppSyncFunction174EF2DF",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationUpdateFamilyWhitelistDataResolverFnMutationUpdateFamilyWhitelistDataResolverFnAppSyncFunction9612F0BD",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"updateFamilyWhitelist\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+       {
+        "Fn::Select": [
+         1,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Fn::Select": [
+             5,
+             {
+              "Fn::Split": [
+               ":",
+               {
+                "Fn::GetAtt": [
+                 "FamilyWhitelistTable",
+                 "TableArn"
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthauthenticatedUserRole97EF2E07Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthunauthenticatedUserRole4D0D6590Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthIdentityPool86B7E993Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Mutation"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/mutationUpdateFamilyWhitelistResolver"
+   }
+  },
+  "MutationdeleteFamilyWhitelistauth0FunctionMutationdeleteFamilyWhitelistauth0FunctionAppSyncFunctionAEC28014": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "FamilyWhitelistDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationdeleteFamilyWhitelistauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/1f5fed297da9c32ae3af922bf3a38ccf23b956078887d16891ec06c20c64722c.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/29e4bdb03133f87f2b1acb547959ffd4cfd22804026994c5b61db33084127353.vtl"
+    }
+   },
+   "DependsOn": [
+    "FamilyWhitelistDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/MutationdeleteFamilyWhitelistauth0Function/MutationdeleteFamilyWhitelistauth0Function.AppSyncFunction"
+   }
+  },
+  "MutationdeleteFamilyWhitelistpostAuth0FunctionMutationdeleteFamilyWhitelistpostAuth0FunctionAppSyncFunction3F93AA57": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPINONEDS201EFB38Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationdeleteFamilyWhitelistpostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/MutationdeleteFamilyWhitelistpostAuth0Function/MutationdeleteFamilyWhitelistpostAuth0Function.AppSyncFunction"
+   }
+  },
+  "MutationDeleteFamilyWhitelistDataResolverFnMutationDeleteFamilyWhitelistDataResolverFnAppSyncFunctionED3EA016": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "FamilyWhitelistDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationDeleteFamilyWhitelistDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/4f7907d1209a2c9953a0c053df402c634e359546d70c7cc5c2e8e21ea734880f.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f4a52b72209a9dfa197b5e7367a5c378c5bb86de6e29ddd9e48b49a3fe54b249.vtl"
+    }
+   },
+   "DependsOn": [
+    "FamilyWhitelistDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/MutationDeleteFamilyWhitelistDataResolverFn/MutationDeleteFamilyWhitelistDataResolverFn.AppSyncFunction"
+   }
+  },
+  "DeleteFamilyWhitelistResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "FieldName": "deleteFamilyWhitelist",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "MutationdeleteFamilyWhitelistauth0FunctionMutationdeleteFamilyWhitelistauth0FunctionAppSyncFunctionAEC28014",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationdeleteFamilyWhitelistpostAuth0FunctionMutationdeleteFamilyWhitelistpostAuth0FunctionAppSyncFunction3F93AA57",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationDeleteFamilyWhitelistDataResolverFnMutationDeleteFamilyWhitelistDataResolverFnAppSyncFunctionED3EA016",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"deleteFamilyWhitelist\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+       {
+        "Fn::Select": [
+         1,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Fn::Select": [
+             5,
+             {
+              "Fn::Split": [
+               ":",
+               {
+                "Fn::GetAtt": [
+                 "FamilyWhitelistTable",
+                 "TableArn"
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthauthenticatedUserRole97EF2E07Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthunauthenticatedUserRole4D0D6590Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthIdentityPool86B7E993Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Mutation"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/mutationDeleteFamilyWhitelistResolver"
+   }
+  },
+  "SubscriptiononCreateFamilyWhitelistauth0FunctionSubscriptiononCreateFamilyWhitelistauth0FunctionAppSyncFunction3D13D605": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPINONEDS201EFB38Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptiononCreateFamilyWhitelistauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/6f3a2a9d562ae3058cc1aed6741edbf5edcaef7b3df7b03f52478816a1c95ffb.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/SubscriptiononCreateFamilyWhitelistauth0Function/SubscriptiononCreateFamilyWhitelistauth0Function.AppSyncFunction"
+   }
+  },
+  "SubscriptiononCreateFamilyWhitelistpostAuth0FunctionSubscriptiononCreateFamilyWhitelistpostAuth0FunctionAppSyncFunction9C0CDAD0": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPINONEDS201EFB38Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptiononCreateFamilyWhitelistpostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/SubscriptiononCreateFamilyWhitelistpostAuth0Function/SubscriptiononCreateFamilyWhitelistpostAuth0Function.AppSyncFunction"
+   }
+  },
+  "SubscriptionOnCreateFamilyWhitelistDataResolverFnSubscriptionOnCreateFamilyWhitelistDataResolverFnAppSyncFunction39583B75": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPINONEDS201EFB38Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptionOnCreateFamilyWhitelistDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fe3c43ada4b9d681a5e2312663ef7a73386424d73b73e51f8e2e9d4b50f7c502.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e0cff47fb007f0bbf2a4e43ca256d6aa7ec109821769fd79fa7c5e83f0e7f9fc.vtl"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/SubscriptionOnCreateFamilyWhitelistDataResolverFn/SubscriptionOnCreateFamilyWhitelistDataResolverFn.AppSyncFunction"
+   }
+  },
+  "SubscriptiononCreateFamilyWhitelistResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "FieldName": "onCreateFamilyWhitelist",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "SubscriptiononCreateFamilyWhitelistauth0FunctionSubscriptiononCreateFamilyWhitelistauth0FunctionAppSyncFunction3D13D605",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "SubscriptiononCreateFamilyWhitelistpostAuth0FunctionSubscriptiononCreateFamilyWhitelistpostAuth0FunctionAppSyncFunction9C0CDAD0",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "SubscriptionOnCreateFamilyWhitelistDataResolverFnSubscriptionOnCreateFamilyWhitelistDataResolverFnAppSyncFunction39583B75",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Subscription\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"onCreateFamilyWhitelist\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"NONE\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthauthenticatedUserRole97EF2E07Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthunauthenticatedUserRole4D0D6590Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthIdentityPool86B7E993Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Subscription"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/subscriptionOnCreateFamilyWhitelistResolver"
+   }
+  },
+  "SubscriptiononUpdateFamilyWhitelistauth0FunctionSubscriptiononUpdateFamilyWhitelistauth0FunctionAppSyncFunction0CFCCC18": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPINONEDS201EFB38Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptiononUpdateFamilyWhitelistauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/6f3a2a9d562ae3058cc1aed6741edbf5edcaef7b3df7b03f52478816a1c95ffb.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/SubscriptiononUpdateFamilyWhitelistauth0Function/SubscriptiononUpdateFamilyWhitelistauth0Function.AppSyncFunction"
+   }
+  },
+  "SubscriptiononUpdateFamilyWhitelistpostAuth0FunctionSubscriptiononUpdateFamilyWhitelistpostAuth0FunctionAppSyncFunctionE6AFD0D3": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPINONEDS201EFB38Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptiononUpdateFamilyWhitelistpostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/SubscriptiononUpdateFamilyWhitelistpostAuth0Function/SubscriptiononUpdateFamilyWhitelistpostAuth0Function.AppSyncFunction"
+   }
+  },
+  "SubscriptionOnUpdateFamilyWhitelistDataResolverFnSubscriptionOnUpdateFamilyWhitelistDataResolverFnAppSyncFunctionBF16900A": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPINONEDS201EFB38Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptionOnUpdateFamilyWhitelistDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fe3c43ada4b9d681a5e2312663ef7a73386424d73b73e51f8e2e9d4b50f7c502.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e0cff47fb007f0bbf2a4e43ca256d6aa7ec109821769fd79fa7c5e83f0e7f9fc.vtl"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/SubscriptionOnUpdateFamilyWhitelistDataResolverFn/SubscriptionOnUpdateFamilyWhitelistDataResolverFn.AppSyncFunction"
+   }
+  },
+  "SubscriptiononUpdateFamilyWhitelistResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "FieldName": "onUpdateFamilyWhitelist",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "SubscriptiononUpdateFamilyWhitelistauth0FunctionSubscriptiononUpdateFamilyWhitelistauth0FunctionAppSyncFunction0CFCCC18",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "SubscriptiononUpdateFamilyWhitelistpostAuth0FunctionSubscriptiononUpdateFamilyWhitelistpostAuth0FunctionAppSyncFunctionE6AFD0D3",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "SubscriptionOnUpdateFamilyWhitelistDataResolverFnSubscriptionOnUpdateFamilyWhitelistDataResolverFnAppSyncFunctionBF16900A",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Subscription\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"onUpdateFamilyWhitelist\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"NONE\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthauthenticatedUserRole97EF2E07Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthunauthenticatedUserRole4D0D6590Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthIdentityPool86B7E993Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Subscription"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/subscriptionOnUpdateFamilyWhitelistResolver"
+   }
+  },
+  "SubscriptiononDeleteFamilyWhitelistauth0FunctionSubscriptiononDeleteFamilyWhitelistauth0FunctionAppSyncFunction13B9807D": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPINONEDS201EFB38Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptiononDeleteFamilyWhitelistauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/6f3a2a9d562ae3058cc1aed6741edbf5edcaef7b3df7b03f52478816a1c95ffb.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/SubscriptiononDeleteFamilyWhitelistauth0Function/SubscriptiononDeleteFamilyWhitelistauth0Function.AppSyncFunction"
+   }
+  },
+  "SubscriptiononDeleteFamilyWhitelistpostAuth0FunctionSubscriptiononDeleteFamilyWhitelistpostAuth0FunctionAppSyncFunction84F9A03D": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPINONEDS201EFB38Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptiononDeleteFamilyWhitelistpostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/SubscriptiononDeleteFamilyWhitelistpostAuth0Function/SubscriptiononDeleteFamilyWhitelistpostAuth0Function.AppSyncFunction"
+   }
+  },
+  "SubscriptionOnDeleteFamilyWhitelistDataResolverFnSubscriptionOnDeleteFamilyWhitelistDataResolverFnAppSyncFunction19F7C1A1": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPINONEDS201EFB38Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptionOnDeleteFamilyWhitelistDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fe3c43ada4b9d681a5e2312663ef7a73386424d73b73e51f8e2e9d4b50f7c502.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e0cff47fb007f0bbf2a4e43ca256d6aa7ec109821769fd79fa7c5e83f0e7f9fc.vtl"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/SubscriptionOnDeleteFamilyWhitelistDataResolverFn/SubscriptionOnDeleteFamilyWhitelistDataResolverFn.AppSyncFunction"
+   }
+  },
+  "SubscriptiononDeleteFamilyWhitelistResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "FieldName": "onDeleteFamilyWhitelist",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "SubscriptiononDeleteFamilyWhitelistauth0FunctionSubscriptiononDeleteFamilyWhitelistauth0FunctionAppSyncFunction13B9807D",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "SubscriptiononDeleteFamilyWhitelistpostAuth0FunctionSubscriptiononDeleteFamilyWhitelistpostAuth0FunctionAppSyncFunction84F9A03D",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "SubscriptionOnDeleteFamilyWhitelistDataResolverFnSubscriptionOnDeleteFamilyWhitelistDataResolverFnAppSyncFunction19F7C1A1",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Subscription\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"onDeleteFamilyWhitelist\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"NONE\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthauthenticatedUserRole97EF2E07Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthunauthenticatedUserRole4D0D6590Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthIdentityPool86B7E993Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Subscription"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/subscriptionOnDeleteFamilyWhitelistResolver"
+   }
+  },
+  "QueryfamilyWhitelistsByEmailauth0FunctionQueryfamilyWhitelistsByEmailauth0FunctionAppSyncFunction68C07770": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPINONEDS201EFB38Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QueryfamilyWhitelistsByEmailauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/88d5b7081b0dc9c39fd0bffedf56f011b2a7cf1ce5cc227f47a1e94efee8067c.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/QueryfamilyWhitelistsByEmailauth0Function/QueryfamilyWhitelistsByEmailauth0Function.AppSyncFunction"
+   }
+  },
+  "QueryfamilyWhitelistsByEmailpostAuth0FunctionQueryfamilyWhitelistsByEmailpostAuth0FunctionAppSyncFunctionF4F895E4": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPINONEDS201EFB38Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QueryfamilyWhitelistsByEmailpostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/QueryfamilyWhitelistsByEmailpostAuth0Function/QueryfamilyWhitelistsByEmailpostAuth0Function.AppSyncFunction"
+   }
+  },
+  "QueryFamilyWhitelistsByEmailDataResolverFnQueryFamilyWhitelistsByEmailDataResolverFnAppSyncFunctionBB47B457": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "FamilyWhitelistDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QueryFamilyWhitelistsByEmailDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f992f3c75f144fefe0ac922df018dcc313c3b657049656829f44f20871935aaf.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/098c998f215c333f57348ca8912f66057ae6b574fe34013033dc54362ee2372c.vtl"
+    }
+   },
+   "DependsOn": [
+    "FamilyWhitelistDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/QueryFamilyWhitelistsByEmailDataResolverFn/QueryFamilyWhitelistsByEmailDataResolverFn.AppSyncFunction"
+   }
+  },
+  "QueryfamilyWhitelistsByEmailResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+    },
+    "FieldName": "familyWhitelistsByEmail",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "QueryfamilyWhitelistsByEmailauth0FunctionQueryfamilyWhitelistsByEmailauth0FunctionAppSyncFunction68C07770",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "QueryfamilyWhitelistsByEmailpostAuth0FunctionQueryfamilyWhitelistsByEmailpostAuth0FunctionAppSyncFunctionF4F895E4",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "QueryFamilyWhitelistsByEmailDataResolverFnQueryFamilyWhitelistsByEmailDataResolverFnAppSyncFunctionBB47B457",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Query\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"familyWhitelistsByEmail\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+       {
+        "Fn::Select": [
+         1,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Fn::Select": [
+             5,
+             {
+              "Fn::Split": [
+               ":",
+               {
+                "Fn::GetAtt": [
+                 "FamilyWhitelistTable",
+                 "TableArn"
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthauthenticatedUserRole97EF2E07Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthunauthenticatedUserRole4D0D6590Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthIdentityPool86B7E993Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Query"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/queryFamilyWhitelistsByEmailResolver"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/1WOQW6DQAxFz5L9xE2gF2hAXbYVdB+ZGYMmgAeNPYkixN0rSJWqq+8nP9k/g+yQw3GHN9lb1+8H38D8QaLkakXbm6LlL4w4klJcoQjsvPrApiIJKVoyRRIN4x+2/JzxJufZ3RnH4Br4xmagEwoZjyPMVRgedhhoMThNcmcLc7npZVOiYv08+Z/eE9u1RBG49V2KuDX6/TxcKS5G8jOKkAq8rWEkh1OyPelaYFndz6RTUrOta8XOc7cYDo7gIi/XLIPjKxx2F/F+HxOrHwmqR/4ACGUAfjYBAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FamilyWhitelist/CDKMetadata/Default"
+   },
+   "Condition": "CDKMetadataAvailable"
+  }
+ },
+ "Outputs": {
+  "GetAttFamilyWhitelistTableStreamArn": {
+   "Description": "Your DynamoDB table StreamArn.",
+   "Value": {
+    "Fn::GetAtt": [
+     "FamilyWhitelistTable",
+     "TableStreamArn"
+    ]
+   },
+   "Export": {
+    "Name": {
+     "Fn::Join": [
+      ":",
+      [
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+       },
+       "GetAtt:FamilyWhitelistTable:StreamArn"
+      ]
+     ]
+    }
+   }
+  },
+  "GetAttFamilyWhitelistTableName": {
+   "Description": "Your DynamoDB table name.",
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "FamilyWhitelist-",
+      {
+       "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+      },
+      "-NONE"
+     ]
+    ]
+   },
+   "Export": {
+    "Name": {
+     "Fn::Join": [
+      ":",
+      [
+       {
+        "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId"
+       },
+       "GetAtt:FamilyWhitelistTable:Name"
+      ]
+     ]
+    }
+   }
+  },
+  "amplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataFamilyWhitelistFamilyWhitelistTable44EF697CTableArn": {
+   "Value": {
+    "Fn::GetAtt": [
+     "FamilyWhitelistTable",
+     "TableArn"
+    ]
+   }
+  }
+ }
+}

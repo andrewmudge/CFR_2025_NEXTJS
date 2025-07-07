@@ -19,7 +19,7 @@ const Header = () => {
 
   const navItems = [
     { href: '#home', label: 'Home' },
-    { href: '#about', label: 'About' },
+    // { href: '#about', label: 'About' },
     { href: '#cabinet', label: 'Cabinet' },
     { href: '#theme', label: 'Theme' },
     { href: '#schedule', label: 'Schedule' },
@@ -128,7 +128,7 @@ const Header = () => {
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <motion.nav
-            className="lg:hidden mt-4 pb-4 border-t border-slate-700"
+            className="lg:hidden mt-4 pb-4 border-t border-slate-700 bg-slate-900/95 rounded-xl shadow-xl"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}

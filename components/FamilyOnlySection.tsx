@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Lock, Camera, TreePine, Clock, Upload, Shield, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/lib/auth/AuthContext';
+import { checkUserApproval } from '@/lib/approved-users';
 import PhotoGallery from '@/components/family/PhotoGallery';
 import FamilyTree from '@/components/family/FamilyTree';
 import PastReunions from '@/components/family/PastReunions';
@@ -13,9 +14,64 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 const FamilyOnlySection = () => {
   const { user, openAuthModal } = useAuth();
   const [previewMode, setPreviewMode] = useState(false);
+  const [isApproved, setIsApproved] = useState(false);
+  const [checkingApproval, setCheckingApproval] = useState(false);
 
-  // Show authenticated content if user is logged in OR preview mode is enabled
-  const showAuthenticatedContent = user || previewMode;
+  useEffect(() => {
+    const checkApproval = async () => {
+      if (user?.email) {
+        console.log('FamilyOnlySection: Checking approval for user:', user.email);
+        setCheckingApproval(true);
+        try {
+          const approved = await checkUserApproval(user.email);
+          console.log('FamilyOnlySection: Approval result:', approved);
+          setIsApproved(approved);
+        } catch (error) {
+          console.error('FamilyOnlySection: Error checking approval:', error);
+          setIsApproved(false);
+        } finally {
+          setCheckingApproval(false);
+        }
+      } else {
+        console.log('FamilyOnlySection: No user, setting approved to false');
+        setIsApproved(false);
+      }
+    };
+
+    checkApproval();
+  }, [user]);
+
+  // Show authenticated content if user is approved OR preview mode is enabled
+  const showAuthenticatedContent = (user && isApproved) || previewMode;
+  
+  console.log('FamilyOnlySection render:', {
+    user: user?.email,
+    isApproved,
+    checkingApproval,
+    showAuthenticatedContent
+  });
+
+  if (checkingApproval) {
+    return (
+      <section id="family-only" className="py-20 bg-gradient-to-b from-slate-50 to-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center max-w-2xl mx-auto">
+            <div className="mb-8">
+              <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center animate-pulse">
+                <Lock className="w-12 h-12 text-white" />
+              </div>
+              <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-4">
+                Checking Access...
+              </h2>
+              <p className="text-lg text-slate-600">
+                Verifying your approval status, please wait...
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   if (!showAuthenticatedContent) {
     return (
@@ -49,20 +105,32 @@ const FamilyOnlySection = () => {
 
             <div className="bg-white border border-slate-200 p-8 rounded-xl shadow-lg">
               <Shield className="w-16 h-16 text-red-500 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-slate-800 mb-4">Authentication Required</h3>
+              <h3 className="text-2xl font-bold text-slate-800 mb-4">
+                {user ? 'Approval Pending' : 'Authentication Required'}
+              </h3>
               <p className="text-slate-600 mb-6">
-                Please log in to access the family photo gallery, family tree, and past reunion archives.
+                {user 
+                  ? 'Your account is pending approval. Please contact the administrator to gain access to family content.'
+                  : 'Please log in to access the family photo gallery, family tree, and past reunion archives.'
+                }
               </p>
               
               <div className="space-y-4">
-                <Button
-                  onClick={openAuthModal}
-                  size="lg"
-                  className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold px-8 py-3 rounded-full w-full"
-                >
-                  <Lock className="w-5 h-5 mr-2" />
-                  Access Family Content
-                </Button>
+                {!user ? (
+                  <Button
+                    onClick={openAuthModal}
+                    size="lg"
+                    className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold px-8 py-3 rounded-full w-full"
+                  >
+                    <Lock className="w-5 h-5 mr-2" />
+                    Access Family Content
+                  </Button>
+                ) : (
+                  <div className="text-center">
+                    <p className="text-slate-500 text-sm mb-2">Signed in as: {user.email}</p>
+                    <p className="text-orange-600 font-medium">Awaiting admin approval</p>
+                  </div>
+                )}
                 
                 {/* Preview Mode Toggle - For Development Only
                 <Button

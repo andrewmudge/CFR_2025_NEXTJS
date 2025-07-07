@@ -1,6 +1,314 @@
 {
- "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"AmplifySandbox\",\"createdWith\":\"1.4.1\",\"stackType\":\"storage-S3\",\"metadata\":{}}",
+ "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"AmplifySandbox\",\"createdWith\":\"1.14.1\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
  "Resources": {
+  "uploadPhotolambdaServiceRole544ECA33": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "amplify:deployment-type",
+      "Value": "sandbox"
+     },
+     {
+      "Key": "amplify:friendly-name",
+      "Value": "uploadPhoto"
+     },
+     {
+      "Key": "created-by",
+      "Value": "amplify"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/storage/uploadPhoto-lambda/ServiceRole/Resource"
+   }
+  },
+  "uploadPhotolambdaServiceRoleDefaultPolicy80DED34D": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:PutObject",
+        "s3:PutObjectAcl"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "photoStorageBucketDD5123FB",
+            "Arn"
+           ]
+          },
+          "/photos/*"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "uploadPhotolambdaServiceRoleDefaultPolicy80DED34D",
+    "Roles": [
+     {
+      "Ref": "uploadPhotolambdaServiceRole544ECA33"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/storage/uploadPhoto-lambda/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "uploadPhotolambda77AF30DD": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Architectures": [
+     "x86_64"
+    ],
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "dc74d48ab56a7e77dfd8fcfc66e4c0ac0d5091ec05ea4e74142e71fbc218b926.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "AMPLIFY_SSM_ENV_CONFIG": "{}"
+     }
+    },
+    "EphemeralStorage": {
+     "Size": 512
+    },
+    "Handler": "index.handler",
+    "MemorySize": 512,
+    "Role": {
+     "Fn::GetAtt": [
+      "uploadPhotolambdaServiceRole544ECA33",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Tags": [
+     {
+      "Key": "amplify:deployment-type",
+      "Value": "sandbox"
+     },
+     {
+      "Key": "amplify:friendly-name",
+      "Value": "uploadPhoto"
+     },
+     {
+      "Key": "created-by",
+      "Value": "amplify"
+     }
+    ],
+    "Timeout": 3
+   },
+   "DependsOn": [
+    "uploadPhotolambdaServiceRoleDefaultPolicy80DED34D",
+    "uploadPhotolambdaServiceRole544ECA33"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/storage/uploadPhoto-lambda/Resource",
+    "aws:asset:path": "asset.dc74d48ab56a7e77dfd8fcfc66e4c0ac0d5091ec05ea4e74142e71fbc218b926",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "listPhotoslambdaServiceRole4FE9E90D": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "amplify:deployment-type",
+      "Value": "sandbox"
+     },
+     {
+      "Key": "amplify:friendly-name",
+      "Value": "listPhotos"
+     },
+     {
+      "Key": "created-by",
+      "Value": "amplify"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/storage/listPhotos-lambda/ServiceRole/Resource"
+   }
+  },
+  "listPhotoslambdaServiceRoleDefaultPolicyD622F329": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:GetObject",
+        "s3:ListBucket"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "photoStorageBucketDD5123FB",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "photoStorageBucketDD5123FB",
+             "Arn"
+            ]
+           },
+           "/photos/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "listPhotoslambdaServiceRoleDefaultPolicyD622F329",
+    "Roles": [
+     {
+      "Ref": "listPhotoslambdaServiceRole4FE9E90D"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/storage/listPhotos-lambda/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "listPhotoslambda081BE3B9": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Architectures": [
+     "x86_64"
+    ],
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "de6f5e86306ab17290e215e1b9a2a01d7470ca9a3fe8a2334df0baa0c151fec9.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "AMPLIFY_SSM_ENV_CONFIG": "{}"
+     }
+    },
+    "EphemeralStorage": {
+     "Size": 512
+    },
+    "Handler": "index.handler",
+    "MemorySize": 512,
+    "Role": {
+     "Fn::GetAtt": [
+      "listPhotoslambdaServiceRole4FE9E90D",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Tags": [
+     {
+      "Key": "amplify:deployment-type",
+      "Value": "sandbox"
+     },
+     {
+      "Key": "amplify:friendly-name",
+      "Value": "listPhotos"
+     },
+     {
+      "Key": "created-by",
+      "Value": "amplify"
+     }
+    ],
+    "Timeout": 3
+   },
+   "DependsOn": [
+    "listPhotoslambdaServiceRoleDefaultPolicyD622F329",
+    "listPhotoslambdaServiceRole4FE9E90D"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/storage/listPhotos-lambda/Resource",
+    "aws:asset:path": "asset.de6f5e86306ab17290e215e1b9a2a01d7470ca9a3fe8a2334df0baa0c151fec9",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
   "photoStorageBucketDD5123FB": {
    "Type": "AWS::S3::Bucket",
    "Properties": {
@@ -265,7 +573,7 @@
     "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/storage/PHOTO_STORAGE_BUCKET_NAMEParameter/Resource"
    }
   },
-  "amplifychurchwellfamilyreunionmudgesandboxf5603c1efdstorageAccess470E0543C": {
+  "amplifychurchwellfamilyreunionmudgesandboxf5603c1efdstorageAccess808BE0B74": {
    "Type": "AWS::IAM::Policy",
    "Properties": {
     "PolicyDocument": {
@@ -345,7 +653,7 @@
      ],
      "Version": "2012-10-17"
     },
-    "PolicyName": "amplifychurchwellfamilyreunionmudgesandboxf5603c1efdstorageAccess470E0543C",
+    "PolicyName": "amplifychurchwellfamilyreunionmudgesandboxf5603c1efdstorageAccess808BE0B74",
     "Roles": [
      {
       "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthauthenticatedUserRole97EF2E07Ref"
@@ -355,10 +663,10 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/storage/amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd--storageAccess4/Resource"
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/storage/amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd--storageAccess8/Resource"
    }
   },
-  "amplifychurchwellfamilyreunionmudgesandboxf5603c1efdstorageAccess526853F10": {
+  "amplifychurchwellfamilyreunionmudgesandboxf5603c1efdstorageAccess9688D333E": {
    "Type": "AWS::IAM::Policy",
    "Properties": {
     "PolicyDocument": {
@@ -402,7 +710,7 @@
      ],
      "Version": "2012-10-17"
     },
-    "PolicyName": "amplifychurchwellfamilyreunionmudgesandboxf5603c1efdstorageAccess526853F10",
+    "PolicyName": "amplifychurchwellfamilyreunionmudgesandboxf5603c1efdstorageAccess9688D333E",
     "Roles": [
      {
       "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthunauthenticatedUserRole4D0D6590Ref"
@@ -412,13 +720,13 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/storage/amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd--storageAccess5/Resource"
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/storage/amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd--storageAccess9/Resource"
    }
   },
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/12LSw6CMBCGz+K+jIJeQFlriBzAjGUkA7Q1nUFjGu5uDEaNq+9/FlCs1pAv8C6Zbfps4DOkA4lSUyva3uBdTknWkHaj7UlNefFvNaMKA9vHN579ZEQcpFoj+7bCiI6U4mv1MZNhdJC+//dzMuUoGtyRJIzR0qv61Xu8Xtm3f6sqhhs3FHcoZLYipLViy76djA8NQSfLW1FAvoHVohPmLI5e2REcZz4B6HC9yQgBAAA="
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/2WQQW6DMBBFz5L9ME2gF2iQumuE4ABoYibIgO3IYyeKEHevDG0aqav3vzy23jjHfF/gYUd3yVQ3ZpM+43xiCdw1gdQIdJd2nsicO2qt63gQPK34jFYF7SxoMjjXbmIoL3Zl5SatHqluaQEpWhLhIPiRAFLgfIxq5HAkYdhiuvCTNvy989oX2HSwvNinhIjBuQle274iT4YD+1XgtywL1CwuesWwOjSBem17KKMEZ55naYeX/EXX6/+pyrub7tgn+QXSt+Agb7c8x8M77neDaJ35aIM2jPXGb3+eP0tpAQAA"
    },
    "Metadata": {
     "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/storage/CDKMetadata/Default"
@@ -822,27 +1130,29 @@
    ]
   }
  },
- "Outputs": {
-  "amplifychurchwellfamilyreunionmudgesandboxf5603c1efdstoragephotoStorageBucketF318B4AFArn": {
-   "Value": {
-    "Fn::GetAtt": [
-     "photoStorageBucketDD5123FB",
-     "Arn"
-    ]
-   }
-  },
-  "amplifychurchwellfamilyreunionmudgesandboxf5603c1efdstoragephotoStorageBucketF318B4AFRef": {
-   "Value": {
-    "Ref": "photoStorageBucketDD5123FB"
-   }
-  }
- },
  "Parameters": {
   "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthauthenticatedUserRole97EF2E07Ref": {
    "Type": "String"
   },
   "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthunauthenticatedUserRole4D0D6590Ref": {
    "Type": "String"
+  }
+ },
+ "Outputs": {
+  "amplifychurchwellfamilyreunionmudgesandboxf5603c1efdstorageuploadPhotolambda8340C7C7Ref": {
+   "Value": {
+    "Ref": "uploadPhotolambda77AF30DD"
+   }
+  },
+  "amplifychurchwellfamilyreunionmudgesandboxf5603c1efdstoragelistPhotoslambda2772359ERef": {
+   "Value": {
+    "Ref": "listPhotoslambda081BE3B9"
+   }
+  },
+  "amplifychurchwellfamilyreunionmudgesandboxf5603c1efdstoragephotoStorageBucketF318B4AFRef": {
+   "Value": {
+    "Ref": "photoStorageBucketDD5123FB"
+   }
   }
  }
 }

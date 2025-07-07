@@ -4,6 +4,10 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import { Amplify } from 'aws-amplify';
 import { signUp as amplifySignUp, signIn as amplifySignIn, signOut as amplifySignOut, getCurrentUser, fetchUserAttributes, confirmSignUp as amplifyConfirmSignUp, resetPassword as amplifyResetPassword, confirmResetPassword as amplifyConfirmResetPassword } from 'aws-amplify/auth';
 import outputs from '@/amplify_outputs.json';
+import { checkUserApproval } from '@/lib/approved-users';
+import { addPendingUser } from '@/lib/cognito-users';
+import { formatPhoneForCognito } from '@/lib/phone-utils';
+
 
 interface User {
   id: string;
@@ -52,7 +56,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   // Configure Amplify on client side
   useEffect(() => {
-    Amplify.configure(outputs);
+    if (typeof window !== 'undefined') {
+      Amplify.configure(outputs);
+    }
   }, []);
 
   useEffect(() => {
@@ -60,11 +66,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       try {
         const currentUser = await getCurrentUser();
         const userAttributes = await fetchUserAttributes();
+        const userEmail = userAttributes.email || '';
         
         setUser({
           id: currentUser.userId,
           username: currentUser.username,
-          email: userAttributes.email || '',
+          email: userEmail,
           attributes: {
             given_name: userAttributes.given_name || '',
             family_name: userAttributes.family_name || '',
@@ -88,17 +95,42 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       
       if (result.isSignedIn) {
         const currentUser = await getCurrentUser();
+        const userAttributes = await fetchUserAttributes();
+        
+        const userEmail = userAttributes.email || email;
+        
         setUser({
           id: currentUser.userId,
           username: currentUser.username,
-          email: email,
+          email: userEmail,
           attributes: {
-            given_name: '',
-            family_name: '',
-            phone_number: ''
+            given_name: userAttributes.given_name || '',
+            family_name: userAttributes.family_name || '',
+            phone_number: userAttributes.phone_number || ''
           }
         });
+        
+        // Check approval status from DynamoDB
+        const isApproved = await checkUserApproval(userEmail);
+        if (!isApproved) {
+          // Add to pending users list for admin review
+          addPendingUser({
+            username: currentUser.username,
+            email: userEmail,
+            givenName: userAttributes.given_name,
+            familyName: userAttributes.family_name,
+            phoneNumber: userAttributes.phone_number,
+            userCreateDate: new Date(),
+            userStatus: 'CONFIRMED'
+          });
+          throw new Error('ACCOUNT_PENDING_APPROVAL');
+        }
         setIsAuthModalOpen(false);
+        
+        // Check if this is an admin login and redirect
+        if (userAttributes.email === 'mudge.andrew@gmail.com' && window.location.search.includes('admin=true')) {
+          window.location.href = '/admin';
+        }
       }
     } catch (error) {
       console.error('Sign in error:', error);
@@ -111,13 +143,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const signUp = async (email: string, password: string, firstName: string, lastName: string, phone: string) => {
     setLoading(true);
     try {
+      // Format phone number to E.164 format for Cognito
+      const formattedPhone = formatPhoneForCognito(phone);
+      
       const result = await amplifySignUp({
         username: email,
         password,
         options: {
           userAttributes: {
             email,
-            phone_number: phone,
+            phone_number: formattedPhone,
             given_name: firstName,
             family_name: lastName
           }

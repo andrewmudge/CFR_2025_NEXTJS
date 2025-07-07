@@ -9,6 +9,8 @@ export const metadata: Metadata = {
   title: 'Churchwell Family Reunion 2025',
   description: 'The 58th Annual Churchwell Family Reunion - Aug 28th - Sep 1st 2025 at Casa de Fruta',
   keywords: 'family reunion, Churchwell, Casa de Fruta, 2025',
+  icons: {
+    icon: '/favicon.ico',}
 };
 
 export default function RootLayout({

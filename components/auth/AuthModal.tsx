@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { useAuth } from '@/lib/auth/AuthContext';
 import { toast } from 'sonner';
 import Image from 'next/image';
+import { formatPhoneInput, isValidUSPhone } from '@/lib/phone-utils';
 
 const AuthModal = () => {
   const { isAuthModalOpen, closeAuthModal, signIn, signUp, confirmSignUp, resetPassword, confirmResetPassword } = useAuth();
@@ -36,6 +37,11 @@ const AuthModal = () => {
           return;
         }
         
+        if (!isValidUSPhone(formData.phone)) {
+          toast.error('Please enter a valid 10-digit US phone number');
+          return;
+        }
+        
         const result = await signUp(
           formData.email,
           formData.password,
@@ -49,15 +55,25 @@ const AuthModal = () => {
         await signIn(formData.email, formData.password);
         toast.success('Welcome back to the family!');
       }
-    } catch (error) {
-      toast.error(authStep === 'signup' ? 'Failed to create account' : 'Failed to sign in');
+    } catch (error: any) {
+      if (error.message === 'ACCOUNT_PENDING_APPROVAL') {
+        toast.error('Your account is pending approval. Please contact the administrator.');
+      } else {
+        toast.error(authStep === 'signup' ? 'Failed to create account' : 'Failed to sign in');
+      }
     } finally {
       setLoading(false);
     }
   };
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    if (field === 'phone') {
+      // Format phone number as user types
+      const formatted = formatPhoneInput(value);
+      setFormData(prev => ({ ...prev, [field]: formatted }));
+    } else {
+      setFormData(prev => ({ ...prev, [field]: value }));
+    }
   };
 
   const handleVerifyEmail = async (e: React.FormEvent) => {
@@ -314,13 +330,14 @@ const AuthModal = () => {
                     <Input
                       id="phone"
                       type="tel"
-                      placeholder="+1 (555) 123-4567"
+                      placeholder="(123) 456-7890"
                       value={formData.phone}
                       onChange={(e) => handleInputChange('phone', e.target.value)}
                       className="pl-10"
                       required
                     />
                   </div>
+                  <p className="text-xs text-gray-500">US numbers only. Enter 10 digits, formatting is automatic.</p>
                 </div>
               </>
             )}

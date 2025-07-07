@@ -1,0 +1,9 @@
+
+    type FamilyWhitelist @model @auth(rules: [{ allow: private }]) {
+      id: ID!
+      email: String! @index(name: "byEmail")
+      fullName: String!
+      phoneNumber: String
+      isActive: Boolean!
+    }
+  

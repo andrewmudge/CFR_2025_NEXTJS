@@ -1,9 +1,9 @@
 {
   "auth": {
-    "user_pool_id": "us-east-1_5tkjh6Sud",
+    "user_pool_id": "us-east-1_mGZAJvEz1",
     "aws_region": "us-east-1",
-    "user_pool_client_id": "232344d7tg5t59l4fuqlaf01pa",
-    "identity_pool_id": "us-east-1:cbb86391-f626-4676-b2f7-eac0d6240f5a",
+    "user_pool_client_id": "7nqtruc6l3lj1c4hslocosn9jb",
+    "identity_pool_id": "us-east-1:cbdd94bc-38e6-4ac5-a8ba-f4c064b39444",
     "mfa_methods": [],
     "standard_required_attributes": [
       "email",
@@ -28,13 +28,150 @@
     },
     "unauthenticated_identities_enabled": true
   },
+  "data": {
+    "url": "https://xhky62fclfgfbil746oclwzlbi.appsync-api.us-east-1.amazonaws.com/graphql",
+    "aws_region": "us-east-1",
+    "default_authorization_type": "AMAZON_COGNITO_USER_POOLS",
+    "authorization_types": [
+      "AWS_IAM"
+    ],
+    "model_introspection": {
+      "version": 1,
+      "models": {
+        "ApprovedUser": {
+          "name": "ApprovedUser",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "email": {
+              "name": "email",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "givenName": {
+              "name": "givenName",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "familyName": {
+              "name": "familyName",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "phoneNumber": {
+              "name": "phoneNumber",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "isActive": {
+              "name": "isActive",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "approvedBy": {
+              "name": "approvedBy",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "approvedDate": {
+              "name": "approvedDate",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "createdDate": {
+              "name": "createdDate",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "ApprovedUsers",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "byEmail",
+                "fields": [
+                  "email"
+                ]
+              }
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "allow": "private",
+                    "operations": [
+                      "create",
+                      "update",
+                      "delete",
+                      "read"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        }
+      },
+      "enums": {},
+      "nonModels": {}
+    }
+  },
   "storage": {
     "aws_region": "us-east-1",
-    "bucket_name": "amplify-churchwellfamilyr-photostoragebucketdd5123-ia0zmxvmgzcc",
+    "bucket_name": "amplify-churchwellfamilyr-photostoragebucketdd5123-tnidholqxmrm",
     "buckets": [
       {
         "name": "photoStorage",
-        "bucket_name": "amplify-churchwellfamilyr-photostoragebucketdd5123-ia0zmxvmgzcc",
+        "bucket_name": "amplify-churchwellfamilyr-photostoragebucketdd5123-tnidholqxmrm",
         "aws_region": "us-east-1",
         "paths": {
           "public/*": {

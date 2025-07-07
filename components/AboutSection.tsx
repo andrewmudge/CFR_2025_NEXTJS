@@ -22,7 +22,7 @@ const AboutSection = () => {
             <div className="space-y-8">
               <div className="space-y-6">
                 <h2 className="text-4xl md:text-5xl font-bold text-slate-800 leading-tight">
-                  About Our Family Reunion
+                  About The Churchwells
                 </h2>
                 <div className="w-16 h-1 bg-gradient-to-r from-red-600 to-red-700 rounded-full"></div>
                 <p className="text-lg text-slate-600 leading-relaxed">
