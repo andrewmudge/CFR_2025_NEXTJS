@@ -13,7 +13,7 @@ const ScheduleSection = () => {
       {
         time: '09:30 AM',
         title: 'Welcoming Committee',
-        description: 'Christina Enns & Dana Miller',
+        description: 'Laura Leedy & Jarret King',
         icon: Users,
         color: 'from-blue-500 to-blue-700',
         bgColor: 'bg-blue-50',
@@ -32,14 +32,14 @@ const ScheduleSection = () => {
       {
         time: '4:00 PM',
         title: 'Food Challenge',
-        description: 'Food Challenge Details Coming Soon',
+        description: 'Street Taco Throwdown',
         price: 'TBD',
         icon: Utensils,
         color: 'from-orange-500 to-orange-700',
         bgColor: 'bg-orange-50',
       },
       {
-        time: '6:00 PM',
+        time: '7:00 PM',
         title: 'Friday Night Meeting',
         description: 'Grab your chairs and tune in for the weekends festivities',
         icon: Users,
@@ -80,7 +80,7 @@ const ScheduleSection = () => {
       {
         time: '12:00 PM',
         title: 'Kids Games',
-        description: 'Volunteers TBD',
+        description: 'Lisa, Allie, Kearstyn',
         icon: Users,
         color: 'from-pink-500 to-pink-700',
         bgColor: 'bg-pink-50',
@@ -147,7 +147,7 @@ const ScheduleSection = () => {
       {
         time: '07:00 PM',
         title: 'Dinner',
-        description: 'Dinner Theme TBD',
+        description: 'Delicious dinner including a Potato Bar',
         icon: Utensils,
         color: 'from-green-500 to-green-700',
         bgColor: 'bg-green-50',
