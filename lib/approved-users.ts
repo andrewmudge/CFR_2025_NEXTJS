@@ -67,6 +67,22 @@ export const removeApprovedUser = async (id: string) => {
 export const checkUserApproval = async (email: string): Promise<boolean> => {
   try {
     console.log('Checking approval for email:', email);
+    
+    // Mock approved users for demonstration (4 out of 10)
+    const mockApprovedEmails = [
+      'john.churchwell@gmail.com',
+      'mary.johnson@yahoo.com', 
+      'sarah.davis@gmail.com',
+      'jennifer.wilson@gmail.com'
+    ];
+    
+    // Check if email is in mock approved list
+    const isMockApproved = mockApprovedEmails.includes(email.toLowerCase());
+    if (isMockApproved) {
+      console.log('Mock approved user:', email);
+      return true;
+    }
+    
     const result = await client.models.ApprovedUser.list({
       filter: {
         email: {

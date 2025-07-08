@@ -17,6 +17,12 @@ const listPhotos = defineFunction({
   resourceGroupName: 'storage'
 });
 
+const cognitoAdmin = defineFunction({
+  name: 'cognitoAdmin',
+  entry: './functions/cognito-admin.js',
+  resourceGroupName: 'auth'
+});
+
 
 
 export const backend: any = defineBackend({
@@ -24,7 +30,8 @@ export const backend: any = defineBackend({
   data,
   uploadPhoto,
   listPhotos,
-  storage
+  storage,
+  cognitoAdmin
 });
 
 // Grant storage access to functions
@@ -44,6 +51,21 @@ backend.listPhotos.resources.lambda.addToRolePolicy(
       backend.storage.resources.bucket.bucketArn,
       `${backend.storage.resources.bucket.bucketArn}/photos/*`
     ]
+  })
+);
+
+// Grant Cognito admin permissions
+backend.cognitoAdmin.addEnvironment('COGNITO_USER_POOL_ID', backend.auth.resources.userPool.userPoolId);
+
+backend.cognitoAdmin.resources.lambda.addToRolePolicy(
+  new PolicyStatement({
+    effect: Effect.ALLOW,
+    actions: [
+      'cognito-idp:AdminListUsers',
+      'cognito-idp:AdminDeleteUser',
+      'cognito-idp:AdminGetUser'
+    ],
+    resources: [backend.auth.resources.userPool.userPoolArn]
   })
 );
 

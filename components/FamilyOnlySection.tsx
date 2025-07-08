@@ -132,7 +132,7 @@ const FamilyOnlySection = () => {
                   </div>
                 )}
                 
-                {/* Preview Mode Toggle - For Development Only
+                Preview Mode Toggle - For Development Only
                 <Button
                   onClick={() => setPreviewMode(true)}
                   size="sm"
@@ -141,7 +141,7 @@ const FamilyOnlySection = () => {
                 >
                   <Eye className="w-4 h-4 mr-2" />
                   Preview Mode (Development)
-                </Button> */}
+                </Button>
               </div>
             </div>
 

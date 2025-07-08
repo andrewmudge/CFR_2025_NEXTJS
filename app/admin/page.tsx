@@ -6,6 +6,7 @@ import { useAuth } from '@/lib/auth/AuthContext';
 import { Shield, Users, BarChart3, Settings, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import PendingUsers from '@/components/admin/PendingUsers';
+import UserEditor from '@/components/admin/UserEditor';
 
 const ADMIN_EMAIL = 'mudge.andrew@gmail.com';
 
@@ -13,6 +14,7 @@ export default function AdminDashboard() {
   const { user, loading, signOut } = useAuth();
   const router = useRouter();
   const [isAuthorized, setIsAuthorized] = useState(false);
+  const [showUserEditor, setShowUserEditor] = useState(false);
 
   useEffect(() => {
     if (!loading) {
@@ -117,8 +119,11 @@ export default function AdminDashboard() {
         <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
           <h2 className="text-xl font-bold text-white mb-4">Quick Actions</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-              Edit Users
+            <Button 
+              onClick={() => setShowUserEditor(!showUserEditor)}
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              {showUserEditor ? 'Hide User Editor' : 'Edit Users'}
             </Button>
             <Button className="bg-green-600 hover:bg-green-700 text-white">
               Manage Photos
@@ -131,6 +136,13 @@ export default function AdminDashboard() {
             </Button>
           </div>
         </div>
+
+        {/* User Editor */}
+        {showUserEditor && (
+          <div className="mt-8">
+            <UserEditor />
+          </div>
+        )}
 
         {/* Manual User Approval */}
         <div className="mt-8">

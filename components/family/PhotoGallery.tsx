@@ -27,7 +27,7 @@ const PhotoGallery = () => {
     { id: '2025', label: '2025', theme: 'Harry Potter', color: 'from-blue-500 to-blue-700' },
     { id: '2024', label: '2024', theme: 'Captain Ron', color: 'from-red-500 to-red-700' },
     { id: '2023', label: '2023', theme: 'Under the Sea', color: 'from-orange-500 to-orange-700' },
-    { id: '2022', label: '2022', theme: 'Paradise', color: 'from-teal-500 to-teal-700' },
+    { id: 'Oldies', label: 'Oldies', theme: 'Through the Years', color: 'from-teal-500 to-teal-700' },
   ];
 
   const loadPhotos = async (year: string) => {
@@ -141,22 +141,22 @@ const PhotoGallery = () => {
               {/* Upload Area */}
               <motion.div
                 className="
-                  border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all duration-300
-                  hover:scale-105
+                  border-2 border-dashed rounded-xl p-4 text-center cursor-pointer transition-all duration-300
+                  hover:scale-105 max-w-md mx-auto
                 "
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
                 <div {...getRootProps()} className="w-full h-full flex flex-col items-center justify-center">
                   <input {...getInputProps()} />
-                  <Upload className="w-12 h-12 text-blue-500 mx-auto mb-4" />
-                  <h5 className="text-slate-800 font-semibold text-lg mb-2">
+                  <Upload className="w-8 h-8 text-blue-500 mx-auto mb-2" />
+                  <h5 className="text-slate-800 font-semibold text-base mb-1">
                     {isDragActive ? `Drop ${year.label} photos here!` : `Upload ${year.label} Photos`}
                   </h5>
-                  <p className="text-slate-600">
-                    Drag & drop photos here, or click to browse
+                  <p className="text-slate-600 text-sm">
+                    Drag & drop or click to browse
                   </p>
-                  <p className="text-slate-500 text-sm mt-2">
+                  <p className="text-slate-500 text-xs mt-1">
                     Photos will be added to the {year.label} reunion gallery
                   </p>
                 </div>
