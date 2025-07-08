@@ -1,6 +1,7 @@
 import { defineAuth } from '@aws-amplify/backend';
 
 export const auth = defineAuth({
+  name: 'cfr-AuthUserPool-prod',
   loginWith: {
     email: true
   },

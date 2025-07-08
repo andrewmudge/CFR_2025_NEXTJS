@@ -1,6 +1,7 @@
 import { defineData } from '@aws-amplify/backend';
 
 export const data = defineData({
+  name: 'cfr-ApprovedUser-prod',
   authorizationModes: {
     defaultAuthorizationMode: 'userPool'
   },

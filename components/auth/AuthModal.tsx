@@ -10,6 +10,7 @@ import { useAuth } from '@/lib/auth/AuthContext';
 import { toast } from 'sonner';
 import Image from 'next/image';
 import { formatPhoneInput, isValidUSPhone } from '@/lib/phone-utils';
+import { validatePassword, isPasswordValid } from '@/lib/password-utils';
 
 const AuthModal = () => {
   const { isAuthModalOpen, closeAuthModal, signIn, signUp, confirmSignUp, resetPassword, confirmResetPassword } = useAuth();
@@ -25,6 +26,7 @@ const AuthModal = () => {
     phone: '',
     confirmPassword: '',
   });
+  const [showPasswordRequirements, setShowPasswordRequirements] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,6 +41,11 @@ const AuthModal = () => {
         
         if (!isValidUSPhone(formData.phone)) {
           toast.error('Please enter a valid 10-digit US phone number');
+          return;
+        }
+        
+        if (!isPasswordValid(formData.password)) {
+          toast.error('Password does not meet requirements');
           return;
         }
         
@@ -367,7 +374,11 @@ const AuthModal = () => {
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Enter your password"
                   value={formData.password}
-                  onChange={(e) => handleInputChange('password', e.target.value)}
+                  onChange={(e) => {
+                    handleInputChange('password', e.target.value);
+                    setShowPasswordRequirements(true);
+                  }}
+                  onFocus={() => setShowPasswordRequirements(true)}
                   className="pl-10 pr-10"
                   required
                 />
@@ -379,6 +390,27 @@ const AuthModal = () => {
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
+              
+              {/* Password Requirements */}
+              {authStep === 'signup' && showPasswordRequirements && (
+                <div className="mt-2 p-3 bg-gray-50 rounded-lg border">
+                  <p className="text-sm font-medium text-gray-700 mb-2">Password Requirements:</p>
+                  <ul className="space-y-1">
+                    {validatePassword(formData.password).map((req, index) => (
+                      <li key={index} className={`text-xs flex items-center ${
+                        req.met ? 'text-green-600' : 'text-gray-500'
+                      }`}>
+                        <span className={`w-4 h-4 rounded-full mr-2 flex items-center justify-center text-xs ${
+                          req.met ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400'
+                        }`}>
+                          {req.met ? '✓' : '○'}
+                        </span>
+                        {req.text}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
 
             {authStep === 'signup' && (
@@ -401,8 +433,8 @@ const AuthModal = () => {
 
             <Button
               type="submit"
-              className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800"
-              disabled={loading}
+              className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={loading || (authStep === 'signup' && !isPasswordValid(formData.password))}
             >
               {loading ? 'Processing...' : (authStep === 'signup' ? 'Create Account' : 'Sign In')}
             </Button>
