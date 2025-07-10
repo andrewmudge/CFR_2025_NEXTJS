@@ -76,11 +76,11 @@ const Footer = () => {
             <h4 className="text-lg font-semibold text-red-300">Stay Connected</h4>
             <div className="space-y-3">
               <a
-                href="mailto:info@churchwellreunion.com"
+                href="mailto:churchwell.reunion@gmail.com"
                 className="flex items-center space-x-3 text-slate-300 hover:text-red-300 transition-colors group"
               >
                 <Mail className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                <span className="text-sm">info@churchwellreunion.com</span>
+                <span className="text-sm">churchwell.reunion@gmail.com</span>
               </a>
               <a
                 href="https://www.instagram.com/Churchwell_family_reunion"

@@ -17,17 +17,20 @@ interface Photo {
   year: number;
 }
 
+const PHOTOS_PER_PAGE = 16; // Adjust as needed
+
 const PhotoGallery = () => {
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
   const [activeYear, setActiveYear] = useState('2025');
   const [photosByYear, setPhotosByYear] = useState<Record<string, Photo[]>>({});
   const [loading, setLoading] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(PHOTOS_PER_PAGE);
 
   const years = [
     { id: '2025', label: '2025', theme: 'Harry Potter', color: 'from-blue-500 to-blue-700' },
     { id: '2024', label: '2024', theme: 'Captain Ron', color: 'from-red-500 to-red-700' },
     { id: '2023', label: '2023', theme: 'Under the Sea', color: 'from-orange-500 to-orange-700' },
-    { id: 'Oldies', label: 'Oldies', theme: 'Through the Years', color: 'from-teal-500 to-teal-700' },
+    { id: 'Oldies', label: 'Oldies', theme: 'Mixed Collection', color: 'from-teal-500 to-teal-700' },
   ];
 
   const loadPhotos = async (year: string) => {
@@ -44,6 +47,10 @@ const PhotoGallery = () => {
 
   useEffect(() => {
     loadPhotos(activeYear);
+  }, [activeYear]);
+
+  useEffect(() => {
+    setVisibleCount(PHOTOS_PER_PAGE); // Reset when year changes
   }, [activeYear]);
 
   const onDrop = async (acceptedFiles: File[]) => {
@@ -80,6 +87,7 @@ const PhotoGallery = () => {
 
   const currentYearData = years.find(y => y.id === activeYear);
   const currentPhotos = photosByYear[activeYear] || [];
+  const visiblePhotos = currentPhotos.slice(0, visibleCount);
 
   return (
     <div className="space-y-8">
@@ -114,92 +122,106 @@ const PhotoGallery = () => {
           ))}
         </TabsList>
 
-        {years.map((year) => (
-          <TabsContent key={year.id} value={year.id} className="mt-0">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-              className="space-y-8"
-            >
-              {/* Year Header */}
-              <div className={`bg-gradient-to-r ${year.color} text-white p-6 rounded-xl shadow-lg`}>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="text-2xl font-bold mb-2">{year.label} Reunion</h4>
-                    <p className="text-white/90">{year.theme}</p>
-                  </div>
-                  <div className="text-right">
-                    <Calendar className="w-8 h-8 mb-2 mx-auto" />
-                    <div className="text-sm">
-                      {currentPhotos.length} photo{currentPhotos.length !== 1 ? 's' : ''}
+        {years.map((year) => {
+          const currentPhotos = photosByYear[year.id] || [];
+          const visiblePhotos = currentPhotos.slice(0, visibleCount);
+
+          return (
+            <TabsContent key={year.id} value={year.id} className="mt-0">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                className="space-y-8"
+              >
+                {/* Year Header */}
+                <div className={`bg-gradient-to-r ${year.color} text-white p-6 rounded-xl shadow-lg`}>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="text-2xl font-bold mb-2">{year.label} Reunion</h4>
+                      <p className="text-white/90">{year.theme}</p>
+                    </div>
+                    <div className="text-right">
+                      <Calendar className="w-8 h-8 mb-2 mx-auto" />
+                      <div className="text-sm">
+                        {currentPhotos.length} photo{currentPhotos.length !== 1 ? 's' : ''}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Upload Area */}
-              <motion.div
-                className="
-                  border-2 border-dashed rounded-xl p-4 text-center cursor-pointer transition-all duration-300
-                  hover:scale-105 max-w-md mx-auto
-                "
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <div {...getRootProps()} className="w-full h-full flex flex-col items-center justify-center">
-                  <input {...getInputProps()} />
-                  <Upload className="w-8 h-8 text-blue-500 mx-auto mb-2" />
-                  <h5 className="text-slate-800 font-semibold text-base mb-1">
-                    {isDragActive ? `Drop ${year.label} photos here!` : `Upload ${year.label} Photos`}
-                  </h5>
-                  <p className="text-slate-600 text-sm">
-                    Drag & drop or click to browse
-                  </p>
-                  <p className="text-slate-500 text-xs mt-1">
-                    Photos will be added to the {year.label} reunion gallery
-                  </p>
-                </div>
-              </motion.div>
+                {/* Upload Area */}
+                <motion.div
+                  className="
+                    border-2 border-dashed rounded-xl p-4 text-center cursor-pointer transition-all duration-300
+                    hover:scale-105 max-w-md mx-auto
+                  "
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div {...getRootProps()} className="w-full h-full flex flex-col items-center justify-center">
+                    <input {...getInputProps()} />
+                    <Upload className="w-8 h-8 text-blue-500 mx-auto mb-2" />
+                    <h5 className="text-slate-800 font-semibold text-base mb-1">
+                      {isDragActive ? `Drop ${year.label} photos here!` : `Upload ${year.label} Photos`}
+                    </h5>
+                    <p className="text-slate-600 text-sm">
+                      Drag & drop or click to browse
+                    </p>
+                    <p className="text-slate-500 text-xs mt-1">
+                      Photos will be added to the {year.label} reunion gallery
+                    </p>
+                  </div>
+                </motion.div>
 
-              {/* Photo Grid */}
-              {currentPhotos.length > 0 ? (
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                  {currentPhotos.map((photo, index) => (
-                    <motion.div
-                      key={photo.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                      className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer"
-                      whileHover={{ y: -5, scale: 1.02 }}
-                      onClick={() => setSelectedPhoto(photo.url)}
-                    >
-                      <div className="relative aspect-square">
-                        <img
-                          src={photo.url}
-                          alt="Family reunion memory"
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                {/* Photo Grid */}
+                {currentPhotos.length > 0 ? (
+                  <>
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                      {visiblePhotos.map((photo, index) => (
+                        <motion.div
+                          key={photo.id}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5, delay: index * 0.1 }}
+                          className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer"
+                          whileHover={{ y: -5, scale: 1.02 }}
+                          onClick={() => setSelectedPhoto(photo.url)}
+                        >
+                          <div className="relative aspect-square">
+                            <img
+                              src={photo.url}
+                              alt="Family reunion memory"
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                    {currentPhotos.length > visibleCount && (
+                      <div className="flex justify-center mt-4">
+                        <Button onClick={() => setVisibleCount(visibleCount + PHOTOS_PER_PAGE)}>
+                          View More
+                        </Button>
                       </div>
-                    </motion.div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-12">
-                  <Calendar className="w-16 h-16 text-slate-400 mx-auto mb-4" />
-                  <h5 className="text-xl font-semibold text-slate-800 mb-2">
-                    No photos yet for {year.label}
-                  </h5>
-                  <p className="text-slate-600">
-                    Be the first to upload memories from the {year.label} reunion!
-                  </p>
-                </div>
-              )}
-            </motion.div>
-          </TabsContent>
-        ))}
+                    )}
+                  </>
+                ) : (
+                  <div className="text-center py-12">
+                    <Calendar className="w-16 h-16 text-slate-400 mx-auto mb-4" />
+                    <h5 className="text-xl font-semibold text-slate-800 mb-2">
+                      No photos yet for {year.label}
+                    </h5>
+                    <p className="text-slate-600">
+                      Be the first to upload memories from the {year.label} reunion!
+                    </p>
+                  </div>
+                )}
+              </motion.div>
+            </TabsContent>
+          );
+        })}
       </Tabs>
 
       {/* Photo Modal */}
