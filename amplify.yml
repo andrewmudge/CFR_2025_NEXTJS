@@ -1,4 +1,11 @@
 version: 1
+backend:
+  phases:
+    build:
+      commands:
+        - echo "Backend build starting"
+        - npm ci
+        - echo "Backend build complete"
 frontend:
   phases:
     preBuild:
