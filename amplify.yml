@@ -3,6 +3,7 @@ backend:
   phases:
     build:
       commands:
+        - npm ci
         - npx ampx push --yes
 frontend:
   phases:
