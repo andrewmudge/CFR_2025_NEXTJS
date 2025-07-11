@@ -22,7 +22,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/0ed3cd60c1298f1d464230a5d7b86a515b47eaf421fff485320589dde740b9fb.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/39ac04a15f24de1738ae177197a83757e55a763703d6b0d077483edb5433f607.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -141,6 +141,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "amplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthunauthenticatedUserRole4D0D6590Ref"
+          }
+        ],
+        "/amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/auth/amplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthUserPool87EBD322Arn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthUserPool87EBD322Arn"
           }
         ],
         "/amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/auth.NestedStack/auth.NestedStackResource": [
@@ -1341,6 +1347,60 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "definedFunctions"
+          }
+        ],
+        "/amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/function/cognitoAdmin-lambda/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cognitoAdminlambdaServiceRole0B452F23"
+          }
+        ],
+        "/amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/function/cognitoAdmin-lambda/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cognitoAdminlambdaServiceRoleDefaultPolicyA879A750"
+          }
+        ],
+        "/amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/function/cognitoAdmin-lambda/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cognitoAdminlambda769DEC68"
+          }
+        ],
+        "/amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/function/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/function/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/function/amplifychurchwellfamilyreunionmudgesandboxf5603c1efdfunctioncognitoAdminlambda1E05DEFARef": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifychurchwellfamilyreunionmudgesandboxf5603c1efdfunctioncognitoAdminlambda1E05DEFARef"
+          }
+        ],
+        "/amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/function/reference-to-amplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputs.amplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthUserPool87EBD322Arn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthUserPool87EBD322Arn"
+          }
+        ],
+        "/amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/function/reference-to-amplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputs.amplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthUserPool87EBD322Ref": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthUserPool87EBD322Ref"
+          }
+        ],
+        "/amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/function.NestedStack/function.NestedStackResource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "function1351588B"
           }
         ],
         "/amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/storageRegion": [

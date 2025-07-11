@@ -1,7 +1,7 @@
 {
  "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"AmplifySandbox\",\"createdWith\":\"1.14.1\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
  "Resources": {
-  "postconfirmationlambdaServiceRoleD88F89BD": {
+  "cognitoAdminlambdaServiceRole0B452F23": {
    "Type": "AWS::IAM::Role",
    "Properties": {
     "AssumeRolePolicyDocument": {
@@ -37,7 +37,7 @@
      },
      {
       "Key": "amplify:friendly-name",
-      "Value": "post-confirmation"
+      "Value": "cognitoAdmin"
      },
      {
       "Key": "created-by",
@@ -48,36 +48,20 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/function/post-confirmation-lambda/ServiceRole/Resource"
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/function/cognitoAdmin-lambda/ServiceRole/Resource"
    }
   },
-  "postconfirmationlambdaServiceRoleDefaultPolicyCD4BF2C1": {
+  "cognitoAdminlambdaServiceRoleDefaultPolicyA879A750": {
    "Type": "AWS::IAM::Policy",
    "Properties": {
     "PolicyDocument": {
      "Statement": [
       {
-       "Action": "dynamodb:Query",
-       "Effect": "Allow",
-       "Resource": [
-        {
-         "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataNestedStackdataNestedStackResource6AC70E35Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataApprovedUserNestedStackApprovedUserNestedStackResourceA817EB2B4FD"
-        },
-        {
-         "Fn::Join": [
-          "",
-          [
-           {
-            "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataNestedStackdataNestedStackResource6AC70E35Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataApprovedUserNestedStackApprovedUserNestedStackResourceA817EB2B4FD"
-           },
-           "/index/*"
-          ]
-         ]
-        }
-       ]
-      },
-      {
-       "Action": "cognito-idp:AdminUpdateUserAttributes",
+       "Action": [
+        "cognito-idp:AdminListUsers",
+        "cognito-idp:AdminDeleteUser",
+        "cognito-idp:AdminGetUser"
+       ],
        "Effect": "Allow",
        "Resource": {
         "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthUserPool87EBD322Arn"
@@ -86,20 +70,20 @@
      ],
      "Version": "2012-10-17"
     },
-    "PolicyName": "postconfirmationlambdaServiceRoleDefaultPolicyCD4BF2C1",
+    "PolicyName": "cognitoAdminlambdaServiceRoleDefaultPolicyA879A750",
     "Roles": [
      {
-      "Ref": "postconfirmationlambdaServiceRoleD88F89BD"
+      "Ref": "cognitoAdminlambdaServiceRole0B452F23"
      }
     ]
    },
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/function/post-confirmation-lambda/ServiceRole/DefaultPolicy/Resource"
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/function/cognitoAdmin-lambda/ServiceRole/DefaultPolicy/Resource"
    }
   },
-  "postconfirmationlambda195D98D2": {
+  "cognitoAdminlambda769DEC68": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
     "Architectures": [
@@ -109,33 +93,13 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "2ab0c013eef57163425285b2c8230202651e27cfbfaa5e20135c246bd712e529.zip"
+     "S3Key": "ba89cd04e689292da488f471d0eddb0547364871c481e5f84a8b7f5d1f09361a.zip"
     },
     "Environment": {
      "Variables": {
       "AMPLIFY_SSM_ENV_CONFIG": "{}",
-      "APPROVED_USERS_TABLE_NAME": {
-       "Fn::Select": [
-        1,
-        {
-         "Fn::Split": [
-          "/",
-          {
-           "Fn::Select": [
-            5,
-            {
-             "Fn::Split": [
-              ":",
-              {
-               "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataNestedStackdataNestedStackResource6AC70E35Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataApprovedUserNestedStackApprovedUserNestedStackResourceA817EB2B4FD"
-              }
-             ]
-            }
-           ]
-          }
-         ]
-        }
-       ]
+      "COGNITO_USER_POOL_ID": {
+       "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthUserPool87EBD322Ref"
       }
      }
     },
@@ -146,7 +110,7 @@
     "MemorySize": 512,
     "Role": {
      "Fn::GetAtt": [
-      "postconfirmationlambdaServiceRoleD88F89BD",
+      "cognitoAdminlambdaServiceRole0B452F23",
       "Arn"
      ]
     },
@@ -158,7 +122,7 @@
      },
      {
       "Key": "amplify:friendly-name",
-      "Value": "post-confirmation"
+      "Value": "cognitoAdmin"
      },
      {
       "Key": "created-by",
@@ -168,14 +132,14 @@
     "Timeout": 3
    },
    "DependsOn": [
-    "postconfirmationlambdaServiceRoleDefaultPolicyCD4BF2C1",
-    "postconfirmationlambdaServiceRoleD88F89BD"
+    "cognitoAdminlambdaServiceRoleDefaultPolicyA879A750",
+    "cognitoAdminlambdaServiceRole0B452F23"
    ],
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/function/post-confirmation-lambda/Resource",
-    "aws:asset:path": "asset.2ab0c013eef57163425285b2c8230202651e27cfbfaa5e20135c246bd712e529",
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/function/cognitoAdmin-lambda/Resource",
+    "aws:asset:path": "asset.ba89cd04e689292da488f471d0eddb0547364871c481e5f84a8b7f5d1f09361a",
     "aws:asset:is-bundled": true,
     "aws:asset:property": "Code"
    }
@@ -458,25 +422,17 @@
   }
  },
  "Outputs": {
-  "amplifychurchwellfamilyreunionmudgesandboxf5603c1efdfunctionpostconfirmationlambdaD859E218Arn": {
+  "amplifychurchwellfamilyreunionmudgesandboxf5603c1efdfunctioncognitoAdminlambda1E05DEFARef": {
    "Value": {
-    "Fn::GetAtt": [
-     "postconfirmationlambda195D98D2",
-     "Arn"
-    ]
-   }
-  },
-  "amplifychurchwellfamilyreunionmudgesandboxf5603c1efdfunctionpostconfirmationlambdaD859E218Ref": {
-   "Value": {
-    "Ref": "postconfirmationlambda195D98D2"
+    "Ref": "cognitoAdminlambda769DEC68"
    }
   }
  },
  "Parameters": {
-  "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataNestedStackdataNestedStackResource6AC70E35Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataApprovedUserNestedStackApprovedUserNestedStackResourceA817EB2B4FD": {
+  "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthUserPool87EBD322Arn": {
    "Type": "String"
   },
-  "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthUserPool87EBD322Arn": {
+  "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthUserPool87EBD322Ref": {
    "Type": "String"
   }
  }

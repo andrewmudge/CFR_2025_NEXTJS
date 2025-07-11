@@ -615,6 +615,14 @@
    "Value": {
     "Ref": "amplifyAuthunauthenticatedUserRole2B524D9E"
    }
+  },
+  "amplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthUserPool87EBD322Arn": {
+   "Value": {
+    "Fn::GetAtt": [
+     "amplifyAuthUserPool4BA7F805",
+     "Arn"
+    ]
+   }
   }
  }
 }

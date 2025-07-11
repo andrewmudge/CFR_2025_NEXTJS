@@ -233,6 +233,13 @@
         "Outputs.amplifychurchwellfamilyreunionmudgesandboxf5603c1efdstoragelistPhotoslambda2772359ERef"
        ]
       },
+      "\",\"",
+      {
+       "Fn::GetAtt": [
+        "function1351588B",
+        "Outputs.amplifychurchwellfamilyreunionmudgesandboxf5603c1efdfunctioncognitoAdminlambda1E05DEFARef"
+       ]
+      },
       "\"]"
      ]
     ]
@@ -303,7 +310,7 @@
        {
         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
        },
-       "/d124323115304e329679aad06f2eef2a578b91c5bec44a27ecece5aea99b207d.json"
+       "/312792c0a4064e0f1b80b548689c5f77caa5fc9f272c993a2dc9d79ce29a14ad.json"
       ]
      ]
     }
@@ -437,6 +444,62 @@
    "Metadata": {
     "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/storage.NestedStack/storage.NestedStackResource",
     "aws:asset:path": "amplifychurchwellfamilyreunionmudgesandboxf5603c1efdstorageA664F27F.nested.template.json",
+    "aws:asset:property": "TemplateURL"
+   }
+  },
+  "function1351588B": {
+   "Type": "AWS::CloudFormation::Stack",
+   "Properties": {
+    "Parameters": {
+     "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthUserPool87EBD322Arn": {
+      "Fn::GetAtt": [
+       "auth179371D7",
+       "Outputs.amplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthUserPool87EBD322Arn"
+      ]
+     },
+     "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthUserPool87EBD322Ref": {
+      "Fn::GetAtt": [
+       "auth179371D7",
+       "Outputs.amplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthUserPool87EBD322Ref"
+      ]
+     }
+    },
+    "Tags": [
+     {
+      "Key": "amplify:deployment-type",
+      "Value": "sandbox"
+     },
+     {
+      "Key": "created-by",
+      "Value": "amplify"
+     }
+    ],
+    "TemplateURL": {
+     "Fn::Join": [
+      "",
+      [
+       "https://s3.",
+       {
+        "Ref": "AWS::Region"
+       },
+       ".",
+       {
+        "Ref": "AWS::URLSuffix"
+       },
+       "/",
+       {
+        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+       },
+       "/577e2a0c72b7a9f337df0a4adb699a0c0c5674f231333e4d5cbf00fb292c695b.json"
+      ]
+     ]
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/function.NestedStack/function.NestedStackResource",
+    "aws:asset:path": "amplifychurchwellfamilyreunionmudgesandboxf5603c1efdfunctionBAA4FC09.nested.template.json",
     "aws:asset:property": "TemplateURL"
    }
   },
