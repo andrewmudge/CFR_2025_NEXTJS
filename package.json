@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-
     "start": "next start",
     "lint": "next lint",
     "cdk:deploy": "cd infrastructure && cdk deploy",
@@ -85,6 +84,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "ampx": "^0.2.2",
     "aws-cdk": "^2.120.0",
     "aws-cdk-lib": "^2.120.0",
     "constructs": "^10.3.0",
