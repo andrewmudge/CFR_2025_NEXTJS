@@ -1,9 +1,9 @@
-const { CognitoIdentityProviderClient, AdminListUsersCommand, AdminDeleteUserCommand } = require('@aws-sdk/client-cognito-identity-provider');
+import { CognitoIdentityProviderClient, AdminListUsersCommand, AdminDeleteUserCommand } from '@aws-sdk/client-cognito-identity-provider';
 
 const cognitoClient = new CognitoIdentityProviderClient({ region: process.env.AWS_REGION });
 const USER_POOL_ID = process.env.COGNITO_USER_POOL_ID;
 
-exports.handler = async (event) => {
+export const handler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',

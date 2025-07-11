@@ -1,4 +1,16 @@
 version: 1
+backend:
+  phases:
+    build:
+      commands:
+        - npm ci
+        - npx ampx generate outputs --branch $AWS_BRANCH
+backend:
+  phases:
+    build:
+      commands:
+        - npm ci
+        - npx ampx generate outputs --branch $AWS_BRANCH
 frontend:
   phases:
     preBuild:
