@@ -19,8 +19,7 @@ const listPhotos = defineFunction({
 
 const cognitoAdmin = defineFunction({
   name: 'cognitoAdmin',
-  entry: './functions/cognito-admin.js',
-  resourceGroupName: 'auth'
+  entry: './functions/cognito-admin.js'
 });
 
 

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth/AuthContext';
-import { Shield, Users, BarChart3, Settings, LogOut } from 'lucide-react';
+import { Shield, Users, BarChart3, Settings, LogOut, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import PendingUsers from '@/components/admin/PendingUsers';
 import UserEditor from '@/components/admin/UserEditor';
@@ -76,6 +76,20 @@ export default function AdminDashboard() {
                 Sign Out
               </Button>
             </div>
+          </div>
+          {/* Right-justified Back Button */}
+          <div className="flex justify-end pb-4">
+            <Button
+              asChild
+              variant="outline"
+              size="sm"
+              className="border-blue-400 text-blue-600 hover:bg-blue-400 hover:text-white"
+            >
+              <a href="https://churchwellreunion.com" target="_blank" rel="noopener noreferrer">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to churchwellreunion.com
+              </a>
+            </Button>
           </div>
         </div>
       </header>
