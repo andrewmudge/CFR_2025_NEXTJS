@@ -4,7 +4,7 @@ backend:
     build:
       commands:
         - npm ci
-        - npx ampx push --yes
+        - npx --no-install ampx push --yes || pnpx ampx push --yes
 frontend:
   phases:
     preBuild:
