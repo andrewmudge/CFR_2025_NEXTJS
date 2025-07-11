@@ -4,7 +4,7 @@ backend:
     build:
       commands:
         - npm ci
-        - npm install -g @aws-amplify/cli-internal
+        - npm install -g @aws-amplify/cli --force
         - npx ampx push --yes
 frontend:
   phases:
