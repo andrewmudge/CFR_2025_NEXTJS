@@ -4,7 +4,8 @@ backend:
     build:
       commands:
         - npm ci
-        - npx --no-install ampx push --yes || pnpx ampx push --yes
+        - npm install -g @aws-amplify/cli-internal
+        - npx ampx push --yes
 frontend:
   phases:
     preBuild:
