@@ -131,13 +131,13 @@ const FamilyOnlySection = () => {
                     <p className="text-orange-600 font-medium">Awaiting admin approval</p>
                   </div>
                 )}
-                
-{/*                 Preview Mode Toggle - For Development Only
+                {/*                 Preview Mode Toggle - For Development Only
                 <Button
                   onClick={() => setPreviewMode(true)}
                   size="sm"
                   variant="outline"
                   className="border-yellow-500 text-yellow-600 hover:bg-yellow-50 hover:text-yellow-700 w-full"
+                >
                 >
                   <Eye className="w-4 h-4 mr-2" />
                   Preview Mode (Development)
