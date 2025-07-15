@@ -16,5 +16,20 @@ export const data = defineData({
       approvedDate: AWSDateTime
       createdDate: AWSDateTime!
     }
+
+    type CognitoUser {
+      username: String!
+      email: String!
+      givenName: String
+      familyName: String
+      phoneNumber: String
+      userStatus: String!
+      userCreateDate: AWSDateTime
+      enabled: Boolean!
+    }
+
+    type Query {
+      listCognitoUsers: [CognitoUser] @function(name: "cognitoAdmin") @auth(rules: [{ allow: private }])
+    }
   `,
 });

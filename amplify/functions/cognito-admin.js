@@ -10,6 +10,16 @@ export const handler = async (event) => {
     'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS'
   };
 
+  // Handle GraphQL query (for AppSync)
+  if (event.info && event.info.fieldName === 'listCognitoUsers') {
+    try {
+      return await listCognitoUsers();
+    } catch (error) {
+      console.error('Error in listCognitoUsers:', error);
+      throw error;
+    }
+  }
+
   // Handle CORS preflight
   if (event.httpMethod === 'OPTIONS') {
     return {
@@ -43,6 +53,41 @@ export const handler = async (event) => {
       headers,
       body: JSON.stringify({ error: error.message })
     };
+  }
+};
+
+// GraphQL resolver for listCognitoUsers
+const listCognitoUsers = async () => {
+  try {
+    const command = new AdminListUsersCommand({
+      UserPoolId: USER_POOL_ID,
+      Limit: 60 // Adjust as needed
+    });
+
+    const response = await cognitoClient.send(command);
+    
+    const users = response.Users.map(user => {
+      const attributes = {};
+      user.Attributes?.forEach(attr => {
+        attributes[attr.Name] = attr.Value;
+      });
+
+      return {
+        username: user.Username,
+        email: attributes.email || '',
+        givenName: attributes.given_name || '',
+        familyName: attributes.family_name || '',
+        phoneNumber: attributes.phone_number || '',
+        userStatus: user.UserStatus,
+        userCreateDate: user.UserCreateDate,
+        enabled: user.Enabled
+      };
+    });
+
+    return users;
+  } catch (error) {
+    console.error('Error listing users:', error);
+    throw error;
   }
 };
 

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Lock, Camera, TreePine, Clock, Upload, Shield, Eye, EyeOff } from 'lucide-react';
+import { Lock, Camera, TreePine, Clock, Upload, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/lib/auth/AuthContext';
 import { checkUserApproval } from '@/lib/approved-users';
@@ -13,7 +13,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const FamilyOnlySection = () => {
   const { user, openAuthModal } = useAuth();
-  const [previewMode, setPreviewMode] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
   const [checkingApproval, setCheckingApproval] = useState(false);
 
@@ -41,8 +40,8 @@ const FamilyOnlySection = () => {
     checkApproval();
   }, [user]);
 
-  // Show authenticated content if user is approved OR preview mode is enabled
-  const showAuthenticatedContent = (user && isApproved) || previewMode;
+  // Show authenticated content only if user is approved
+  const showAuthenticatedContent = user && isApproved;
   
   console.log('FamilyOnlySection render:', {
     user: user?.email,
@@ -131,17 +130,6 @@ const FamilyOnlySection = () => {
                     <p className="text-orange-600 font-medium">Awaiting admin approval</p>
                   </div>
                 )}
-                {/*                 Preview Mode Toggle - For Development Only
-                <Button
-                  onClick={() => setPreviewMode(true)}
-                  size="sm"
-                  variant="outline"
-                  className="border-yellow-500 text-yellow-600 hover:bg-yellow-50 hover:text-yellow-700 w-full"
-                >
-                >
-                  <Eye className="w-4 h-4 mr-2" />
-                  Preview Mode (Development)
-                </Button> */}
               </div>
             </div>
 
@@ -179,30 +167,7 @@ const FamilyOnlySection = () => {
             <h2 className="text-4xl md:text-5xl font-bold text-slate-800">
               Welcome to the Family Area
             </h2>
-            
-            {/* Preview Mode Indicator 
-            {previewMode && !user && (
-              <div className="flex items-center space-x-2">
-                <Button
-                  onClick={() => setPreviewMode(false)}
-                  size="sm"
-                  variant="outline"
-                  className="border-yellow-500 text-yellow-600 hover:bg-yellow-50 hover:text-yellow-700"
-                >
-                  <EyeOff className="w-4 h-4 mr-2" />
-                  Exit Preview
-                </Button>
-              </div>
-            )} */}
           </div>
-          
-          {/* {previewMode && !user && (
-            <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 p-3 rounded-lg mb-6 max-w-md mx-auto">
-              <p className="text-sm">
-                <strong>Preview Mode:</strong> You&apos;re viewing the authenticated content for development purposes.
-              </p>
-            </div>
-          )} */}
           
           <p className="text-lg text-slate-600 max-w-2xl mx-auto">
             Exclusive family content, memories, and treasures. Share photos, explore our family tree, 

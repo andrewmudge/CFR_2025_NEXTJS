@@ -1,6 +1,5 @@
-// Note: This is a mock implementation for client-side
-// In production, you'd need a Lambda function to query Cognito users
-// due to security restrictions on client-side Cognito admin operations
+// Note: This implementation calls the API endpoint to get Cognito users
+// The API endpoint handles the Lambda function calls securely
 
 export interface CognitoUser {
   username: string;
@@ -10,41 +9,45 @@ export interface CognitoUser {
   phoneNumber?: string;
   userCreateDate?: Date;
   userStatus: string;
+  isApproved?: boolean;
 }
 
-// Mock function - in production this would be a Lambda function
+// Get all Cognito users via API endpoint
 export const getCognitoUsers = async (): Promise<CognitoUser[]> => {
-  // This is a placeholder - you'd need to implement a Lambda function
-  // that calls AWS Cognito ListUsers API
-  return [];
-};
-
-// For now, we'll track pending users in localStorage for demo purposes
-const PENDING_USERS_KEY = 'pending_approval_users';
-
-export const addPendingUser = (user: CognitoUser) => {
-  if (typeof window === 'undefined') return;
-  
-  const pending = getPendingUsers();
-  const exists = pending.find(u => u.email === user.email);
-  
-  if (!exists) {
-    pending.push(user);
-    localStorage.setItem(PENDING_USERS_KEY, JSON.stringify(pending));
+  try {
+    const response = await fetch('/api/cognito-users');
+    if (!response.ok) {
+      throw new Error('Failed to fetch Cognito users');
+    }
+    const users = await response.json();
+    return users;
+  } catch (error) {
+    console.error('Error fetching Cognito users:', error);
+    return [];
   }
 };
 
-export const getPendingUsers = (): CognitoUser[] => {
-  if (typeof window === 'undefined') return [];
-  
-  const stored = localStorage.getItem(PENDING_USERS_KEY);
-  return stored ? JSON.parse(stored) : [];
+// Get users who are signed up but not approved
+export const getPendingUsers = async (): Promise<CognitoUser[]> => {
+  try {
+    const allUsers = await getCognitoUsers();
+    // Filter for users who are confirmed but not approved
+    return allUsers.filter(user => 
+      user.userStatus === 'CONFIRMED' && !user.isApproved
+    );
+  } catch (error) {
+    console.error('Error fetching pending users:', error);
+    return [];
+  }
+};
+
+// For backward compatibility - this is now handled by the database
+export const addPendingUser = (user: CognitoUser) => {
+  // This is now handled automatically by the post-confirmation trigger
+  console.log('addPendingUser called but handled by post-confirmation trigger');
 };
 
 export const removePendingUser = (email: string) => {
-  if (typeof window === 'undefined') return;
-  
-  const pending = getPendingUsers();
-  const filtered = pending.filter(u => u.email !== email);
-  localStorage.setItem(PENDING_USERS_KEY, JSON.stringify(filtered));
+  // This is now handled automatically when user is approved via addApprovedUser
+  console.log('removePendingUser called but handled by approval process');
 };

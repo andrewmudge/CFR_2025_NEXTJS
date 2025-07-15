@@ -20,6 +20,11 @@ export const auth = defineAuth({
     familyName: {
       required: true,
       mutable: true
+    },
+    // Add custom attribute for approval status
+    'custom:isApproved': {
+      dataType: 'String',
+      mutable: true
     }
   }
 });

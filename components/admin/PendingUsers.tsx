@@ -21,9 +21,17 @@ export default function PendingUsers() {
     phoneNumber: ''
   });
 
-  const loadPendingUsers = () => {
-    const pending = getPendingUsers();
-    setPendingUsers(pending);
+  const loadPendingUsers = async () => {
+    setLoading(true);
+    try {
+      const pending = await getPendingUsers();
+      setPendingUsers(pending);
+    } catch (error) {
+      console.error('Error loading pending users:', error);
+      toast.error('Failed to load pending users');
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -65,17 +73,17 @@ export default function PendingUsers() {
         phoneNumber: user.phoneNumber || ''
       });
       
-      removePendingUser(user.email);
-      loadPendingUsers();
+      await loadPendingUsers();
       toast.success(`Approved ${user.email}`);
     } catch (error) {
       toast.error('Failed to approve user');
     }
   };
 
-  const handleDenyUser = (user: CognitoUser) => {
-    removePendingUser(user.email);
-    loadPendingUsers();
+  const handleDenyUser = async (user: CognitoUser) => {
+    // For now, just remove from the pending list
+    // In the future, you might want to track denied users
+    await loadPendingUsers();
     toast.success(`Denied ${user.email}`);
   };
 
