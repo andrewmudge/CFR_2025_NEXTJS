@@ -5,25 +5,26 @@ import { Users, Search, Trash2, CheckCircle, XCircle, Mail, Phone, User, Calenda
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { listAllCognitoUsers, deleteCognitoUser, type CognitoUserDetails } from '@/lib/cognito-admin';
+import { deleteCognitoUser } from '@/lib/cognito-admin';
+import { getCognitoUsers, type CognitoUser } from '@/lib/cognito-users';
 import { checkUserApproval } from '@/lib/approved-users';
 import { formatPhoneForDisplay } from '@/lib/phone-utils';
 import { toast } from 'sonner';
 
 export default function UserEditor() {
-  const [users, setUsers] = useState<CognitoUserDetails[]>([]);
-  const [filteredUsers, setFilteredUsers] = useState<CognitoUserDetails[]>([]);
+  const [users, setUsers] = useState<CognitoUser[]>([]);
+  const [filteredUsers, setFilteredUsers] = useState<CognitoUser[]>([]);
   const [approvalStatus, setApprovalStatus] = useState<Record<string, boolean>>({});
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [showOnlyNonApproved, setShowOnlyNonApproved] = useState(false);
-  const [deleteUser, setDeleteUser] = useState<CognitoUserDetails | null>(null);
+  const [deleteUser, setDeleteUser] = useState<CognitoUser | null>(null);
   const [deleting, setDeleting] = useState(false);
 
   const loadUsers = async () => {
     setLoading(true);
     try {
-      const cognitoUsers = await listAllCognitoUsers();
+      const cognitoUsers = await getCognitoUsers();
       setUsers(cognitoUsers);
       setFilteredUsers(cognitoUsers);
       

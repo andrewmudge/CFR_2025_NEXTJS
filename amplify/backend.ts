@@ -22,23 +22,13 @@ const cognitoAdmin = defineFunction({
   entry: './functions/cognito-admin.js'
 });
 
-const postConfirmation = defineFunction({
-  name: 'postConfirmation',
-  entry: './functions/post-confirmation.ts'
-});
-
-
-
-
-
-export const backend: any = defineBackend({
+export const backend = defineBackend({
   auth,
   data,
   uploadPhoto,
   listPhotos,
   storage,
-  cognitoAdmin,
-  postConfirmation
+  cognitoAdmin
 });
 
 // Grant storage access to functions
@@ -75,52 +65,3 @@ backend.cognitoAdmin.resources.lambda.addToRolePolicy(
     resources: [backend.auth.resources.userPool.userPoolArn]
   })
 );
-
-// Setup post-confirmation trigger
-backend.auth.resources.userPool.addTrigger(
-  'postConfirmation',
-  backend.postConfirmation.resources.lambda
-);
-
-// Grant permissions to post-confirmation function
-backend.postConfirmation.addEnvironment('APPROVED_USERS_TABLE_NAME', backend.data.resources.tables['ApprovedUser'].tableName);
-backend.postConfirmation.addEnvironment('SNS_TOPIC_ARN', 'arn:aws:sns:us-east-1:122610511543:cfr-signup-notification');
-
-backend.postConfirmation.resources.lambda.addToRolePolicy(
-  new PolicyStatement({
-    effect: Effect.ALLOW,
-    actions: [
-      'dynamodb:Query',
-      'dynamodb:GetItem'
-    ],
-    resources: [
-      backend.data.resources.tables['ApprovedUser'].tableArn,
-      `${backend.data.resources.tables['ApprovedUser'].tableArn}/index/*`
-    ]
-  })
-);
-
-backend.postConfirmation.resources.lambda.addToRolePolicy(
-  new PolicyStatement({
-    effect: Effect.ALLOW,
-    actions: [
-      'cognito-idp:AdminUpdateUserAttributes'
-    ],
-    resources: [backend.auth.resources.userPool.userPoolArn]
-  })
-);
-
-backend.postConfirmation.resources.lambda.addToRolePolicy(
-  new PolicyStatement({
-    effect: Effect.ALLOW,
-    actions: [
-      'sns:Publish'
-    ],
-    resources: ['arn:aws:sns:us-east-1:122610511543:cfr-signup-notification']
-  })
-);
-
-
-
-
-

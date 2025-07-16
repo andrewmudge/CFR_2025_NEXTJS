@@ -1,5 +1,5 @@
 {
- "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"AmplifySandbox\",\"createdWith\":\"1.20.3\",\"stackType\":\"api-AppSync\",\"metadata\":{\"dataSources\":\"dynamodb\",\"authorizationModes\":\"amazon_cognito_identity_pools,amazon_cognito_user_pools,aws_iam\",\"customOperations\":\"\"}}",
+ "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"AmplifySandbox\",\"createdWith\":\"1.20.3\",\"stackType\":\"api-AppSync\",\"metadata\":{\"dataSources\":\"dynamodb\",\"authorizationModes\":\"amazon_cognito_identity_pools,amazon_cognito_user_pools,aws_iam\",\"customOperations\":\"queries\"}}",
  "Resources": {
   "amplifyDataGraphQLAPI42A6FA33": {
    "Type": "AWS::AppSync::GraphQLApi",
@@ -51,7 +51,7 @@
      ]
     },
     "DefinitionS3Location": {
-     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/cff59770b107347b01f98c264762009e090c0b7c47470ee8ba2b1ed01f116d03.graphql"
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/db8c085b9ac623624214b3e31d0da6af7e8c1096ba196a1de9b3ac145659d41e.graphql"
     }
    },
    "UpdateReplacePolicy": "Delete",
@@ -69,7 +69,6 @@
       "ApiId"
      ]
     },
-    "Description": "None Data Source for Pipeline functions",
     "Name": "NONE_DS",
     "Type": "NONE"
    },
@@ -223,6 +222,78 @@
    "Metadata": {
     "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/ApprovedUser.NestedStack/ApprovedUser.NestedStackResource",
     "aws:asset:path": "amplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataApprovedUser658F3C2E.nested.template.json",
+    "aws:asset:property": "TemplateURL"
+   }
+  },
+  "amplifyDataFunctionDirectiveStackNestedStackFunctionDirectiveStackNestedStackResource1246A302": {
+   "Type": "AWS::CloudFormation::Stack",
+   "Properties": {
+    "Parameters": {
+     "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPI40E54E99ApiId": {
+      "Fn::GetAtt": [
+       "amplifyDataGraphQLAPI42A6FA33",
+       "ApiId"
+      ]
+     },
+     "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthauthenticatedUserRole97EF2E07Ref": {
+      "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthauthenticatedUserRole97EF2E07Ref"
+     },
+     "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthunauthenticatedUserRole4D0D6590Ref": {
+      "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthunauthenticatedUserRole4D0D6590Ref"
+     },
+     "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthIdentityPool86B7E993Ref": {
+      "Ref": "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthNestedStackauthNestedStackResourceE5041651Outputsamplifychurchwellfamilyreunionmudgesandboxf5603c1efdauthamplifyAuthIdentityPool86B7E993Ref"
+     },
+     "referencetoamplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataGraphQLAPINONEDS201EFB38Name": {
+      "Fn::GetAtt": [
+       "amplifyDataGraphQLAPINONEDS684BF699",
+       "Name"
+      ]
+     }
+    },
+    "Tags": [
+     {
+      "Key": "amplify:deployment-type",
+      "Value": "sandbox"
+     },
+     {
+      "Key": "amplify:friendly-name",
+      "Value": "amplifyData"
+     },
+     {
+      "Key": "created-by",
+      "Value": "amplify"
+     }
+    ],
+    "TemplateURL": {
+     "Fn::Join": [
+      "",
+      [
+       "https://s3.",
+       {
+        "Ref": "AWS::Region"
+       },
+       ".",
+       {
+        "Ref": "AWS::URLSuffix"
+       },
+       "/",
+       {
+        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+       },
+       "/ad6c07b7e0d989c0797f90089fb88565581d77597940119c4c3e0f6119117391.json"
+      ]
+     ]
+    }
+   },
+   "DependsOn": [
+    "amplifyDataGraphQLAPITransformerSchemaFF50A789"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/amplifyData/FunctionDirectiveStack.NestedStack/FunctionDirectiveStack.NestedStackResource",
+    "aws:asset:path": "amplifychurchwellfamilyreunionmudgesandboxf5603c1efddataamplifyDataFunctionDirectiveStackE3D7BDD8.nested.template.json",
     "aws:asset:property": "TemplateURL"
    }
   },
@@ -399,7 +470,7 @@
      }
     ],
     "SourceObjectKeys": [
-     "520e603beedce05d6e24cae8b7b78cd6c81840e3be194dc3834e30056a78d5ea.zip"
+     "ac9f073bcc6cc343ad054001747c72708d35688565700e0a4225dfd69aba6996.zip"
     ],
     "SourceMarkers": [
      {}
@@ -911,7 +982,7 @@
      }
     ],
     "SourceObjectKeys": [
-     "d9df58217adee38c2fb76e9cc794adcb2775c09450a2f723a51416d0ae6ab02f.zip"
+     "bd97cf07e5c9654e481ca0ea69989c41904a62c88c66b535bc50ce3a656ed69e.zip"
     ],
     "SourceMarkers": [
      {}
@@ -1006,7 +1077,7 @@
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/1VQy27CMBD8Fu7GhdAfCEHthSJKpF6jxVmCwbFdr0MURfn3yjGEcprHyuPZTXiyWPHlDFqai/I6V/LI+x2SxzL3IK7sgGQaJ5BBS0UP1lKnBe8/Hdjzr0qtXAMhy056dL63qZX/VC7OWAPbGY0b8JDHqOykn2pgtOL9uhFX9GFyZxH2RknRPe27jiL8HF4XfYlWma5G7XkcbSaDARF64mmAgSmojyXwPjvpLXToftCRNJrlUlcKvdEfjRY+OBPJTpM5MAk17w9GjUuM+KwY2cCIat7n3kld7cFBjR7dOH+IYQgy3jdryJt6unJIffDYtVChZwEtCSV52lKm5FidjSvlHiqpq5f8IL7A2tF/yd87c5Mlung6bUrkF3q7JQlfvvPF7EJSzl2jvayRHyL+AW2kvXUiAgAA"
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/1VQy27CMBD8Fu7GpaE/EILaC0WUSL1Gi7MJBsdOvQ5RZOXfK8cllNM8bM3sbsKT1Zq/LqCnpSivSyVP3O+RHJa5A3FlRyTTWYEMeio8tC0NWnD/YaE9/6i0lRsgZFmlJ+drl7byn8rFGRtge6NxCw7yGJVV+qFGRuvCAxE64mkAVmKrzNCgdnzTiSu67WyE39xHd2qONET+sQgHo6QYHnbUI1PQnErgPqv0Dga032hJGs1yqWuFzuj3TgsXnJlk1WyOTELD/dGoaYkJH033DqKG+9xZqesDWGjQoZ3e72Ic2bRo7qCWug5v8dhZR84088lDxZ3HwQsVhi6gJ6EkT3vKlJz2eMoP4hPadsp+ijxYc5Ml2nC6kWlTIr/Qyy1J+OsbXy0uJOXSdtrJBvkx4i8pn9LSIgIAAA=="
    },
    "Metadata": {
     "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/data/CDKMetadata/Default"

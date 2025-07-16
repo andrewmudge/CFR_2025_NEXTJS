@@ -1,0 +1,5 @@
+{
+  "AllowMethods": ["GET", "POST"],
+  "AllowOrigins": ["*"],
+  "AllowHeaders": ["*"]
+}

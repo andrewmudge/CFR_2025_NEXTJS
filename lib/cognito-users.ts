@@ -4,11 +4,12 @@
 export interface CognitoUser {
   username: string;
   email: string;
-  givenName?: string;
-  familyName?: string;
-  phoneNumber?: string;
-  userCreateDate?: Date;
+  givenName: string;
+  familyName: string;
+  phoneNumber: string;
+  userCreateDate: Date;
   userStatus: string;
+  enabled: boolean;
   isApproved?: boolean;
 }
 

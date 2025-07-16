@@ -93,7 +93,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "ba89cd04e689292da488f471d0eddb0547364871c481e5f84a8b7f5d1f09361a.zip"
+     "S3Key": "729b814bcce1d307cdcf1bf1bb3e2b0a34552939954c452776404637c4a2100c.zip"
     },
     "Environment": {
      "Variables": {
@@ -139,7 +139,114 @@
    "DeletionPolicy": "Delete",
    "Metadata": {
     "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/function/cognitoAdmin-lambda/Resource",
-    "aws:asset:path": "asset.ba89cd04e689292da488f471d0eddb0547364871c481e5f84a8b7f5d1f09361a",
+    "aws:asset:path": "asset.729b814bcce1d307cdcf1bf1bb3e2b0a34552939954c452776404637c4a2100c",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "postConfirmationlambdaServiceRole3904634C": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "amplify:deployment-type",
+      "Value": "sandbox"
+     },
+     {
+      "Key": "amplify:friendly-name",
+      "Value": "postConfirmation"
+     },
+     {
+      "Key": "created-by",
+      "Value": "amplify"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/function/postConfirmation-lambda/ServiceRole/Resource"
+   }
+  },
+  "postConfirmationlambda4BCE3732": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Architectures": [
+     "x86_64"
+    ],
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "1a5de73562b63329aefa982788bbdcb98907eb6a9a82576867244cb422dd3e53.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "AMPLIFY_SSM_ENV_CONFIG": "{}"
+     }
+    },
+    "EphemeralStorage": {
+     "Size": 512
+    },
+    "Handler": "index.handler",
+    "MemorySize": 512,
+    "Role": {
+     "Fn::GetAtt": [
+      "postConfirmationlambdaServiceRole3904634C",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Tags": [
+     {
+      "Key": "amplify:deployment-type",
+      "Value": "sandbox"
+     },
+     {
+      "Key": "amplify:friendly-name",
+      "Value": "postConfirmation"
+     },
+     {
+      "Key": "created-by",
+      "Value": "amplify"
+     }
+    ],
+    "Timeout": 3
+   },
+   "DependsOn": [
+    "postConfirmationlambdaServiceRole3904634C"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-churchwellfamilyreunion-mudge-sandbox-f5603c1efd/function/postConfirmation-lambda/Resource",
+    "aws:asset:path": "asset.1a5de73562b63329aefa982788bbdcb98907eb6a9a82576867244cb422dd3e53",
     "aws:asset:is-bundled": true,
     "aws:asset:property": "Code"
    }
@@ -425,6 +532,11 @@
   "amplifychurchwellfamilyreunionmudgesandboxf5603c1efdfunctioncognitoAdminlambda1E05DEFARef": {
    "Value": {
     "Ref": "cognitoAdminlambda769DEC68"
+   }
+  },
+  "amplifychurchwellfamilyreunionmudgesandboxf5603c1efdfunctionpostConfirmationlambda0691618CRef": {
+   "Value": {
+    "Ref": "postConfirmationlambda4BCE3732"
    }
   }
  },
