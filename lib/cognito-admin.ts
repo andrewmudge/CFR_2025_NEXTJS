@@ -52,25 +52,18 @@ export const listAllCognitoUsers = async (): Promise<CognitoUserDetails[]> => {
 };
 
 export const deleteCognitoUser = async (username: string): Promise<void> => {
-  const lambdaUrl = getCognitoAdminUrl();
-  
-  if (!lambdaUrl) {
-    console.log('Lambda URL not configured, simulating delete');
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    return;
-  }
-
   try {
-    const response = await fetch(lambdaUrl, {
-      method: 'POST',
+    const response = await fetch('/api/cognito-users/delete', {
+      method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ action: 'deleteUser', username })
+      body: JSON.stringify({ username })
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorData = await response.json();
+      throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
     }
 
     const data = await response.json();
