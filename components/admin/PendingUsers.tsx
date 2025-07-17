@@ -24,7 +24,13 @@ export default function PendingUsers() {
   const loadPendingUsers = async () => {
     setLoading(true);
     try {
+      console.log('Loading pending users...');
       const pending = await getPendingUsers();
+      console.log('Pending users loaded:', pending);
+      console.log('Pending users count:', pending.length);
+      pending.forEach(user => {
+        console.log(`User: ${user.email}, isApproved: ${user.isApproved}, userStatus: ${user.userStatus}`);
+      });
       setPendingUsers(pending);
     } catch (error) {
       console.error('Error loading pending users:', error);
@@ -66,6 +72,7 @@ export default function PendingUsers() {
 
   const handleApproveUser = async (user: CognitoUser) => {
     try {
+      console.log('Approving user:', user.email);
       await addApprovedUser({
         email: user.email,
         givenName: user.givenName || '',
@@ -73,9 +80,14 @@ export default function PendingUsers() {
         phoneNumber: user.phoneNumber || ''
       });
       
-      await loadPendingUsers();
       toast.success(`Approved ${user.email}`);
+      
+      // Wait a moment for DynamoDB eventual consistency
+      setTimeout(async () => {
+        await loadPendingUsers();
+      }, 1000);
     } catch (error) {
+      console.error('Error approving user:', error);
       toast.error('Failed to approve user');
     }
   };
