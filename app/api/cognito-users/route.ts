@@ -78,6 +78,12 @@ export async function GET(request: NextRequest) {
         console.log(`🔍 API: Checking approval for user: ${user.email}`);
         const isApproved = await checkUserApproval(user.email);
         console.log(`🔍 API: User ${user.email} approval status: ${isApproved}`);
+        
+        // Special logging for our test user
+        if (user.email === '0zhv2@mechanicspedia.com') {
+          console.log(`🚨 SPECIAL: User 0zhv2@mechanicspedia.com has isApproved: ${isApproved}`);
+        }
+        
         return {
           ...user,
           isApproved

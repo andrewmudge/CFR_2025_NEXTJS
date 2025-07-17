@@ -90,7 +90,6 @@ export const removeApprovedUser = async (id: string) => {
 export const checkUserApproval = async (email: string): Promise<boolean> => {
   try {
     console.warn('🔍 Checking approval for email:', email);
-    console.warn('🔍 Email to search (lowercase):', email.toLowerCase());
     
     const dynamicClient = getClient();
     
@@ -101,7 +100,7 @@ export const checkUserApproval = async (email: string): Promise<boolean> => {
       console.warn('🔍 CLIENT: Using client-side operations');
     }
     
-    // First try with lowercase
+    // First try with lowercase filter
     let result = await dynamicClient.models.ApprovedUser.list({
       filter: {
         email: {
@@ -110,11 +109,16 @@ export const checkUserApproval = async (email: string): Promise<boolean> => {
       }
     });
     
-    console.warn('🔍 Lowercase search result:', result);
+    // MANUAL FILTER: If we got too many results, filter manually
+    if (result.data.length > 1) {
+      console.warn('🚨 FILTER ISSUE: Got', result.data.length, 'records, filtering manually');
+      result.data = result.data.filter((user: any) => 
+        user.email.toLowerCase() === email.toLowerCase()
+      );
+    }
     
     // If not found, try with original case
     if (result.data.length === 0) {
-      console.warn('🔍 Trying original case search...');
       result = await dynamicClient.models.ApprovedUser.list({
         filter: {
           email: {
@@ -122,37 +126,28 @@ export const checkUserApproval = async (email: string): Promise<boolean> => {
           }
         }
       });
-      console.warn('🔍 Original case search result:', result);
-    }
-    
-    // If still not found, try listing all and manually checking
-    if (result.data.length === 0) {
-      console.warn('🔍 Trying manual search through all records...');
-      const allResult = await dynamicClient.models.ApprovedUser.list({});
-      console.warn('🔍 All approved users:', allResult.data);
       
-      const matchingUser = allResult.data.find((user: any) => 
-        user.email.toLowerCase() === email.toLowerCase()
-      );
-      
-      if (matchingUser) {
-        console.warn('🔍 Found matching user manually:', matchingUser);
-        const isApproved = matchingUser.isActive;
-        console.warn('🔍 Final approval status (manual):', isApproved);
-        return isApproved;
+      // MANUAL FILTER: If we got too many results, filter manually
+      if (result.data.length > 1) {
+        console.warn('🚨 FILTER ISSUE: Got', result.data.length, 'records, filtering manually');
+        result.data = result.data.filter((user: any) => 
+          user.email === email
+        );
       }
     }
     
-    console.warn('🔍 Found records:', result.data.length);
+    const isApproved = result.data.length > 0 && result.data[0].isActive;
     
-    if (result.data.length > 0) {
-      console.warn('🔍 First record:', result.data[0]);
-      console.warn('🔍 First record isActive:', result.data[0].isActive);
-      console.warn('🔍 First record email:', result.data[0].email);
+    // Special logging for our test user
+    if (email === '0zhv2@mechanicspedia.com') {
+      console.warn('🚨 SPECIAL: 0zhv2@mechanicspedia.com check result:', {
+        foundRecords: result.data.length,
+        isApproved: isApproved,
+        firstRecord: result.data[0] || 'none'
+      });
     }
     
-    const isApproved = result.data.length > 0 && result.data[0].isActive;
-    console.warn('🔍 Final approval status:', isApproved);
+    console.warn('🔍 Final approval status:', email, '=', isApproved);
     return isApproved;
   } catch (error) {
     console.error('🔍 Error checking user approval:', error);

@@ -74,34 +74,44 @@ exports.handler = async (event) => {
 // GraphQL resolver for listCognitoUsers
 const listCognitoUsers = async () => {
   try {
-    const command = new ListUsersCommand({
-      UserPoolId: USER_POOL_ID,
-      Limit: 60
-    });
-
-    const response = await cognitoClient.send(command);
+    let allUsers = [];
+    let paginationToken = null;
     
-    const users = response.Users.map(user => {
-      const attributes = {};
-      if (user.Attributes) {
-        user.Attributes.forEach(attr => {
-          attributes[attr.Name] = attr.Value;
-        });
-      }
+    do {
+      const command = new ListUsersCommand({
+        UserPoolId: USER_POOL_ID,
+        Limit: 60,
+        ...(paginationToken && { PaginationToken: paginationToken })
+      });
 
-      return {
-        username: user.Username,
-        email: attributes.email || '',
-        givenName: attributes.given_name || '',
-        familyName: attributes.family_name || '',
-        phoneNumber: attributes.phone_number || '',
-        userStatus: user.UserStatus,
-        userCreateDate: user.UserCreateDate,
-        enabled: user.Enabled
-      };
-    });
+      const response = await cognitoClient.send(command);
+      
+      const users = response.Users.map(user => {
+        const attributes = {};
+        if (user.Attributes) {
+          user.Attributes.forEach(attr => {
+            attributes[attr.Name] = attr.Value;
+          });
+        }
 
-    return users;
+        return {
+          username: user.Username,
+          email: attributes.email || '',
+          givenName: attributes.given_name || '',
+          familyName: attributes.family_name || '',
+          phoneNumber: attributes.phone_number || '',
+          userStatus: user.UserStatus,
+          userCreateDate: user.UserCreateDate,
+          enabled: user.Enabled
+        };
+      });
+
+      allUsers = allUsers.concat(users);
+      paginationToken = response.PaginationToken;
+      
+    } while (paginationToken);
+
+    return allUsers;
   } catch (error) {
     console.error('Error listing users:', error);
     throw error;

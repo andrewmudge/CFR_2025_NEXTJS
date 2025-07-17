@@ -40,10 +40,17 @@ export const getCognitoUsers = async (): Promise<CognitoUser[]> => {
 export const getPendingUsers = async (): Promise<CognitoUser[]> => {
   try {
     const allUsers = await getCognitoUsers();
+    console.warn('🔍 CLIENT: All users before filtering:', allUsers);
+    
     // Filter for users who are confirmed but not approved
-    return allUsers.filter(user => 
-      user.userStatus === 'CONFIRMED' && !user.isApproved
-    );
+    const pendingUsers = allUsers.filter(user => {
+      const isPending = user.userStatus === 'CONFIRMED' && !user.isApproved;
+      console.warn(`🔍 CLIENT: User ${user.email} - Status: ${user.userStatus}, isApproved: ${user.isApproved}, isPending: ${isPending}`);
+      return isPending;
+    });
+    
+    console.warn('🔍 CLIENT: Filtered pending users:', pendingUsers);
+    return pendingUsers;
   } catch (error) {
     console.error('Error fetching pending users:', error);
     return [];
