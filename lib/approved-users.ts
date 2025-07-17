@@ -66,8 +66,8 @@ export const removeApprovedUser = async (id: string) => {
 
 export const checkUserApproval = async (email: string): Promise<boolean> => {
   try {
-    console.log('Checking approval for email:', email);
-    console.log('Email to search (lowercase):', email.toLowerCase());
+    console.warn('🔍 Checking approval for email:', email);
+    console.warn('🔍 Email to search (lowercase):', email.toLowerCase());
     
     // First try with lowercase
     let result = await client.models.ApprovedUser.list({
@@ -78,11 +78,11 @@ export const checkUserApproval = async (email: string): Promise<boolean> => {
       }
     });
     
-    console.log('Lowercase search result:', result);
+    console.warn('🔍 Lowercase search result:', result);
     
     // If not found, try with original case
     if (result.data.length === 0) {
-      console.log('Trying original case search...');
+      console.warn('🔍 Trying original case search...');
       result = await client.models.ApprovedUser.list({
         filter: {
           email: {
@@ -90,40 +90,40 @@ export const checkUserApproval = async (email: string): Promise<boolean> => {
           }
         }
       });
-      console.log('Original case search result:', result);
+      console.warn('🔍 Original case search result:', result);
     }
     
     // If still not found, try listing all and manually checking
     if (result.data.length === 0) {
-      console.log('Trying manual search through all records...');
+      console.warn('🔍 Trying manual search through all records...');
       const allResult = await client.models.ApprovedUser.list({});
-      console.log('All approved users:', allResult.data);
+      console.warn('🔍 All approved users:', allResult.data);
       
       const matchingUser = allResult.data.find(user => 
         user.email.toLowerCase() === email.toLowerCase()
       );
       
       if (matchingUser) {
-        console.log('Found matching user manually:', matchingUser);
+        console.warn('🔍 Found matching user manually:', matchingUser);
         const isApproved = matchingUser.isActive;
-        console.log('Final approval status (manual):', isApproved);
+        console.warn('🔍 Final approval status (manual):', isApproved);
         return isApproved;
       }
     }
     
-    console.log('Found records:', result.data.length);
+    console.warn('🔍 Found records:', result.data.length);
     
     if (result.data.length > 0) {
-      console.log('First record:', result.data[0]);
-      console.log('First record isActive:', result.data[0].isActive);
-      console.log('First record email:', result.data[0].email);
+      console.warn('🔍 First record:', result.data[0]);
+      console.warn('🔍 First record isActive:', result.data[0].isActive);
+      console.warn('🔍 First record email:', result.data[0].email);
     }
     
     const isApproved = result.data.length > 0 && result.data[0].isActive;
-    console.log('Final approval status:', isApproved);
+    console.warn('🔍 Final approval status:', isApproved);
     return isApproved;
   } catch (error) {
-    console.error('Error checking user approval:', error);
+    console.error('🔍 Error checking user approval:', error);
     return false;
   }
 };
