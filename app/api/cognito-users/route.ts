@@ -32,6 +32,7 @@ async function getCognitoUsers() {
     });
 
     console.log('Lambda response status:', response.status);
+    console.log('Lambda response headers:', Object.fromEntries(response.headers.entries()));
     
     if (!response.ok) {
       const errorText = await response.text();
@@ -39,8 +40,11 @@ async function getCognitoUsers() {
       throw new Error(`Lambda function returned ${response.status}: ${errorText}`);
     }
 
-    const result = await response.json();
-    console.log('Lambda result:', result);
+    const responseText = await response.text();
+    console.log('Lambda raw response:', responseText);
+    
+    const result = JSON.parse(responseText);
+    console.log('Lambda parsed result:', result);
     
     if (!result.users) {
       console.error('No users property in response:', result);
@@ -59,8 +63,11 @@ async function getCognitoUsers() {
 
 export async function GET(request: NextRequest) {
   try {
+    console.log('=== API Route Started ===');
+    
     // Get all Cognito users
     const users = await getCognitoUsers();
+    console.log('Successfully got users from Lambda:', users.length);
     
     // Check approval status for each user
     const usersWithApproval = await Promise.all(
@@ -73,11 +80,14 @@ export async function GET(request: NextRequest) {
       })
     );
 
+    console.log('Returning users with approval status:', usersWithApproval.length);
     return NextResponse.json(usersWithApproval);
   } catch (error) {
+    console.error('=== API Route Error ===');
     console.error('Error fetching Cognito users:', error);
+    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
     return NextResponse.json(
-      { error: 'Failed to fetch users' },
+      { error: 'Failed to fetch users', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }

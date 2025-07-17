@@ -21,7 +21,11 @@ export const getCognitoUsers = async (): Promise<CognitoUser[]> => {
       throw new Error('Failed to fetch Cognito users');
     }
     const users = await response.json();
-    return users;
+    // Convert userCreateDate strings back to Date objects
+    return users.map((user: any) => ({
+      ...user,
+      userCreateDate: new Date(user.userCreateDate)
+    }));
   } catch (error) {
     console.error('Error fetching Cognito users:', error);
     return [];
