@@ -24,16 +24,16 @@ export default function PendingUsers() {
   const loadPendingUsers = async () => {
     setLoading(true);
     try {
-      console.log('Loading pending users...');
+      console.warn('🔍 CLIENT: Loading pending users...');
       const pending = await getPendingUsers();
-      console.log('Pending users loaded:', pending);
-      console.log('Pending users count:', pending.length);
+      console.warn('🔍 CLIENT: Pending users loaded:', pending);
+      console.warn('🔍 CLIENT: Pending users count:', pending.length);
       pending.forEach(user => {
-        console.log(`User: ${user.email}, isApproved: ${user.isApproved}, userStatus: ${user.userStatus}`);
+        console.warn(`🔍 CLIENT: User: ${user.email}, isApproved: ${user.isApproved}, userStatus: ${user.userStatus}`);
       });
       setPendingUsers(pending);
     } catch (error) {
-      console.error('Error loading pending users:', error);
+      console.error('🔍 CLIENT: Error loading pending users:', error);
       toast.error('Failed to load pending users');
     } finally {
       setLoading(false);

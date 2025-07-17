@@ -16,18 +16,22 @@ export interface CognitoUser {
 // Get all Cognito users via API endpoint
 export const getCognitoUsers = async (): Promise<CognitoUser[]> => {
   try {
+    console.warn('🔍 CLIENT: Fetching Cognito users from API...');
     const response = await fetch('/api/cognito-users');
     if (!response.ok) {
       throw new Error('Failed to fetch Cognito users');
     }
     const users = await response.json();
+    console.warn('🔍 CLIENT: Raw API response:', users);
     // Convert userCreateDate strings back to Date objects
-    return users.map((user: any) => ({
+    const processedUsers = users.map((user: any) => ({
       ...user,
       userCreateDate: new Date(user.userCreateDate)
     }));
+    console.warn('🔍 CLIENT: Processed users:', processedUsers);
+    return processedUsers;
   } catch (error) {
-    console.error('Error fetching Cognito users:', error);
+    console.error('🔍 CLIENT: Error fetching Cognito users:', error);
     return [];
   }
 };

@@ -3,6 +3,26 @@ import { generateClient } from 'aws-amplify/data';
 // Use any type for now to avoid build issues
 const client = generateClient<any>();
 
+// Server-side operations
+let serverOps: any = null;
+
+const getClient = () => {
+  // Check if we're in a server-side context
+  if (typeof window === 'undefined') {
+    if (!serverOps) {
+      // Lazy load the server operations to avoid circular imports
+      const { serverApprovedUserOperations } = require('./amplify-server');
+      serverOps = {
+        models: {
+          ApprovedUser: serverApprovedUserOperations
+        }
+      };
+    }
+    return serverOps;
+  }
+  return client;
+};
+
 export interface ApprovedUserData {
   email: string;
   givenName: string;
@@ -13,7 +33,8 @@ export interface ApprovedUserData {
 export const addApprovedUser = async (userData: ApprovedUserData) => {
   try {
     console.log('Adding approved user:', userData);
-    const result = await client.models.ApprovedUser.create({
+    const dynamicClient = getClient();
+    const result = await dynamicClient.models.ApprovedUser.create({
       email: userData.email.toLowerCase(),
       givenName: userData.givenName,
       familyName: userData.familyName,
@@ -45,7 +66,8 @@ export const bulkImportApprovedUsers = async (users: ApprovedUserData[]) => {
 export const getApprovedUsers = async () => {
   try {
     console.log('Fetching approved users...');
-    const result = await client.models.ApprovedUser.list({});
+    const dynamicClient = getClient();
+    const result = await dynamicClient.models.ApprovedUser.list({});
     console.log('Approved users result:', result);
     return result.data;
   } catch (error) {
@@ -56,7 +78,8 @@ export const getApprovedUsers = async () => {
 
 export const removeApprovedUser = async (id: string) => {
   try {
-    const result = await client.models.ApprovedUser.delete({ id });
+    const dynamicClient = getClient();
+    const result = await dynamicClient.models.ApprovedUser.delete({ id });
     return result;
   } catch (error) {
     console.error('Error removing approved user:', error);
@@ -69,8 +92,17 @@ export const checkUserApproval = async (email: string): Promise<boolean> => {
     console.warn('🔍 Checking approval for email:', email);
     console.warn('🔍 Email to search (lowercase):', email.toLowerCase());
     
+    const dynamicClient = getClient();
+    
+    // Check if we're using server or client operations
+    if (typeof window === 'undefined') {
+      console.warn('🔍 SERVER: Using server-side operations');
+    } else {
+      console.warn('🔍 CLIENT: Using client-side operations');
+    }
+    
     // First try with lowercase
-    let result = await client.models.ApprovedUser.list({
+    let result = await dynamicClient.models.ApprovedUser.list({
       filter: {
         email: {
           eq: email.toLowerCase()
@@ -83,7 +115,7 @@ export const checkUserApproval = async (email: string): Promise<boolean> => {
     // If not found, try with original case
     if (result.data.length === 0) {
       console.warn('🔍 Trying original case search...');
-      result = await client.models.ApprovedUser.list({
+      result = await dynamicClient.models.ApprovedUser.list({
         filter: {
           email: {
             eq: email
@@ -96,10 +128,10 @@ export const checkUserApproval = async (email: string): Promise<boolean> => {
     // If still not found, try listing all and manually checking
     if (result.data.length === 0) {
       console.warn('🔍 Trying manual search through all records...');
-      const allResult = await client.models.ApprovedUser.list({});
+      const allResult = await dynamicClient.models.ApprovedUser.list({});
       console.warn('🔍 All approved users:', allResult.data);
       
-      const matchingUser = allResult.data.find(user => 
+      const matchingUser = allResult.data.find((user: any) => 
         user.email.toLowerCase() === email.toLowerCase()
       );
       
