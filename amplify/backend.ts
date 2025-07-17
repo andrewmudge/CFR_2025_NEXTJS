@@ -58,7 +58,7 @@ backend.cognitoAdmin.resources.lambda.addToRolePolicy(
   new PolicyStatement({
     effect: Effect.ALLOW,
     actions: [
-      'cognito-idp:AdminListUsers',
+      'cognito-idp:ListUsers',
       'cognito-idp:AdminDeleteUser',
       'cognito-idp:AdminGetUser'
     ],
