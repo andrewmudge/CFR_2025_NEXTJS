@@ -5,7 +5,7 @@ import { Amplify } from 'aws-amplify';
 import { signUp as amplifySignUp, signIn as amplifySignIn, signOut as amplifySignOut, getCurrentUser, fetchUserAttributes, confirmSignUp as amplifyConfirmSignUp, resetPassword as amplifyResetPassword, confirmResetPassword as amplifyConfirmResetPassword } from 'aws-amplify/auth';
 import outputs from '@/amplify_outputs.json';
 import { checkUserApproval } from '@/lib/approved-users';
-import { addPendingUser } from '@/lib/cognito-users';
+import { addPendingUser, CognitoUser } from '@/lib/cognito-users';
 import { formatPhoneForCognito } from '@/lib/phone-utils';
 
 
@@ -114,15 +114,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         const isApproved = await checkUserApproval(userEmail);
         if (!isApproved) {
           // Add to pending users list for admin review
-          addPendingUser({
+          const pendingUser: CognitoUser = {
             username: currentUser.username,
             email: userEmail,
             givenName: userAttributes.given_name || '',
             familyName: userAttributes.family_name || '',
             phoneNumber: userAttributes.phone_number || '',
             userCreateDate: new Date(),
-            userStatus: 'CONFIRMED'
-          });
+            userStatus: 'CONFIRMED',
+            enabled: true
+          };
+          addPendingUser(pendingUser);
           throw new Error('ACCOUNT_PENDING_APPROVAL');
         }
         setIsAuthModalOpen(false);
