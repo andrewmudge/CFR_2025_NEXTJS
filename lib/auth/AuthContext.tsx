@@ -117,9 +117,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           addPendingUser({
             username: currentUser.username,
             email: userEmail,
-            givenName: userAttributes.given_name,
-            familyName: userAttributes.family_name,
-            phoneNumber: userAttributes.phone_number,
+            givenName: userAttributes.given_name || '',
+            familyName: userAttributes.family_name || '',
+            phoneNumber: userAttributes.phone_number || '',
             userCreateDate: new Date(),
             userStatus: 'CONFIRMED'
           });
@@ -128,7 +128,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setIsAuthModalOpen(false);
         
         // Check if this is an admin login and redirect
-        if (userAttributes.email === 'mudge.andrew@gmail.com' && window.location.search.includes('admin=true')) {
+        if ((userAttributes.email || '') === 'mudge.andrew@gmail.com' && window.location.search.includes('admin=true')) {
           window.location.href = '/admin';
         }
       }
