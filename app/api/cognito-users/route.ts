@@ -92,7 +92,16 @@ export async function GET(request: NextRequest) {
     );
 
     console.log('Returning users with approval status:', usersWithApproval.length);
-    return NextResponse.json(usersWithApproval);
+    
+    // Add cache-busting headers to prevent caching issues
+    return NextResponse.json(usersWithApproval, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+        'Surrogate-Control': 'no-store'
+      }
+    });
   } catch (error) {
     console.error('=== API Route Error ===');
     console.error('Error fetching Cognito users:', error);

@@ -17,7 +17,18 @@ export interface CognitoUser {
 export const getCognitoUsers = async (): Promise<CognitoUser[]> => {
   try {
     console.warn('🔍 CLIENT: Fetching Cognito users from API...');
-    const response = await fetch('/api/cognito-users');
+    
+    // Add cache-busting parameters
+    const timestamp = new Date().getTime();
+    const response = await fetch(`/api/cognito-users?t=${timestamp}`, {
+      method: 'GET',
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache'
+      },
+      cache: 'no-store'
+    });
+    
     if (!response.ok) {
       throw new Error('Failed to fetch Cognito users');
     }

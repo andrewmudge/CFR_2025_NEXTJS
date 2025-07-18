@@ -90,15 +90,15 @@ export default function UserEditor() {
 
   return (
     <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col space-y-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 mb-6">
         <h3 className="text-xl font-bold text-white flex items-center">
-          <Users className="w-5 h-5 mr-2" />
-          User Management
+          <Users className="w-5 h-5 mr-2 flex-shrink-0" />
+          <span className="truncate">User Management</span>
         </h3>
         <Button
           onClick={loadUsers}
           disabled={loading}
-          className="bg-blue-600 hover:bg-blue-700"
+          className="bg-blue-600 hover:bg-blue-700 flex-shrink-0"
           size="sm"
         >
           {loading ? 'Loading...' : 'Refresh'}
@@ -118,13 +118,13 @@ export default function UserEditor() {
           />
         </div>
         
-        <div className="flex items-center space-x-4">
+        <div className="flex flex-wrap gap-2 items-center">
           <Button
             onClick={() => setShowOnlyNonApproved(!showOnlyNonApproved)}
             variant={showOnlyNonApproved ? "default" : "outline"}
             className={showOnlyNonApproved 
-              ? "bg-red-600 hover:bg-red-700 text-white" 
-              : "border-red-400 text-red-300 hover:bg-red-400 hover:text-white"
+              ? "bg-red-600 hover:bg-red-700 text-white flex-shrink-0" 
+              : "border-red-400 text-red-300 hover:bg-red-400 hover:text-white flex-shrink-0"
             }
             size="sm"
           >
@@ -156,21 +156,21 @@ export default function UserEditor() {
               key={user.username}
               className="bg-slate-700 rounded-lg p-4 border border-slate-600"
             >
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center mb-2">
-                    <User className="w-4 h-4 text-gray-400 mr-2" />
-                    <span className="text-white font-medium">
+              <div className="flex flex-col space-y-3 sm:flex-row sm:items-start sm:justify-between sm:space-y-0">
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-wrap items-center gap-2 mb-2">
+                    <User className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                    <span className="text-white font-medium truncate">
                       {user.givenName} {user.familyName}
                     </span>
-                    <span className={`ml-3 px-2 py-1 rounded-full text-xs font-medium ${
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium flex-shrink-0 ${
                       approvalStatus[user.email] 
                         ? 'bg-green-900/30 text-green-300' 
                         : 'bg-red-900/30 text-red-300'
                     }`}>
                       {approvalStatus[user.email] ? 'Approved' : 'Not Approved'}
                     </span>
-                    <span className={`ml-2 px-2 py-1 rounded-full text-xs ${
+                    <span className={`px-2 py-1 rounded-full text-xs flex-shrink-0 ${
                       user.userStatus === 'CONFIRMED' 
                         ? 'bg-blue-900/30 text-blue-300' 
                         : 'bg-yellow-900/30 text-yellow-300'
@@ -180,31 +180,31 @@ export default function UserEditor() {
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-300">
-                    <div className="flex items-center">
-                      <Mail className="w-3 h-3 mr-2" />
-                      {user.email}
+                    <div className="flex items-center min-w-0">
+                      <Mail className="w-3 h-3 mr-2 flex-shrink-0" />
+                      <span className="truncate">{user.email}</span>
                     </div>
-                    <div className="flex items-center">
-                      <Phone className="w-3 h-3 mr-2" />
-                      {formatPhoneForDisplay(user.phoneNumber.replace('+1', ''))}
+                    <div className="flex items-center min-w-0">
+                      <Phone className="w-3 h-3 mr-2 flex-shrink-0" />
+                      <span className="truncate">{formatPhoneForDisplay(user.phoneNumber.replace('+1', ''))}</span>
                     </div>
-                    <div className="flex items-center">
-                      <Calendar className="w-3 h-3 mr-2" />
-                      Joined: {user.userCreateDate.toLocaleDateString()}
+                    <div className="flex items-center min-w-0">
+                      <Calendar className="w-3 h-3 mr-2 flex-shrink-0" />
+                      <span className="truncate">Joined: {user.userCreateDate.toLocaleDateString()}</span>
                     </div>
-                    <div className="flex items-center">
-                      <span className="text-xs text-gray-400">
+                    <div className="flex items-center min-w-0">
+                      <span className="text-xs text-gray-400 truncate">
                         Username: {user.username}
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex space-x-2 ml-4">
+                <div className="flex justify-end sm:ml-4 sm:flex-shrink-0">
                   <Button
                     onClick={() => setDeleteUser(user)}
                     variant="outline"
-                    className="border-red-400 text-red-300 hover:bg-red-400 hover:text-white"
+                    className="border-red-400 text-red-300 hover:bg-red-400 hover:text-white w-full sm:w-auto"
                     size="sm"
                   >
                     <Trash2 className="w-4 h-4 mr-1" />

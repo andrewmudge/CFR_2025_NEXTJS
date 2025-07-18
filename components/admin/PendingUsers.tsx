@@ -21,10 +21,22 @@ export default function PendingUsers() {
     phoneNumber: ''
   });
 
-  const loadPendingUsers = async () => {
+  const loadPendingUsers = async (forceRefresh = false) => {
     setLoading(true);
     try {
-      console.warn('🔍 CLIENT: Loading pending users...');
+      console.warn('🔍 CLIENT: Loading pending users...', forceRefresh ? '(FORCE REFRESH)' : '');
+      
+      // Force cache clear on refresh
+      if (forceRefresh && 'caches' in window) {
+        try {
+          const cacheNames = await caches.keys();
+          await Promise.all(cacheNames.map(name => caches.delete(name)));
+          console.warn('🔍 CLIENT: Cache cleared');
+        } catch (e) {
+          console.warn('🔍 CLIENT: Could not clear cache:', e);
+        }
+      }
+      
       const pending = await getPendingUsers();
       console.warn('🔍 CLIENT: Pending users loaded:', pending);
       console.warn('🔍 CLIENT: Pending users count:', pending.length);
@@ -84,7 +96,7 @@ export default function PendingUsers() {
       
       // Wait a moment for DynamoDB eventual consistency
       setTimeout(async () => {
-        await loadPendingUsers();
+        await loadPendingUsers(true); // Force refresh after approval
       }, 1000);
     } catch (error) {
       console.error('Error approving user:', error);
@@ -101,23 +113,28 @@ export default function PendingUsers() {
 
   return (
     <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col space-y-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 mb-4">
         <h3 className="text-xl font-bold text-white flex items-center">
-          <Users className="w-5 h-5 mr-2" />
-          User Approval Management
+          <Users className="w-5 h-5 mr-2 flex-shrink-0" />
+          <span className="truncate">User Approval Management</span>
         </h3>
-        <div className="flex space-x-2">
-          <Button
-            onClick={loadPendingUsers}
-            className="bg-blue-600 hover:bg-blue-700"
-            size="sm"
-          >
-            <RefreshCw className="w-4 h-4 mr-1" />
-            Refresh
-          </Button>
+        <Button
+          onClick={() => loadPendingUsers(true)}
+          disabled={loading}
+          variant="outline"
+          size="sm"
+          className="bg-slate-700 border-slate-600 hover:bg-slate-600 text-white flex-shrink-0"
+        >
+          <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+          Refresh
+        </Button>
+      </div>
+
+      <div className="mb-4">
+        <div className="flex flex-wrap gap-2">
           <Button
             onClick={() => setShowAddForm(!showAddForm)}
-            className="bg-green-600 hover:bg-green-700"
+            className="bg-green-600 hover:bg-green-700 flex-shrink-0"
             size="sm"
           >
             {showAddForm ? 'Cancel' : 'Add User'}
@@ -135,30 +152,32 @@ export default function PendingUsers() {
                 key={user.email}
                 className="bg-slate-700 rounded-lg p-4 border border-slate-600"
               >
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
+                <div className="flex flex-col space-y-3 sm:flex-row sm:items-start sm:justify-between sm:space-y-0">
+                  <div className="flex-1 min-w-0">
                     <div className="flex items-center mb-2">
-                      <User className="w-4 h-4 text-gray-400 mr-2" />
-                      <span className="text-white font-medium">
+                      <User className="w-4 h-4 text-gray-400 mr-2 flex-shrink-0" />
+                      <span className="text-white font-medium truncate">
                         {user.givenName} {user.familyName}
                       </span>
-                      <span className="ml-2 px-2 py-1 rounded-full text-xs bg-yellow-900/30 text-yellow-300">
+                      <span className="ml-2 px-2 py-1 rounded-full text-xs bg-yellow-900/30 text-yellow-300 flex-shrink-0">
                         PENDING
                       </span>
                     </div>
                     
                     <div className="space-y-1 text-sm text-gray-300">
                       <div className="flex items-center">
-                        <Mail className="w-3 h-3 mr-2" />
-                        {user.email}
+                        <Mail className="w-3 h-3 mr-2 flex-shrink-0" />
+                        <span className="truncate">{user.email}</span>
                       </div>
                       {user.phoneNumber && (
                         <div className="flex items-center">
-                          <Phone className="w-3 h-3 mr-2" />
-                          {user.phoneNumber.startsWith('+1') 
-                            ? formatPhoneForDisplay(user.phoneNumber.slice(2))
-                            : user.phoneNumber
-                          }
+                          <Phone className="w-3 h-3 mr-2 flex-shrink-0" />
+                          <span className="truncate">
+                            {user.phoneNumber.startsWith('+1') 
+                              ? formatPhoneForDisplay(user.phoneNumber.slice(2))
+                              : user.phoneNumber
+                            }
+                          </span>
                         </div>
                       )}
                       {user.userCreateDate && (
@@ -169,10 +188,10 @@ export default function PendingUsers() {
                     </div>
                   </div>
 
-                  <div className="flex space-x-2 ml-4">
+                  <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2 sm:ml-4 sm:flex-shrink-0">
                     <Button
                       onClick={() => handleApproveUser(user)}
-                      className="bg-green-600 hover:bg-green-700 text-white"
+                      className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto"
                       size="sm"
                     >
                       <CheckCircle className="w-4 h-4 mr-1" />
@@ -181,7 +200,7 @@ export default function PendingUsers() {
                     <Button
                       onClick={() => handleDenyUser(user)}
                       variant="outline"
-                      className="border-red-400 text-red-300 hover:bg-red-400 hover:text-white"
+                      className="border-red-400 text-red-300 hover:bg-red-400 hover:text-white w-full sm:w-auto"
                       size="sm"
                     >
                       <XCircle className="w-4 h-4 mr-1" />
