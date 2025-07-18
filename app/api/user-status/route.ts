@@ -52,7 +52,7 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
-    const updateExpression = 'SET #status = :status';
+    let updateExpression = 'SET #status = :status';
     const expressionAttributeNames = { '#status': 'status' };
     const expressionAttributeValues: any = { ':status': status };
 
