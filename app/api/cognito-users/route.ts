@@ -68,30 +68,49 @@ export async function GET(request: NextRequest) {
     
     // Get all Cognito users
     const users = await getCognitoUsers();
-    console.log('Successfully got users from Lambda:', users.length);
+    console.log('🔍 API: Successfully got users from Lambda:', users.length);
+    console.log('🔍 API: User emails:', users.map((u: any) => u.email));
     
     // Check approval status for each user using the unified function
     console.log('🔍 API: Checking approval status for users...');
     
     const usersWithApproval = await Promise.all(
       users.map(async (user: any) => {
-        console.log(`🔍 API: Checking approval for user: ${user.email}`);
-        const isApproved = await checkUserApproval(user.email);
-        console.log(`🔍 API: User ${user.email} approval status: ${isApproved}`);
-        
-        // Special logging for our test user
-        if (user.email === '0zhv2@mechanicspedia.com') {
-          console.log(`🚨 SPECIAL: User 0zhv2@mechanicspedia.com has isApproved: ${isApproved}`);
+        try {
+          console.log(`🔍 API: Checking approval for user: ${user.email}`);
+          
+          // Add timeout to prevent hanging
+          const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Approval check timeout')), 10000)
+          );
+          
+          const approvalPromise = checkUserApproval(user.email);
+          const isApproved = await Promise.race([approvalPromise, timeoutPromise]) as boolean;
+          
+          console.log(`🔍 API: User ${user.email} approval status: ${isApproved}`);
+          
+          // Special logging for our test user
+          if (user.email === '0zhv2@mechanicspedia.com') {
+            console.log(`🚨 SPECIAL: User 0zhv2@mechanicspedia.com has isApproved: ${isApproved}`);
+          }
+          
+          return {
+            ...user,
+            isApproved
+          };
+        } catch (approvalError) {
+          console.error(`🔍 API: Error checking approval for ${user.email}:`, approvalError);
+          // Return user with approval false if check fails
+          return {
+            ...user,
+            isApproved: false
+          };
         }
-        
-        return {
-          ...user,
-          isApproved
-        };
       })
     );
 
-    console.log('Returning users with approval status:', usersWithApproval.length);
+    console.log('🔍 API: Returning users with approval status:', usersWithApproval.length);
+    console.log('🔍 API: Final user emails:', usersWithApproval.map(u => u.email));
     
     // Add cache-busting headers to prevent caching issues
     return NextResponse.json(usersWithApproval, {
