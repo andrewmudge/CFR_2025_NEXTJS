@@ -2,14 +2,17 @@ import { NextRequest, NextResponse } from 'next/server';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, ScanCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 
-// Configure DynamoDB client with explicit credentials handling
+// Configure DynamoDB client to use IAM role in production, explicit credentials in development
 const dynamoClient = new DynamoDBClient({
-  region: 'us-east-1',
-  // Use environment variables or default credential chain
-  credentials: process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY ? {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  } : undefined,
+  region: process.env.AWS_REGION || 'us-east-1',
+  // In production (AWS environment), let it use the IAM role automatically
+  // In development, use explicit credentials if available
+  ...(process.env.NODE_ENV === 'production' ? {} : {
+    credentials: process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY ? {
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    } : undefined,
+  }),
 });
 const docClient = DynamoDBDocumentClient.from(dynamoClient);
 
@@ -51,13 +54,22 @@ export async function GET() {
     });
   } catch (error) {
     console.error('🔍 API: Error fetching user statuses:', error);
-    console.error('🔍 API: Environment variables check:', {
+    console.error('🔍 API: Environment check:', {
+      nodeEnv: process.env.NODE_ENV,
       hasAccessKey: !!process.env.AWS_ACCESS_KEY_ID,
       hasSecretKey: !!process.env.AWS_SECRET_ACCESS_KEY,
-      region: process.env.AWS_REGION || 'us-east-1'
+      region: process.env.AWS_REGION || 'us-east-1',
+      awsExecutionEnv: process.env.AWS_EXECUTION_ENV,
+      lambdaTaskRoot: process.env.LAMBDA_TASK_ROOT
     });
+    
+    // In production, provide more specific error guidance
+    const errorMessage = process.env.NODE_ENV === 'production' 
+      ? 'Database connection failed. Please check IAM permissions for DynamoDB access.'
+      : 'Failed to fetch user statuses';
+    
     return NextResponse.json(
-      { error: 'Failed to fetch user statuses', details: String(error) },
+      { error: errorMessage, details: String(error) },
       { status: 500 }
     );
   }
