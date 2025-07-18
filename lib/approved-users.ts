@@ -89,6 +89,12 @@ export const removeApprovedUser = async (id: string) => {
 
 export const checkUserApproval = async (email: string): Promise<boolean> => {
   try {
+    // Skip database calls during build time
+    if (typeof window === 'undefined' && process.env.NODE_ENV === 'production' && !process.env.AWS_EXECUTION_ENV) {
+      console.log('🔍 Skipping approval check during build time for:', email);
+      return false;
+    }
+
     console.warn('🔍 Checking approval for email:', email);
     
     const dynamicClient = getClient();

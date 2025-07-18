@@ -66,6 +66,18 @@ export async function GET(request: NextRequest) {
   try {
     console.log('=== API Route Started ===');
     
+    // Skip API calls during build time
+    if (process.env.NODE_ENV === 'production' && !process.env.AWS_EXECUTION_ENV) {
+      console.log('🔍 API: Skipping cognito users call during build time');
+      return NextResponse.json([], {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        }
+      });
+    }
+    
     // Get all Cognito users
     const users = await getCognitoUsers();
     console.log('🔍 API: Successfully got users from Lambda:', users.length);

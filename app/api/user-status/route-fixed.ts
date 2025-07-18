@@ -2,15 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, ScanCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 
-// Configure DynamoDB client with explicit credentials handling
-const dynamoClient = new DynamoDBClient({
-  region: 'us-east-1',
-  // Use environment variables or default credential chain
-  credentials: process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY ? {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  } : undefined,
-});
+const dynamoClient = new DynamoDBClient({ region: 'us-east-1' });
 const docClient = DynamoDBDocumentClient.from(dynamoClient);
 
 const USER_STATUS_TABLE = 'UserStatus-cfr2025';
@@ -18,18 +10,6 @@ const USER_STATUS_TABLE = 'UserStatus-cfr2025';
 // Get all users with their status
 export async function GET() {
   try {
-    // Skip database calls during build time
-    if (process.env.NODE_ENV === 'production' && !process.env.AWS_EXECUTION_ENV) {
-      console.log('🔍 API: Skipping database call during build time');
-      return NextResponse.json([], {
-        headers: {
-          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
-          'Pragma': 'no-cache',
-          'Expires': '0'
-        }
-      });
-    }
-
     console.log('🔍 API: Fetching all user statuses from DynamoDB...');
     
     const result = await docClient.send(new ScanCommand({
@@ -51,11 +31,6 @@ export async function GET() {
     });
   } catch (error) {
     console.error('🔍 API: Error fetching user statuses:', error);
-    console.error('🔍 API: Environment variables check:', {
-      hasAccessKey: !!process.env.AWS_ACCESS_KEY_ID,
-      hasSecretKey: !!process.env.AWS_SECRET_ACCESS_KEY,
-      region: process.env.AWS_REGION || 'us-east-1'
-    });
     return NextResponse.json(
       { error: 'Failed to fetch user statuses', details: String(error) },
       { status: 500 }

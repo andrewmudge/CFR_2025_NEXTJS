@@ -18,22 +18,24 @@ const FamilyOnlySection = () => {
 
   useEffect(() => {
     const checkApproval = async () => {
-      if (user?.email) {
-        console.log('FamilyOnlySection: Checking approval for user:', user.email);
-        setCheckingApproval(true);
-        try {
-          const approved = await checkUserApproval(user.email);
-          console.log('FamilyOnlySection: Approval result:', approved);
-          setIsApproved(approved);
-        } catch (error) {
-          console.error('FamilyOnlySection: Error checking approval:', error);
-          setIsApproved(false);
-        } finally {
-          setCheckingApproval(false);
-        }
-      } else {
-        console.log('FamilyOnlySection: No user, setting approved to false');
+      // Only run on client side and when we have a user
+      if (typeof window === 'undefined' || !user?.email) {
+        console.log('FamilyOnlySection: Skipping approval check - no client or user');
         setIsApproved(false);
+        return;
+      }
+
+      console.log('FamilyOnlySection: Checking approval for user:', user.email);
+      setCheckingApproval(true);
+      try {
+        const approved = await checkUserApproval(user.email);
+        console.log('FamilyOnlySection: Approval result:', approved);
+        setIsApproved(approved);
+      } catch (error) {
+        console.error('FamilyOnlySection: Error checking approval:', error);
+        setIsApproved(false);
+      } finally {
+        setCheckingApproval(false);
       }
     };
 
