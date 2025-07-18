@@ -20,7 +20,7 @@ export async function GET() {
     console.log('🔍 API: Found users:', users.length);
     
     // Sort by registration date (newest first)
-    users.sort((a, b) => new Date(b.registrationDate).getTime() - new Date(a.registrationDate).getTime());
+    users.sort((a: any, b: any) => new Date(b.registrationDate).getTime() - new Date(a.registrationDate).getTime());
     
     return NextResponse.json(users, {
       headers: {
@@ -32,7 +32,7 @@ export async function GET() {
   } catch (error) {
     console.error('🔍 API: Error fetching user statuses:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch user statuses' },
+      { error: 'Failed to fetch user statuses', details: String(error) },
       { status: 500 }
     );
   }
@@ -84,7 +84,7 @@ export async function PATCH(request: NextRequest) {
   } catch (error) {
     console.error('🔍 API: Error updating user status:', error);
     return NextResponse.json(
-      { error: 'Failed to update user status' },
+      { error: 'Failed to update user status', details: String(error) },
       { status: 500 }
     );
   }
