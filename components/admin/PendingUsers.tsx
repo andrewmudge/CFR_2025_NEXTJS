@@ -5,15 +5,15 @@ import { Users, CheckCircle, XCircle, Clock, Mail, Phone, User, RefreshCw } from
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { addApprovedUser } from '@/lib/approved-users';
-import { getPendingUsers, removePendingUser, type CognitoUser } from '@/lib/cognito-users';
+import { getAllUsers, updateUserStatus, type UserStatus } from '@/lib/user-status';
 import { formatPhoneForDisplay } from '@/lib/phone-utils';
 import { toast } from 'sonner';
 
 export default function PendingUsers() {
   const [showAddForm, setShowAddForm] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [pendingUsers, setPendingUsers] = useState<CognitoUser[]>([]);
+  const [allUsers, setAllUsers] = useState<UserStatus[]>([]);
+  const [pendingUsers, setPendingUsers] = useState<UserStatus[]>([]);
   const [formData, setFormData] = useState({
     email: '',
     givenName: '',
@@ -21,39 +21,42 @@ export default function PendingUsers() {
     phoneNumber: ''
   });
 
-  const loadPendingUsers = async (forceRefresh = false) => {
+  const loadUsers = async (forceRefresh = false) => {
     setLoading(true);
     try {
-      console.warn('🔍 CLIENT: Loading pending users...', forceRefresh ? '(FORCE REFRESH)' : '');
+      console.log('🔍 Loading users from new UserStatus system...', forceRefresh ? '(FORCE REFRESH)' : '');
       
       // Force cache clear on refresh
       if (forceRefresh && 'caches' in window) {
         try {
           const cacheNames = await caches.keys();
           await Promise.all(cacheNames.map(name => caches.delete(name)));
-          console.warn('🔍 CLIENT: Cache cleared');
+          console.log('🔍 Cache cleared');
         } catch (e) {
-          console.warn('🔍 CLIENT: Could not clear cache:', e);
+          console.log('🔍 Could not clear cache:', e);
         }
       }
       
-      const pending = await getPendingUsers();
-      console.warn('🔍 CLIENT: Pending users loaded:', pending);
-      console.warn('🔍 CLIENT: Pending users count:', pending.length);
-      pending.forEach(user => {
-        console.warn(`🔍 CLIENT: User: ${user.email}, isApproved: ${user.isApproved}, userStatus: ${user.userStatus}`);
-      });
+      // Get all users from the new UserStatus system
+      const users = await getAllUsers();
+      console.log('🔍 All users loaded:', users.length);
+      
+      // Filter pending users
+      const pending = users.filter(user => user.status === 'pending');
+      console.log('🔍 Pending users found:', pending.length);
+      
+      setAllUsers(users);
       setPendingUsers(pending);
     } catch (error) {
-      console.error('🔍 CLIENT: Error loading pending users:', error);
-      toast.error('Failed to load pending users');
+      console.error('🔍 Error loading users:', error);
+      toast.error('Failed to load users');
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    loadPendingUsers();
+    loadUsers();
   }, []);
 
   const handleInputChange = (field: string, value: string) => {
@@ -65,50 +68,52 @@ export default function PendingUsers() {
     setLoading(true);
 
     try {
-      await addApprovedUser({
-        email: formData.email,
-        givenName: formData.givenName,
-        familyName: formData.familyName,
-        phoneNumber: formData.phoneNumber
-      });
-      
-      toast.success(`Approved ${formData.email}`);
+      // For now, this would need to be handled differently
+      // since we're not directly adding to approved users anymore
+      toast.info('Manual user addition needs to be implemented for new system');
       setFormData({ email: '', givenName: '', familyName: '', phoneNumber: '' });
       setShowAddForm(false);
     } catch (error) {
-      toast.error('Failed to approve user');
+      toast.error('Failed to add user');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleApproveUser = async (user: CognitoUser) => {
+  const handleApproveUser = async (user: UserStatus) => {
     try {
       console.log('Approving user:', user.email);
-      await addApprovedUser({
-        email: user.email,
-        givenName: user.givenName || '',
-        familyName: user.familyName || '',
-        phoneNumber: user.phoneNumber || ''
-      });
       
-      toast.success(`Approved ${user.email}`);
+      const success = await updateUserStatus(user.id, 'approved');
       
-      // Wait a moment for DynamoDB eventual consistency
-      setTimeout(async () => {
-        await loadPendingUsers(true); // Force refresh after approval
-      }, 1000);
+      if (success) {
+        toast.success(`Approved ${user.email}`);
+        // Refresh the user list
+        await loadUsers(true);
+      } else {
+        toast.error('Failed to approve user');
+      }
     } catch (error) {
       console.error('Error approving user:', error);
       toast.error('Failed to approve user');
     }
   };
 
-  const handleDenyUser = async (user: CognitoUser) => {
-    // For now, just remove from the pending list
-    // In the future, you might want to track denied users
-    await loadPendingUsers();
-    toast.success(`Denied ${user.email}`);
+  const handleDenyUser = async (user: UserStatus) => {
+    try {
+      const success = await updateUserStatus(user.id, 'denied', 'Manual denial by admin');
+      
+      if (success) {
+        toast.success(`Denied ${user.email}`);
+        // Refresh the user list
+        await loadUsers(true);
+      } else {
+        toast.error('Failed to deny user');
+      }
+    } catch (error) {
+      console.error('Error denying user:', error);
+      toast.error('Failed to deny user');
+    }
   };
 
   return (
@@ -119,7 +124,7 @@ export default function PendingUsers() {
           <span className="truncate">User Approval Management</span>
         </h3>
         <Button
-          onClick={() => loadPendingUsers(true)}
+          onClick={() => loadUsers(true)}
           disabled={loading}
           variant="outline"
           size="sm"
@@ -180,11 +185,9 @@ export default function PendingUsers() {
                           </span>
                         </div>
                       )}
-                      {user.userCreateDate && (
-                        <div className="text-xs text-gray-400">
-                          Signed up: {new Date(user.userCreateDate).toLocaleDateString()}
-                        </div>
-                      )}
+                      <div className="text-xs text-gray-400">
+                        Signed up: {new Date(user.registrationDate).toLocaleDateString()}
+                      </div>
                     </div>
                   </div>
 

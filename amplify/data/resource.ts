@@ -17,6 +17,21 @@ export const data = defineData({
       createdDate: AWSDateTime!
     }
 
+    type UserStatus @model @auth(rules: [{ allow: private }]) {
+      id: ID!
+      email: String! @index(name: "byEmail")
+      cognitoUsername: String!
+      status: String! # 'pending', 'approved', 'denied'
+      givenName: String!
+      familyName: String!
+      phoneNumber: String
+      registrationDate: AWSDateTime!
+      approvalDate: AWSDateTime
+      denialDate: AWSDateTime
+      denialReason: String
+      approvedBy: String
+    }
+
     type CognitoUser {
       username: String!
       email: String!

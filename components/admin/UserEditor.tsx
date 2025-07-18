@@ -6,38 +6,25 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { deleteCognitoUser } from '@/lib/cognito-admin';
-import { getCognitoUsers, type CognitoUser } from '@/lib/cognito-users';
-import { checkUserApproval } from '@/lib/approved-users';
+import { getAllUsers, updateUserStatus, type UserStatus } from '@/lib/user-status';
 import { formatPhoneForDisplay } from '@/lib/phone-utils';
 import { toast } from 'sonner';
 
 export default function UserEditor() {
-  const [users, setUsers] = useState<CognitoUser[]>([]);
-  const [filteredUsers, setFilteredUsers] = useState<CognitoUser[]>([]);
-  const [approvalStatus, setApprovalStatus] = useState<Record<string, boolean>>({});
+  const [users, setUsers] = useState<UserStatus[]>([]);
+  const [filteredUsers, setFilteredUsers] = useState<UserStatus[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [showOnlyNonApproved, setShowOnlyNonApproved] = useState(false);
-  const [deleteUser, setDeleteUser] = useState<CognitoUser | null>(null);
+  const [deleteUser, setDeleteUser] = useState<UserStatus | null>(null);
   const [deleting, setDeleting] = useState(false);
 
   const loadUsers = async () => {
     setLoading(true);
     try {
-      const cognitoUsers = await getCognitoUsers();
-      setUsers(cognitoUsers);
-      setFilteredUsers(cognitoUsers);
-      
-      // Check approval status for each user
-      const approvals: Record<string, boolean> = {};
-      for (const user of cognitoUsers) {
-        try {
-          approvals[user.email] = await checkUserApproval(user.email);
-        } catch (error) {
-          approvals[user.email] = false;
-        }
-      }
-      setApprovalStatus(approvals);
+      const allUsers = await getAllUsers();
+      setUsers(allUsers);
+      setFilteredUsers(allUsers);
     } catch (error) {
       console.error('Error loading users:', error);
       toast.error('Failed to load users');
@@ -65,18 +52,18 @@ export default function UserEditor() {
     
     // Apply approval filter
     if (showOnlyNonApproved) {
-      filtered = filtered.filter(user => !approvalStatus[user.email]);
+      filtered = filtered.filter(user => user.status !== 'approved');
     }
     
     setFilteredUsers(filtered);
-  }, [searchTerm, users, showOnlyNonApproved, approvalStatus]);
+  }, [searchTerm, users, showOnlyNonApproved]);
 
   const handleDeleteUser = async () => {
     if (!deleteUser) return;
     
     setDeleting(true);
     try {
-      await deleteCognitoUser(deleteUser.username);
+      await deleteCognitoUser(deleteUser.cognitoUsername);
       toast.success(`Deleted user ${deleteUser.email}`);
       setDeleteUser(null);
       // Reload users after deletion
@@ -153,7 +140,7 @@ export default function UserEditor() {
         <div className="h-96 overflow-y-auto space-y-4 pr-2">
           {filteredUsers.slice(0, 5).map((user) => (
             <div
-              key={user.username}
+              key={user.cognitoUsername}
               className="bg-slate-700 rounded-lg p-4 border border-slate-600"
             >
               <div className="flex flex-col space-y-3 sm:flex-row sm:items-start sm:justify-between sm:space-y-0">
@@ -164,18 +151,13 @@ export default function UserEditor() {
                       {user.givenName} {user.familyName}
                     </span>
                     <span className={`px-2 py-1 rounded-full text-xs font-medium flex-shrink-0 ${
-                      approvalStatus[user.email] 
+                      user.status === 'approved'
                         ? 'bg-green-900/30 text-green-300' 
-                        : 'bg-red-900/30 text-red-300'
-                    }`}>
-                      {approvalStatus[user.email] ? 'Approved' : 'Not Approved'}
-                    </span>
-                    <span className={`px-2 py-1 rounded-full text-xs flex-shrink-0 ${
-                      user.userStatus === 'CONFIRMED' 
-                        ? 'bg-blue-900/30 text-blue-300' 
+                        : user.status === 'denied'
+                        ? 'bg-red-900/30 text-red-300'
                         : 'bg-yellow-900/30 text-yellow-300'
                     }`}>
-                      {user.userStatus}
+                      {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
                     </span>
                   </div>
                   
@@ -190,11 +172,11 @@ export default function UserEditor() {
                     </div>
                     <div className="flex items-center min-w-0">
                       <Calendar className="w-3 h-3 mr-2 flex-shrink-0" />
-                      <span className="truncate">Joined: {user.userCreateDate.toLocaleDateString()}</span>
+                      <span className="truncate">Joined: {new Date(user.registrationDate).toLocaleDateString()}</span>
                     </div>
                     <div className="flex items-center min-w-0">
                       <span className="text-xs text-gray-400 truncate">
-                        Username: {user.username}
+                        ID: {user.cognitoUsername}
                       </span>
                     </div>
                   </div>
@@ -241,7 +223,7 @@ export default function UserEditor() {
               <div className="text-gray-300 text-sm space-y-1">
                 <div>Email: {deleteUser.email}</div>
                 <div>Phone: {formatPhoneForDisplay(deleteUser.phoneNumber.replace('+1', ''))}</div>
-                <div>Status: {deleteUser.userStatus}</div>
+                <div>Status: {deleteUser.status}</div>
               </div>
             </div>
           )}
