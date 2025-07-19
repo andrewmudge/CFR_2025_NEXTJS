@@ -2,17 +2,25 @@ import { NextRequest, NextResponse } from 'next/server';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, ScanCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 
-// Configure DynamoDB client to use IAM role in production, explicit credentials in development
-const dynamoClient = new DynamoDBClient({
-  region: process.env.AWS_REGION || 'us-east-1',
-  // In production (AWS environment), let it use the IAM role automatically
-  // In development, use explicit credentials if available
-  ...(process.env.NODE_ENV === 'production' ? {} : {
-    credentials: process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY ? {
+// Configure DynamoDB client with fallback credential strategies
+const getCredentials = () => {
+  // Strategy 1: Environment variables (for manual setup)
+  if (process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY) {
+    console.log('🔍 Using explicit credentials from environment variables');
+    return {
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    } : undefined,
-  }),
+    };
+  }
+  
+  // Strategy 2: Let AWS SDK use default credential chain (IAM roles, etc.)
+  console.log('🔍 Using default AWS credential chain (IAM role, instance profile, etc.)');
+  return undefined; // This tells AWS SDK to use default credential chain
+};
+
+const dynamoClient = new DynamoDBClient({
+  region: process.env.AWS_REGION || 'us-east-1',
+  credentials: getCredentials(),
 });
 const docClient = DynamoDBDocumentClient.from(dynamoClient);
 
