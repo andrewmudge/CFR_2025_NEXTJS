@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, ScanCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 
-// Configure DynamoDB client with fallback credential strategies
+// Configure DynamoDB client with credential fallback
 const getCredentials = () => {
-  // Strategy 1: Environment variables (for manual setup) - check both standard and custom names
+  // Check both standard AWS names and your custom names
   const accessKeyId = process.env.AWS_ACCESS_KEY_ID || process.env.ACCESS_KEY_ID;
   const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || process.env.SECRET_ACCESS_KEY;
   
@@ -16,9 +16,9 @@ const getCredentials = () => {
     };
   }
   
-  // Strategy 2: Let AWS SDK use default credential chain (IAM roles, etc.)
+  // Let AWS SDK use default credential chain (IAM roles, etc.)
   console.log('🔍 Using default AWS credential chain (IAM role, instance profile, etc.)');
-  return undefined; // This tells AWS SDK to use default credential chain
+  return undefined;
 };
 
 const dynamoClient = new DynamoDBClient({
@@ -67,9 +67,11 @@ export async function GET() {
     console.error('🔍 API: Error fetching user statuses:', error);
     console.error('🔍 API: Environment check:', {
       nodeEnv: process.env.NODE_ENV,
-      hasAccessKey: !!process.env.AWS_ACCESS_KEY_ID,
-      hasSecretKey: !!process.env.AWS_SECRET_ACCESS_KEY,
-      region: process.env.AWS_REGION || 'us-east-1',
+      hasStandardAccessKey: !!process.env.AWS_ACCESS_KEY_ID,
+      hasCustomAccessKey: !!process.env.ACCESS_KEY_ID,
+      hasStandardSecretKey: !!process.env.AWS_SECRET_ACCESS_KEY,
+      hasCustomSecretKey: !!process.env.SECRET_ACCESS_KEY,
+      region: process.env.AWS_REGION || process.env.REGION || 'us-east-1',
       awsExecutionEnv: process.env.AWS_EXECUTION_ENV,
       lambdaTaskRoot: process.env.LAMBDA_TASK_ROOT
     });
@@ -100,30 +102,34 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
-    let updateExpression = 'SET #status = :status';
-    const expressionAttributeNames = { '#status': 'status' };
-    const expressionAttributeValues: any = { ':status': status };
+    // Prepare update data
+    const updateData: any = { status };
 
     // Add approval/denial date and reason
     if (status === 'approved') {
-      updateExpression += ', approvalDate = :approvalDate';
-      expressionAttributeValues[':approvalDate'] = new Date().toISOString();
+      updateData.approvalDate = new Date().toISOString();
     } else if (status === 'denied') {
-      updateExpression += ', denialDate = :denialDate';
-      expressionAttributeValues[':denialDate'] = new Date().toISOString();
+      updateData.denialDate = new Date().toISOString();
       
       if (denialReason) {
-        updateExpression += ', denialReason = :denialReason';
-        expressionAttributeValues[':denialReason'] = denialReason;
+        updateData.denialReason = denialReason;
       }
     }
 
     await docClient.send(new UpdateCommand({
       TableName: USER_STATUS_TABLE,
       Key: { id },
-      UpdateExpression: updateExpression,
-      ExpressionAttributeNames: expressionAttributeNames,
-      ExpressionAttributeValues: expressionAttributeValues
+      UpdateExpression: 'SET #status = :status' + 
+        (status === 'approved' ? ', approvalDate = :approvalDate' : '') +
+        (status === 'denied' ? ', denialDate = :denialDate' : '') +
+        (status === 'denied' && denialReason ? ', denialReason = :denialReason' : ''),
+      ExpressionAttributeNames: { '#status': 'status' },
+      ExpressionAttributeValues: {
+        ':status': status,
+        ...(status === 'approved' && { ':approvalDate': new Date().toISOString() }),
+        ...(status === 'denied' && { ':denialDate': new Date().toISOString() }),
+        ...(status === 'denied' && denialReason && { ':denialReason': denialReason })
+      }
     }));
 
     console.log('🔍 API: User status updated successfully');
