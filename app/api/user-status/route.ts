@@ -4,12 +4,15 @@ import { DynamoDBDocumentClient, ScanCommand, UpdateCommand } from '@aws-sdk/lib
 
 // Configure DynamoDB client with fallback credential strategies
 const getCredentials = () => {
-  // Strategy 1: Environment variables (for manual setup)
-  if (process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY) {
+  // Strategy 1: Environment variables (for manual setup) - check both standard and custom names
+  const accessKeyId = process.env.AWS_ACCESS_KEY_ID || process.env.ACCESS_KEY_ID;
+  const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || process.env.SECRET_ACCESS_KEY;
+  
+  if (accessKeyId && secretAccessKey) {
     console.log('🔍 Using explicit credentials from environment variables');
     return {
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      accessKeyId,
+      secretAccessKey,
     };
   }
   
@@ -19,7 +22,7 @@ const getCredentials = () => {
 };
 
 const dynamoClient = new DynamoDBClient({
-  region: process.env.AWS_REGION || 'us-east-1',
+  region: process.env.AWS_REGION || process.env.REGION || 'us-east-1',
   credentials: getCredentials(),
 });
 const docClient = DynamoDBDocumentClient.from(dynamoClient);
