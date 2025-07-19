@@ -1,47 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { DynamoDBDocumentClient, ScanCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
-import { fromEnv, fromContainerMetadata, fromInstanceMetadata } from '@aws-sdk/credential-providers';
+import { Amplify } from 'aws-amplify';
+import { generateServerClientUsingCookies } from '@aws-amplify/adapter-nextjs/api';
+import { Schema } from '@/amplify/data/resource';
+import { cookies } from 'next/headers';
+import config from '@/amplify_outputs.json';
 
-// Configure DynamoDB client with Amplify-specific credential handling
-const getCredentials = () => {
-  // Strategy 1: Use Amplify environment variables (can't start with AWS_)
-  const accessKeyId = process.env.ACCESS_KEY_ID;
-  const secretAccessKey = process.env.SECRET_ACCESS_KEY;
-  
-  if (accessKeyId && secretAccessKey) {
-    console.log('🔍 Using Amplify environment variables (ACCESS_KEY_ID/SECRET_ACCESS_KEY)');
-    return {
-      accessKeyId,
-      secretAccessKey,
-    };
-  }
-  
-  // Strategy 2: Try standard AWS environment variables (for local development)
-  const awsAccessKeyId = process.env.AWS_ACCESS_KEY_ID;
-  const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-  
-  if (awsAccessKeyId && awsSecretAccessKey) {
-    console.log('🔍 Using standard AWS environment variables');
-    return {
-      accessKeyId: awsAccessKeyId,
-      secretAccessKey: awsSecretAccessKey,
-    };
-  }
-  
-  // Strategy 3: Try AWS credential provider chain
-  console.log('🔍 No explicit credentials found, trying AWS credential provider chain');
-  return undefined; // Let AWS SDK use default credential chain
-};
+// Configure Amplify for server-side usage
+Amplify.configure(config, { ssr: true });
 
-const dynamoClient = new DynamoDBClient({
-  region: process.env.AWS_REGION || process.env.REGION || 'us-east-1',
-  credentials: getCredentials(),
+const cookiesClient = generateServerClientUsingCookies<Schema>({
+  config,
+  cookies,
 });
-const docClient = DynamoDBDocumentClient.from(dynamoClient);
-
-// Use the actual table name - it might have a suffix in Amplify
-const USER_STATUS_TABLE = process.env.AMPLIFY_TABLE_NAME_USERSTATUS || 'UserStatus-cfr2025';
 
 // Get all users with their status
 export async function GET() {
@@ -58,21 +28,18 @@ export async function GET() {
       });
     }
 
-    console.log('🔍 API: Fetching all user statuses from DynamoDB...');
-    console.log('🔍 API: Using table:', USER_STATUS_TABLE);
-    console.log('🔍 API: Using region:', process.env.REGION || 'us-east-1');
-    console.log('🔍 API: Credentials check:', {
-      hasAccessKey: !!process.env.ACCESS_KEY_ID,
-      accessKeyPrefix: process.env.ACCESS_KEY_ID?.substring(0, 8),
-      hasSecretKey: !!process.env.SECRET_ACCESS_KEY,
-      region: process.env.REGION
-    });
+    console.log('🔍 API: Fetching all user statuses using Amplify Data client...');
     
-    const result = await docClient.send(new ScanCommand({
-      TableName: USER_STATUS_TABLE
-    }));
+    const result = await cookiesClient.models.UserStatus.list({
+      authMode: 'apiKey'
+    });
 
-    const users = result.Items || [];
+    if (result.errors && result.errors.length > 0) {
+      console.error('🔍 API: GraphQL errors:', result.errors);
+      throw new Error(`GraphQL errors: ${result.errors.map((e: any) => e.message).join(', ')}`);
+    }
+
+    const users = result.data || [];
     console.log('🔍 API: Found users:', users.length);
     
     // Sort by registration date (newest first)
@@ -87,23 +54,10 @@ export async function GET() {
     });
   } catch (error) {
     console.error('🔍 API: Error fetching user statuses:', error);
-    console.error('🔍 API: Environment check:', {
-      nodeEnv: process.env.NODE_ENV,
-      hasStandardAccessKey: !!process.env.AWS_ACCESS_KEY_ID,
-      hasCustomAccessKey: !!process.env.ACCESS_KEY_ID,
-      hasStandardSecretKey: !!process.env.AWS_SECRET_ACCESS_KEY,
-      hasCustomSecretKey: !!process.env.SECRET_ACCESS_KEY,
-      region: process.env.AWS_REGION || process.env.REGION || 'us-east-1',
-      awsExecutionEnv: process.env.AWS_EXECUTION_ENV,
-      lambdaTaskRoot: process.env.LAMBDA_TASK_ROOT,
-      // Log first few characters of credentials for debugging (but not full values)
-      accessKeyPreview: process.env.AWS_ACCESS_KEY_ID?.substring(0, 8) || process.env.ACCESS_KEY_ID?.substring(0, 8) || 'none',
-      allEnvKeys: Object.keys(process.env).filter(key => key.includes('AWS') || key.includes('ACCESS') || key.includes('SECRET') || key.includes('REGION'))
-    });
     
     // In production, provide more specific error guidance
     const errorMessage = process.env.NODE_ENV === 'production' 
-      ? 'Database connection failed. Please check IAM permissions for DynamoDB access.'
+      ? 'Database connection failed. Please check authentication.'
       : 'Failed to fetch user statuses';
     
     return NextResponse.json(
@@ -141,21 +95,17 @@ export async function PATCH(request: NextRequest) {
       }
     }
 
-    await docClient.send(new UpdateCommand({
-      TableName: USER_STATUS_TABLE,
-      Key: { id },
-      UpdateExpression: 'SET #status = :status' + 
-        (status === 'approved' ? ', approvalDate = :approvalDate' : '') +
-        (status === 'denied' ? ', denialDate = :denialDate' : '') +
-        (status === 'denied' && denialReason ? ', denialReason = :denialReason' : ''),
-      ExpressionAttributeNames: { '#status': 'status' },
-      ExpressionAttributeValues: {
-        ':status': status,
-        ...(status === 'approved' && { ':approvalDate': new Date().toISOString() }),
-        ...(status === 'denied' && { ':denialDate': new Date().toISOString() }),
-        ...(status === 'denied' && denialReason && { ':denialReason': denialReason })
-      }
-    }));
+    const result = await cookiesClient.models.UserStatus.update({
+      id,
+      ...updateData
+    }, {
+      authMode: 'apiKey'
+    });
+
+    if (result.errors && result.errors.length > 0) {
+      console.error('🔍 API: GraphQL errors:', result.errors);
+      throw new Error(`GraphQL errors: ${result.errors.map((e: any) => e.message).join(', ')}`);
+    }
 
     console.log('🔍 API: User status updated successfully');
     

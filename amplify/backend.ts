@@ -73,3 +73,10 @@ backend.addOutput({
     userStatusTableArn: backend.data.resources.tables["UserStatus"].tableArn
   }
 });
+
+// Enable IAM authorization for the hosting service to access data
+backend.data.resources.cfnResources.cfnGraphqlApi.additionalAuthenticationProviders = [
+  {
+    authenticationType: 'AWS_IAM'
+  }
+];

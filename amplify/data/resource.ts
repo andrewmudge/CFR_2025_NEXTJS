@@ -2,7 +2,11 @@ import { defineData } from '@aws-amplify/backend';
 
 export const data = defineData({
   authorizationModes: {
-    defaultAuthorizationMode: 'userPool'
+    defaultAuthorizationMode: 'userPool',
+    // Enable IAM authorization for API routes
+    apiKeyAuthorizationMode: {
+      expiresInDays: 30,
+    },
   },
   schema: `
     type ApprovedUser @model @auth(rules: [{ allow: private }]) {
@@ -17,7 +21,7 @@ export const data = defineData({
       createdDate: AWSDateTime!
     }
 
-    type UserStatus @model @auth(rules: [{ allow: private }]) {
+    type UserStatus @model @auth(rules: [{ allow: private }, { allow: public, provider: apiKey }]) {
       id: ID!
       email: String! @index(name: "byEmail")
       cognitoUsername: String!
@@ -48,3 +52,6 @@ export const data = defineData({
     }
   `,
 });
+
+// Export a type for use in the client
+export type Schema = any;
