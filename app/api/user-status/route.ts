@@ -1,24 +1,37 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, ScanCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
+import { fromEnv, fromContainerMetadata, fromInstanceMetadata } from '@aws-sdk/credential-providers';
 
-// Configure DynamoDB client with credential fallback
+// Configure DynamoDB client with Amplify-specific credential handling
 const getCredentials = () => {
-  // Check both standard AWS names and your custom names
-  const accessKeyId = process.env.AWS_ACCESS_KEY_ID || process.env.ACCESS_KEY_ID;
-  const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || process.env.SECRET_ACCESS_KEY;
+  // Strategy 1: Use Amplify environment variables (can't start with AWS_)
+  const accessKeyId = process.env.ACCESS_KEY_ID;
+  const secretAccessKey = process.env.SECRET_ACCESS_KEY;
   
   if (accessKeyId && secretAccessKey) {
-    console.log('🔍 Using explicit credentials from environment variables');
+    console.log('🔍 Using Amplify environment variables (ACCESS_KEY_ID/SECRET_ACCESS_KEY)');
     return {
       accessKeyId,
       secretAccessKey,
     };
   }
   
-  // Let AWS SDK use default credential chain (IAM roles, etc.)
-  console.log('🔍 Using default AWS credential chain (IAM role, instance profile, etc.)');
-  return undefined;
+  // Strategy 2: Try standard AWS environment variables (for local development)
+  const awsAccessKeyId = process.env.AWS_ACCESS_KEY_ID;
+  const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
+  
+  if (awsAccessKeyId && awsSecretAccessKey) {
+    console.log('🔍 Using standard AWS environment variables');
+    return {
+      accessKeyId: awsAccessKeyId,
+      secretAccessKey: awsSecretAccessKey,
+    };
+  }
+  
+  // Strategy 3: Try AWS credential provider chain
+  console.log('🔍 No explicit credentials found, trying AWS credential provider chain');
+  return undefined; // Let AWS SDK use default credential chain
 };
 
 const dynamoClient = new DynamoDBClient({
@@ -27,7 +40,8 @@ const dynamoClient = new DynamoDBClient({
 });
 const docClient = DynamoDBDocumentClient.from(dynamoClient);
 
-const USER_STATUS_TABLE = 'UserStatus-cfr2025';
+// Use the actual table name - it might have a suffix in Amplify
+const USER_STATUS_TABLE = process.env.AMPLIFY_TABLE_NAME_USERSTATUS || 'UserStatus-cfr2025';
 
 // Get all users with their status
 export async function GET() {
@@ -45,6 +59,14 @@ export async function GET() {
     }
 
     console.log('🔍 API: Fetching all user statuses from DynamoDB...');
+    console.log('🔍 API: Using table:', USER_STATUS_TABLE);
+    console.log('🔍 API: Using region:', process.env.REGION || 'us-east-1');
+    console.log('🔍 API: Credentials check:', {
+      hasAccessKey: !!process.env.ACCESS_KEY_ID,
+      accessKeyPrefix: process.env.ACCESS_KEY_ID?.substring(0, 8),
+      hasSecretKey: !!process.env.SECRET_ACCESS_KEY,
+      region: process.env.REGION
+    });
     
     const result = await docClient.send(new ScanCommand({
       TableName: USER_STATUS_TABLE
@@ -73,7 +95,10 @@ export async function GET() {
       hasCustomSecretKey: !!process.env.SECRET_ACCESS_KEY,
       region: process.env.AWS_REGION || process.env.REGION || 'us-east-1',
       awsExecutionEnv: process.env.AWS_EXECUTION_ENV,
-      lambdaTaskRoot: process.env.LAMBDA_TASK_ROOT
+      lambdaTaskRoot: process.env.LAMBDA_TASK_ROOT,
+      // Log first few characters of credentials for debugging (but not full values)
+      accessKeyPreview: process.env.AWS_ACCESS_KEY_ID?.substring(0, 8) || process.env.ACCESS_KEY_ID?.substring(0, 8) || 'none',
+      allEnvKeys: Object.keys(process.env).filter(key => key.includes('AWS') || key.includes('ACCESS') || key.includes('SECRET') || key.includes('REGION'))
     });
     
     // In production, provide more specific error guidance

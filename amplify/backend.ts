@@ -65,3 +65,11 @@ backend.cognitoAdmin.resources.lambda.addToRolePolicy(
     resources: [backend.auth.resources.userPool.userPoolArn]
   })
 );
+
+// Grant DynamoDB permissions to hosting service for Next.js API routes
+backend.addOutput({
+  custom: {
+    userStatusTableName: backend.data.resources.tables["UserStatus"].tableName,
+    userStatusTableArn: backend.data.resources.tables["UserStatus"].tableArn
+  }
+});
